@@ -15,7 +15,7 @@ import kayak.freestyle.competition.kflow.repositories.UserRepository;
 
 @Service
 public class UserService extends GenericService<User, UserDto, UserRepository, UserMapper> {
-;
+    
     /*private final PasswordEncoder passwordEncoder;*/
     public UserService(UserRepository repository, UserMapper mapper/* , PasswordEncoder passwordEncoder*/) {
         super(repository, mapper);

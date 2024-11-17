@@ -1,14 +1,14 @@
 package kayak.freestyle.competition.kflow.dto;
 
-import org.hibernate.validator.constraints.Length;
+import java.util.List;
+
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import kayak.freestyle.competition.kflow.models.Categorie;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,29 +22,25 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
-public class UserDto implements HasId {
+public class CompetitionDto implements HasId{
 
     @EqualsAndHashCode.Include
     private long id;
 
     @NotBlank
-    private String name;
-
-    @Email
-    @JsonProperty("email")
-    private String email;
+    @DateTimeFormat(style="SS")
+    private String date;
 
     @NotBlank
-    @Length(min = 8)
-    @NotBlank(message = "Le mot de passe ne doit pas être vide")
-    @JsonProperty("password")
-    private String password;
+    private String level;
 
     @NotBlank
-    private int bibNb;
-        
+    private String place;
+
+    private List<Categorie> categories;
+
     @PostMapping
-    public ResponseEntity<UserDto> save(@RequestBody UserDto userDto) {
-        return ResponseEntity.ok(userDto);
+    public ResponseEntity<CompetitionDto> save(@RequestBody CompetitionDto competitionDto) {
+        return ResponseEntity.ok(competitionDto);
     }
 }

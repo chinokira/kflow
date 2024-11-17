@@ -34,8 +34,8 @@ public class Competition {
     private String level;
 
     private String place;
-
-    @OneToMany(mappedBy = "competition", cascade=CascadeType.ALL, orphanRemoval=true, fetch=FetchType.LAZY)
+    
+    @OneToMany(mappedBy = "competition", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
     private List<Categorie> categories;
 
 }
