@@ -1,6 +1,11 @@
 package kayak.freestyle.competition.kflow.dto;
 
 import org.hibernate.validator.constraints.Length;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -26,12 +31,19 @@ public class UserDto implements HasId {
     private String name;
 
     @Email
+    @JsonProperty("email")
     private String email;
 
     @NotBlank
     @Length(min = 8)
+    @NotBlank(message = "Le mot de passe ne doit pas être vide")
+    @JsonProperty("password")
     private String password;
 
-    private int pollsNumber;
-
+    private int bibNb;
+        
+    @PostMapping
+    public ResponseEntity<UserDto> save(@RequestBody UserDto userDto) {
+        return ResponseEntity.ok(userDto);
+    }
 }

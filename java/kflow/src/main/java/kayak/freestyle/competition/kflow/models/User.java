@@ -5,6 +5,8 @@ import java.util.List;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -31,6 +33,23 @@ public class User {
 
     private String name;
 
-    @ManyToMany(mappedBy = "users")
+    private String email;
+
+    private String password;
+    
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    @ManyToMany
+    @JoinTable(
+        name = "user_categories",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "categorie_id")
+    )
     private List<Categorie> categories;
 }

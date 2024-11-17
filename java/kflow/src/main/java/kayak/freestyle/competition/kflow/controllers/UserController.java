@@ -21,6 +21,7 @@ public class UserController extends GenericController<UserDto, UserService> {
         super(userService);
     }
 
+
     @Transactional
     @PatchMapping("{id:\\d+}")
     public void update(@PathVariable long id, @RequestBody Map<String, Object> values) {
@@ -29,4 +30,6 @@ public class UserController extends GenericController<UserDto, UserService> {
         }
         service.patch(id, values);
     }
+
+
 }

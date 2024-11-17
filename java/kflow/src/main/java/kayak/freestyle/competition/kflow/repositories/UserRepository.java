@@ -11,4 +11,6 @@ import kayak.freestyle.competition.kflow.models.User;
 public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByEmail(String email);
+
+    Optional<User> findById(int id);
 }

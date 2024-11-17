@@ -1,6 +1,7 @@
 package kayak.freestyle.competition.kflow.models;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
@@ -29,6 +30,7 @@ public class Run {
 
     private float score;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Stage stage;
+
 }
