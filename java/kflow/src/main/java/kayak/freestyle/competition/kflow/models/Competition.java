@@ -2,9 +2,10 @@ package kayak.freestyle.competition.kflow.models;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
@@ -34,8 +35,9 @@ public class Competition {
     private String level;
 
     private String place;
-    
-    @OneToMany(mappedBy = "competition", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+
+    @OneToMany(mappedBy = "competition", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Categorie> categories;
 
 }

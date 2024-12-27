@@ -30,6 +30,4 @@ public class UserController extends GenericController<UserDto, UserService> {
         }
         service.patch(id, values);
     }
-
-
 }

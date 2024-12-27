@@ -18,6 +18,4 @@ public class CompetitionService extends GenericService<Competition, CompetitionD
     public CompetitionDto save(CompetitionDto dto) {
         return super.save(dto);
     }
-
-    
 }
