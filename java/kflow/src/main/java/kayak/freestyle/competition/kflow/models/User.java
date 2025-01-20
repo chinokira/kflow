@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.validation.constraints.Positive;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,6 +30,7 @@ public class User {
     @GeneratedValue
     private long id;
 
+    @Positive
     private int bibNb;
 
     private String name;
@@ -36,7 +38,7 @@ public class User {
     private String email;
 
     private String password;
-    
+
     public String getEmail() {
         return email;
     }
@@ -47,9 +49,9 @@ public class User {
 
     @ManyToMany
     @JoinTable(
-        name = "user_categories",
-        joinColumns = @JoinColumn(name = "user_id"),
-        inverseJoinColumns = @JoinColumn(name = "categorie_id")
+            name = "user_categories",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "categorie_id")
     )
     private List<Categorie> categories;
 }

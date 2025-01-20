@@ -8,8 +8,8 @@ import kayak.freestyle.competition.kflow.models.Categorie;
 import kayak.freestyle.competition.kflow.repositories.CategorieRepository;
 
 @Service
-public class CategorieService  extends GenericService<Categorie, CategorieDto, CategorieRepository, CategorieMapper> {
-    
+public class CategorieService extends GenericService<Categorie, CategorieDto, CategorieRepository, CategorieMapper> {
+
     public CategorieService(CategorieRepository repository, CategorieMapper mapper) {
         super(repository, mapper);
     }

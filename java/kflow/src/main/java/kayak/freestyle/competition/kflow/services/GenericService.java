@@ -21,10 +21,15 @@ public class GenericService<MODEL, DTO extends HasId, REPOSITORY extends JpaRepo
                 .toList();
     }
 
-    public DTO findById(long id) {
+    public DTO findByIdDto(long id) {
         return repository.findById(id)
                 .map(mapper::modelToDto)
                 .orElseThrow(() -> new NotFoundException("no entity with id " + id + " exists"));
+    }
+
+    public MODEL findById(long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Run not found with ID: " + id));
     }
 
     public DTO save(DTO dto) {

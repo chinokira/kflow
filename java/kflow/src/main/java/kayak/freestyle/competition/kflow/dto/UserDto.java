@@ -40,9 +40,8 @@ public class UserDto implements HasId {
     @JsonProperty("password")
     private String password;
 
-    @NotBlank
     private int bibNb;
-        
+
     @PostMapping
     public ResponseEntity<UserDto> save(@RequestBody UserDto userDto) {
         return ResponseEntity.ok(userDto);

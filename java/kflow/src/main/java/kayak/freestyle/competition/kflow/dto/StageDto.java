@@ -1,14 +1,10 @@
 package kayak.freestyle.competition.kflow.dto;
 
-import java.util.List;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import jakarta.validation.constraints.NotBlank;
-import kayak.freestyle.competition.kflow.models.Categorie;
-import kayak.freestyle.competition.kflow.models.Run;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +14,7 @@ import lombok.experimental.SuperBuilder;
 
 @NoArgsConstructor
 @SuperBuilder
+
 @Setter
 @Getter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -36,9 +33,9 @@ public class StageDto implements HasId {
     @NotBlank
     private int nbCompetitor;
 
-    private Categorie categorie;
+    private Long categorieId;
 
-    private List<Run> runs;
+    private Long[] runsId;
 
     @PostMapping
     public ResponseEntity<StageDto> save(@RequestBody StageDto stageDto) {

@@ -8,7 +8,7 @@ import kayak.freestyle.competition.kflow.services.RunService;
 
 @RestController
 @RequestMapping("/run")
-public class RunController extends GenericController<RunDto, RunService>{
+public class RunController extends GenericController<RunDto, RunService> {
 
     public RunController(RunService service) {
         super(service);

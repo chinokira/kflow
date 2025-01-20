@@ -8,7 +8,7 @@ import kayak.freestyle.competition.kflow.models.Run;
 import kayak.freestyle.competition.kflow.repositories.RunRepository;
 
 @Service
-public class RunService extends GenericService<Run, RunDto, RunRepository, RunMapper>{
+public class RunService extends GenericService<Run, RunDto, RunRepository, RunMapper> {
 
     public RunService(RunRepository repository, RunMapper mapper) {
         super(repository, mapper);

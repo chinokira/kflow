@@ -27,8 +27,8 @@ public class GenericController<DTO extends HasId, SERVICE extends GenericService
     }
 
     @GetMapping("{id}")
-    public DTO findById(@PathVariable long id) {
-        return service.findById(id);
+    public DTO findByIdDto(@PathVariable long id) {
+        return service.findByIdDto(id);
     }
 
     @PostMapping

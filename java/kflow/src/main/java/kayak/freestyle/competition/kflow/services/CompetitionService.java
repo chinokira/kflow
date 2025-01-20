@@ -8,7 +8,7 @@ import kayak.freestyle.competition.kflow.models.Competition;
 import kayak.freestyle.competition.kflow.repositories.CompetitionRepository;
 
 @Service
-public class CompetitionService extends GenericService<Competition, CompetitionDto, CompetitionRepository, CompetitionMapper>{
+public class CompetitionService extends GenericService<Competition, CompetitionDto, CompetitionRepository, CompetitionMapper> {
 
     public CompetitionService(CompetitionRepository repository, CompetitionMapper mapper) {
         super(repository, mapper);
