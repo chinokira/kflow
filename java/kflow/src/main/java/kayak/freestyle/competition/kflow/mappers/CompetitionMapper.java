@@ -1,19 +1,12 @@
 package kayak.freestyle.competition.kflow.mappers;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.stereotype.Component;
 
 import kayak.freestyle.competition.kflow.dto.CompetitionDto;
-import kayak.freestyle.competition.kflow.models.Categorie;
 import kayak.freestyle.competition.kflow.models.Competition;
-import kayak.freestyle.competition.kflow.services.CategorieService;
 
 @Component
 public class CompetitionMapper implements GenericMapper<Competition, CompetitionDto> {
-
-    private CategorieService categorieService;
 
     @Override
     public CompetitionDto modelToDto(Competition m) {
@@ -22,13 +15,10 @@ public class CompetitionMapper implements GenericMapper<Competition, Competition
                 .date(m.getDate())
                 .level(m.getLevel())
                 .place(m.getPlace())
+                .categories(m.getCategories())
                 .build();
         if (m.getCategories() != null) {
-            List<Long> list = new ArrayList<>();
-            for (Categorie cat : m.getCategories()) {
-                list.add(cat.getId());
-            }
-            competitionDto.setCategoriesId(list);
+            competitionDto.setCategories(m.getCategories());
         }
         return competitionDto;
     }
@@ -40,14 +30,10 @@ public class CompetitionMapper implements GenericMapper<Competition, Competition
                 .date(d.getDate())
                 .level(d.getLevel())
                 .place(d.getPlace())
+                .categories(d.getCategories())
                 .build();
-
-        if (d.getCategoriesId() != null) {
-            List<Categorie> list = new ArrayList<>();
-            for (Long catId : d.getCategoriesId()) {
-                list.add(categorieService.findById(catId));
-            }
-            competition.setCategories(list);
+        if (d.getCategories() != null) {
+            competition.setCategories(d.getCategories());
         }
         return competition;
     }

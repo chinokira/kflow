@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import jakarta.validation.constraints.NotBlank;
+import kayak.freestyle.competition.kflow.models.Competition;
+import kayak.freestyle.competition.kflow.models.Stage;
+import kayak.freestyle.competition.kflow.models.User;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,11 +31,11 @@ public class CategorieDto implements HasId {
     @NotBlank
     private String name;
 
-    private List<Long> usersId;
+    private List<User> users;
 
-    private Long competitionId;
+    private Competition competition;
 
-    private List<Long> stagesId;
+    private List<Stage> stages;
 
     @PostMapping
     public ResponseEntity<CompetitionDto> save(@RequestBody CompetitionDto competitionDto) {

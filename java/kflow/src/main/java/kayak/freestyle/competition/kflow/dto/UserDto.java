@@ -1,5 +1,7 @@
 package kayak.freestyle.competition.kflow.dto;
 
+import java.util.List;
+
 import org.hibernate.validator.constraints.Length;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import kayak.freestyle.competition.kflow.models.Categorie;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -41,6 +44,8 @@ public class UserDto implements HasId {
     private String password;
 
     private int bibNb;
+
+    private List<Categorie> categories;
 
     @PostMapping
     public ResponseEntity<UserDto> save(@RequestBody UserDto userDto) {

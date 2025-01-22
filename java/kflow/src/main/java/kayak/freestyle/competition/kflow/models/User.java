@@ -3,6 +3,7 @@ package kayak.freestyle.competition.kflow.models;
 import java.util.List;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -47,7 +48,7 @@ public class User {
         this.email = email;
     }
 
-    @ManyToMany
+    @ManyToMany(fetch= FetchType.LAZY)
     @JoinTable(
             name = "user_categories",
             joinColumns = @JoinColumn(name = "user_id"),

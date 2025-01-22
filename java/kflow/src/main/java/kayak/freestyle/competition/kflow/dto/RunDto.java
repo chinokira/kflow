@@ -1,5 +1,6 @@
 package kayak.freestyle.competition.kflow.dto;
 
+import kayak.freestyle.competition.kflow.models.Stage;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,5 +23,5 @@ public class RunDto implements HasId {
 
     private float score;
 
-    private Long stageId;
+    private Stage stage;
 }
