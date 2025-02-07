@@ -8,24 +8,16 @@ import kayak.freestyle.competition.kflow.models.Categorie;
 @Component
 public class CategorieMapper implements GenericMapper<Categorie, CategorieDto> {
 
-
     @Override
     public CategorieDto modelToDto(Categorie m) {
-        CategorieDto categorieDto = CategorieDto.builder()
-                .id(m.getId())
-                .name(m.getName())
-                .build();
-
-        if (m.getUsers() != null) {
-            categorieDto.setUsers(m.getUsers());
-        }
-        if (m.getCompetition() != null) {
-            categorieDto.setCompetition(m.getCompetition());
-        }
-        if (m.getStages() != null) {
-            categorieDto.setStages(m.getStages());
-        }
-        return categorieDto;
+        CategorieDto dto = CategorieDto.builder()
+        .id(m.getId())
+        .name(m.getName())
+        .users(m.getUsers()!= null ? m.getUsers() : null)
+        .stages(m.getStages()!= null ? m.getStages() : null)
+        .competition(m.getCompetition() != null ? m.getCompetition() : null)
+        .build();
+        return dto;
     }
 
     @Override
@@ -33,16 +25,10 @@ public class CategorieMapper implements GenericMapper<Categorie, CategorieDto> {
         Categorie categorie = Categorie.builder()
                 .id(d.getId())
                 .name(d.getName())
+                .users(d.getUsers() != null ?d.getUsers() : null)
+                .competition(d.getCompetition() != null ? d.getCompetition() : null)
+                .stages(d.getStages() != null ?d.getStages() : null)
                 .build();
-        if (d.getUsers() != null) {
-            categorie.setUsers(d.getUsers());
-        }
-        if (d.getCompetition() != null) {
-            categorie.setCompetition(d.getCompetition());
-        }
-        if (d.getStages() != null) {
-            categorie.setStages(d.getStages());
-        }
         return categorie;
     }
 

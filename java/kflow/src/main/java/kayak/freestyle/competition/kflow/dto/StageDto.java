@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 import kayak.freestyle.competition.kflow.models.Categorie;
 import kayak.freestyle.competition.kflow.models.Run;
 import lombok.EqualsAndHashCode;
@@ -28,13 +29,12 @@ public class StageDto implements HasId {
     @EqualsAndHashCode.Include
     private long id;
 
-    @NotBlank
+    @Positive
     private int nbRun;
 
     @NotBlank
     private String rules;
 
-    @NotBlank
     private int nbCompetitor;
 
     private Categorie categorie;

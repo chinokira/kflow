@@ -14,10 +14,8 @@ public class RunMapper implements GenericMapper<Run, RunDto> {
                 .id(m.getId())
                 .duration(m.getDuration())
                 .score(m.getScore())
+                .stage(m.getStage() != null ? m.getStage() : null)
                 .build();
-        if (m.getStage() != null) {
-            runDto.setStage(m.getStage());
-        }
         return runDto;
     }
 
@@ -27,10 +25,8 @@ public class RunMapper implements GenericMapper<Run, RunDto> {
                 .id(d.getId())
                 .duration(d.getDuration())
                 .score(d.getScore())
+                .stage(d.getStage() != null ? d.getStage() : null)
                 .build();
-        if (d.getStage() != null) {
-            run.setStage(d.getStage());
-        }
         return run;
     }
 

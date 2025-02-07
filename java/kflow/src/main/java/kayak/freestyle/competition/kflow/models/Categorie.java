@@ -2,10 +2,13 @@ package kayak.freestyle.competition.kflow.models;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
@@ -29,19 +32,21 @@ public class Categorie {
 
     @EqualsAndHashCode.Include
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private String name;
-    
-    @ManyToMany(mappedBy = "categories")
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JsonIgnore
     private List<User> users;
+
+    @OneToMany(mappedBy = "categorie", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JsonIgnore
+    private List<Stage> stages;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "competition_id")
+    @JsonIgnore
     private Competition competition;
-
-    @OneToMany(mappedBy = "categorie", cascade=CascadeType.ALL, orphanRemoval=true, fetch=FetchType.LAZY)
-    private List<Stage> stages;
-
 }

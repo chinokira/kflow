@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import kayak.freestyle.competition.kflow.models.Categorie;
+import kayak.freestyle.competition.kflow.models.Run;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -46,6 +47,8 @@ public class UserDto implements HasId {
     private int bibNb;
 
     private List<Categorie> categories;
+
+    private List<Run> runs;
 
     @PostMapping
     public ResponseEntity<UserDto> save(@RequestBody UserDto userDto) {

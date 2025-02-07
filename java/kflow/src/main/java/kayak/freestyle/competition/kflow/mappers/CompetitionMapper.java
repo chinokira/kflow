@@ -15,11 +15,8 @@ public class CompetitionMapper implements GenericMapper<Competition, Competition
                 .date(m.getDate())
                 .level(m.getLevel())
                 .place(m.getPlace())
-                .categories(m.getCategories())
+                .categories(m.getCategories() != null ? m.getCategories() : null)
                 .build();
-        if (m.getCategories() != null) {
-            competitionDto.setCategories(m.getCategories());
-        }
         return competitionDto;
     }
 
@@ -30,11 +27,8 @@ public class CompetitionMapper implements GenericMapper<Competition, Competition
                 .date(d.getDate())
                 .level(d.getLevel())
                 .place(d.getPlace())
-                .categories(d.getCategories())
+                .categories(d.getCategories() != null ? d.getCategories() : null)
                 .build();
-        if (d.getCategories() != null) {
-            competition.setCategories(d.getCategories());
-        }
         return competition;
     }
 }
