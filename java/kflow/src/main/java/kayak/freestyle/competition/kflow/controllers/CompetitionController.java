@@ -8,7 +8,7 @@ import kayak.freestyle.competition.kflow.services.CompetitionService;
 
 @RestController
 @RequestMapping("/competitions")
-public class CompetitionController extends GenericController<CompetitionDto, CompetitionService>{
+public class CompetitionController extends GenericController<CompetitionDto, CompetitionService> {
 
     public CompetitionController(CompetitionService service) {
         super(service);

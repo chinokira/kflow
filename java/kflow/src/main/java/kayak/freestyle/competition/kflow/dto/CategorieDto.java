@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.validation.constraints.NotBlank;
 import kayak.freestyle.competition.kflow.models.Competition;
 import kayak.freestyle.competition.kflow.models.Stage;
@@ -31,14 +33,17 @@ public class CategorieDto implements HasId {
     @NotBlank
     private String name;
 
+    @JsonIgnore
     private List<User> users;
 
+    @JsonIgnore
     private Competition competition;
 
+    @JsonIgnore
     private List<Stage> stages;
 
     @PostMapping
-    public ResponseEntity<CompetitionDto> save(@RequestBody CompetitionDto competitionDto) {
-        return ResponseEntity.ok(competitionDto);
+    public ResponseEntity<CategorieDto> save(@RequestBody CategorieDto categorieDto) {
+        return ResponseEntity.ok(categorieDto);
     }
 }

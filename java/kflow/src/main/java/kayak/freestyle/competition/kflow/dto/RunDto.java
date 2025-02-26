@@ -1,5 +1,7 @@
 package kayak.freestyle.competition.kflow.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import kayak.freestyle.competition.kflow.models.Stage;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -23,5 +25,6 @@ public class RunDto implements HasId {
 
     private float score;
 
+    @JsonIgnore
     private Stage stage;
 }

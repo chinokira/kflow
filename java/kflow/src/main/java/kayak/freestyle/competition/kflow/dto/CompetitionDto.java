@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import kayak.freestyle.competition.kflow.models.Categorie;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -33,6 +35,7 @@ public class CompetitionDto implements HasId {
 
     private String place;
 
+    @JsonIgnore
     private List<Categorie> categories;
 
     @PostMapping

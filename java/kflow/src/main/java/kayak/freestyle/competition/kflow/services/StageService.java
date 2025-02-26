@@ -12,8 +12,8 @@ public class StageService extends GenericService<Stage, StageDto, StageRepositor
 
     public StageService(StageRepository repository, StageMapper mapper) {
         super(repository, mapper);
-    }    
-    
+    }
+
     @Override
     public StageDto save(StageDto dto) {
         return super.save(dto);

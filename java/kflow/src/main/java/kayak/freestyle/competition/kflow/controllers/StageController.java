@@ -8,7 +8,7 @@ import kayak.freestyle.competition.kflow.services.StageService;
 
 @RestController
 @RequestMapping("/stage")
-public class StageController extends GenericController<StageDto, StageService>{
+public class StageController extends GenericController<StageDto, StageService> {
 
     public StageController(StageService service) {
         super(service);

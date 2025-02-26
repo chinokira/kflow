@@ -20,14 +20,4 @@ public class UserController extends GenericController<UserDto, UserService> {
     public UserController(UserService userService) {
         super(userService);
     }
-
-
-    @Transactional
-    @PatchMapping("{id:\\d+}")
-    public void update(@PathVariable long id, @RequestBody Map<String, Object> values) {
-        if (values.containsKey("id") && !values.get("id").equals(id)) {
-            throw new BadRequestException("id in url and body must be the same");
-        }
-        service.patch(id, values);
-    }
 }
