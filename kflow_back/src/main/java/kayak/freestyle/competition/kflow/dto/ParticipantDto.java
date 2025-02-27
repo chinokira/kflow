@@ -27,7 +27,7 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
-public class UserDto implements HasId {
+public class ParticipantDto implements HasId {
 
     @EqualsAndHashCode.Include
     private long id;
@@ -54,7 +54,7 @@ public class UserDto implements HasId {
     private List<Run> runs;
 
     @PostMapping
-    public ResponseEntity<UserDto> save(@RequestBody UserDto userDto) {
+    public ResponseEntity<ParticipantDto> save(@RequestBody ParticipantDto userDto) {
         return ResponseEntity.ok(userDto);
     }
 }

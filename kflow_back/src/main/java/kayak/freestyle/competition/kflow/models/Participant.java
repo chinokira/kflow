@@ -27,7 +27,7 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
 @Entity
-public class User {
+public class Participant {
 
     @EqualsAndHashCode.Include
     @Id

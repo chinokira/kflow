@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotBlank;
 import kayak.freestyle.competition.kflow.models.Competition;
 import kayak.freestyle.competition.kflow.models.Stage;
-import kayak.freestyle.competition.kflow.models.User;
+import kayak.freestyle.competition.kflow.models.Participant;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,7 +34,7 @@ public class CategorieDto implements HasId {
     private String name;
 
     @JsonIgnore
-    private List<User> users;
+    private List<Participant> users;
 
     @JsonIgnore
     private Competition competition;

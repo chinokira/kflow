@@ -3,8 +3,6 @@ package kayak.freestyle.competition.kflow.mappers;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.imageio.plugins.tiff.TIFFTagSet;
-
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
@@ -12,19 +10,19 @@ import kayak.freestyle.competition.kflow.dto.CategorieDto;
 import kayak.freestyle.competition.kflow.models.Categorie;
 import kayak.freestyle.competition.kflow.models.Competition;
 import kayak.freestyle.competition.kflow.models.Stage;
-import kayak.freestyle.competition.kflow.models.User;
+import kayak.freestyle.competition.kflow.models.Participant;
 import kayak.freestyle.competition.kflow.services.CompetitionService;
 import kayak.freestyle.competition.kflow.services.StageService;
-import kayak.freestyle.competition.kflow.services.UserService;
+import kayak.freestyle.competition.kflow.services.ParticipantService;
 
 @Component
 public class CategorieMapper implements GenericMapper<Categorie, CategorieDto> {
 
     private final CompetitionService competitionService;
-    private final UserService userService;
+    private final ParticipantService userService;
     private final StageService stageService;
 
-    public CategorieMapper(@Lazy CompetitionService competitionService, @Lazy UserService userService, @Lazy StageService stageService) {
+    public CategorieMapper(@Lazy CompetitionService competitionService, @Lazy ParticipantService userService, @Lazy StageService stageService) {
         this.competitionService = competitionService;
         this.userService = userService;
         this.stageService = stageService;
@@ -51,13 +49,13 @@ public class CategorieMapper implements GenericMapper<Categorie, CategorieDto> {
                 // .stages(d.getStages() != null ? d.getStages() : null)
                 .build();
 
-        List<User> dtoUsers = new ArrayList<>();
-        List<User> users = d.getUsers();
+        List<Participant> dtoUsers = new ArrayList<>();
+        List<Participant> users = d.getUsers();
         if (!users.isEmpty()) {
-            for (User user : users) {
+            for (Participant user : users) {
                 long id = user.getId();
                 if (id > 0) {
-                    User findById = userService.findById(id);
+                    Participant findById = userService.findById(id);
                     if (findById != null) {
                         dtoUsers.add(findById);
                     }

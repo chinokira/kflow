@@ -42,5 +42,5 @@ public class Run {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     @JsonIgnore
-    private User user;
+    private Participant user;
 }

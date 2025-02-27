@@ -6,27 +6,27 @@ import java.util.List;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-import kayak.freestyle.competition.kflow.dto.UserDto;
+import kayak.freestyle.competition.kflow.dto.ParticipantDto;
 import kayak.freestyle.competition.kflow.models.Categorie;
 import kayak.freestyle.competition.kflow.models.Run;
-import kayak.freestyle.competition.kflow.models.User;
+import kayak.freestyle.competition.kflow.models.Participant;
 import kayak.freestyle.competition.kflow.services.CategorieService;
 import kayak.freestyle.competition.kflow.services.RunService;
 
 @Component
-public class UserMapper implements GenericMapper<User, UserDto> {
+public class ParticipantMapper implements GenericMapper<Participant, ParticipantDto> {
 
     private final RunService runService;
     private final CategorieService categorieService;
 
-    public UserMapper(@Lazy RunService runService, @Lazy CategorieService categorieService) {
+    public ParticipantMapper(@Lazy RunService runService, @Lazy CategorieService categorieService) {
         this.runService = runService;
         this.categorieService = categorieService;
     }
 
     @Override
-    public UserDto modelToDto(User m) {
-        return UserDto.builder()
+    public ParticipantDto modelToDto(Participant m) {
+        return ParticipantDto.builder()
                 .id(m.getId())
                 .bibNb(m.getBibNb())
                 .name(m.getName())
@@ -38,8 +38,8 @@ public class UserMapper implements GenericMapper<User, UserDto> {
     }
 
     @Override
-    public User dtoToModel(UserDto d) {
-        User user = User.builder()
+    public Participant dtoToModel(ParticipantDto d) {
+        Participant user = Participant.builder()
                 .id(d.getId())
                 .bibNb(d.getBibNb())
                 .name(d.getName())
