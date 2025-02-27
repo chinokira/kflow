@@ -7,7 +7,7 @@ import kayak.freestyle.competition.kflow.dto.ParticipantDto;
 import kayak.freestyle.competition.kflow.services.ParticipantService;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/participant")
 public class ParticipantController extends GenericController<ParticipantDto, ParticipantService> {
 
     public ParticipantController(ParticipantService userService) {

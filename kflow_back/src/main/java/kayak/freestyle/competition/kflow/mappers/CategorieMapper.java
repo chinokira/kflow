@@ -19,12 +19,12 @@ import kayak.freestyle.competition.kflow.services.ParticipantService;
 public class CategorieMapper implements GenericMapper<Categorie, CategorieDto> {
 
     private final CompetitionService competitionService;
-    private final ParticipantService userService;
+    private final ParticipantService participantService;
     private final StageService stageService;
 
-    public CategorieMapper(@Lazy CompetitionService competitionService, @Lazy ParticipantService userService, @Lazy StageService stageService) {
+    public CategorieMapper(@Lazy CompetitionService competitionService, @Lazy ParticipantService participantService, @Lazy StageService stageService) {
         this.competitionService = competitionService;
-        this.userService = userService;
+        this.participantService = participantService;
         this.stageService = stageService;
     }
 
@@ -33,7 +33,7 @@ public class CategorieMapper implements GenericMapper<Categorie, CategorieDto> {
         return CategorieDto.builder()
                 .id(m.getId())
                 .name(m.getName())
-                .users(m.getUsers() != null ? m.getUsers() : null)
+                .participants(m.getParticipants() != null ? m.getParticipants() : null)
                 .stages(m.getStages() != null ? m.getStages() : null)
                 .competition(m.getCompetition() != null ? m.getCompetition() : null)
                 .build();
@@ -44,24 +44,24 @@ public class CategorieMapper implements GenericMapper<Categorie, CategorieDto> {
         Categorie categorie = Categorie.builder()
                 .id(d.getId())
                 .name(d.getName())
-                // .users(d.getUsers() != null ? d.getUsers() : null)
+                // .participants(d.getparticipants() != null ? d.getparticipants() : null)
                 // .competition(d.getCompetition() != null ? d.getCompetition() : null)
                 // .stages(d.getStages() != null ? d.getStages() : null)
                 .build();
 
-        List<Participant> dtoUsers = new ArrayList<>();
-        List<Participant> users = d.getUsers();
-        if (!users.isEmpty()) {
-            for (Participant user : users) {
-                long id = user.getId();
+        List<Participant> dtoParticipants = new ArrayList<>();
+        List<Participant> participants = d.getParticipants();
+        if (!participants.isEmpty()) {
+            for (Participant participant : participants) {
+                long id = participant.getId();
                 if (id > 0) {
-                    Participant findById = userService.findById(id);
+                    Participant findById = participantService.findById(id);
                     if (findById != null) {
-                        dtoUsers.add(findById);
+                        dtoParticipants.add(findById);
                     }
                 }
             }
-            categorie.setUsers(dtoUsers);
+            categorie.setParticipants(dtoParticipants);
         }
         List<Stage> dtoStage = new ArrayList<>();
         List<Stage> stages = d.getStages();

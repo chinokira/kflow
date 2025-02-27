@@ -30,8 +30,6 @@ public class ParticipantMapper implements GenericMapper<Participant, Participant
                 .id(m.getId())
                 .bibNb(m.getBibNb())
                 .name(m.getName())
-                .email(m.getEmail())
-                .password(m.getPassword())
                 .categories(m.getCategories())
                 .runs(m.getRuns())
                 .build();
@@ -43,10 +41,6 @@ public class ParticipantMapper implements GenericMapper<Participant, Participant
                 .id(d.getId())
                 .bibNb(d.getBibNb())
                 .name(d.getName())
-                .email(d.getEmail())
-                .password(d.getPassword())
-                // .categories(d.getCategories())
-                // .runs(d.getRuns())
                 .build();
 
         List<Categorie> dtoCategories = new ArrayList<>();

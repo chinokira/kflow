@@ -10,15 +10,12 @@ import kayak.freestyle.competition.kflow.repositories.ParticipantRepository;
 @Service
 public class ParticipantService extends GenericService<Participant, ParticipantDto, ParticipantRepository, ParticipantMapper> {
 
-    /*private final PasswordEncoder passwordEncoder;*/
-    public ParticipantService(ParticipantRepository repository, ParticipantMapper mapper/* , PasswordEncoder passwordEncoder*/) {
+    public ParticipantService(ParticipantRepository repository, ParticipantMapper mapper) {
         super(repository, mapper);
-        /*this.passwordEncoder = passwordEncoder;*/
     }
 
     @Override
     public ParticipantDto save(ParticipantDto dto) {
-        /*dto.setPassword(passwordEncoder.encode(dto.getPassword()));*/
         return super.save(dto);
     }
 }

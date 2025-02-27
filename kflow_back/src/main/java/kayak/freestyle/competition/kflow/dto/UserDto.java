@@ -2,16 +2,16 @@ package kayak.freestyle.competition.kflow.dto;
 
 import java.util.List;
 
+import org.hibernate.validator.constraints.Length;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import kayak.freestyle.competition.kflow.models.Competition;
-import kayak.freestyle.competition.kflow.models.Stage;
-import kayak.freestyle.competition.kflow.models.Participant;
+import kayak.freestyle.competition.kflow.models.Role;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,7 +25,7 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
-public class CategorieDto implements HasId {
+public class UserDto implements HasId {
 
     @EqualsAndHashCode.Include
     private long id;
@@ -33,17 +33,21 @@ public class CategorieDto implements HasId {
     @NotBlank
     private String name;
 
-    @JsonIgnore
-    private List<Participant> participants;
+    @Email
+    @JsonProperty("email")
+    private String email;
 
-    @JsonIgnore
-    private Competition competition;
+    @NotBlank
+    @Length(min = 8)
+    @NotBlank(message = "Le mot de passe ne doit pas être vide")
+    @JsonProperty("password")
+    private String password;
 
-    @JsonIgnore
-    private List<Stage> stages;
+    @NotBlank
+    private Role role;
 
     @PostMapping
-    public ResponseEntity<CategorieDto> save(@RequestBody CategorieDto categorieDto) {
-        return ResponseEntity.ok(categorieDto);
+    public ResponseEntity<ParticipantDto> save(@RequestBody ParticipantDto userDto) {
+        return ResponseEntity.ok(userDto);
     }
 }

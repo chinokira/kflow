@@ -5,10 +5,12 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import kayak.freestyle.competition.kflow.models.Participant;
+import kayak.freestyle.competition.kflow.models.User;
 
 @Repository
-public interface ParticipantRepository extends JpaRepository<Participant, Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
 
-    Optional<Participant> findById(int id);
+    Optional<User> findByEmail(String email);
+
+    Optional<User> findById(int id);
 }
