@@ -1,6 +1,7 @@
 package kayak.freestyle.competition.kflow.services;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import kayak.freestyle.competition.kflow.dto.CompetitionDto;
 import kayak.freestyle.competition.kflow.mappers.CompetitionMapper;
@@ -17,5 +18,12 @@ public class CompetitionService extends GenericService<Competition, CompetitionD
     @Override
     public CompetitionDto save(CompetitionDto dto) {
         return super.save(dto);
+    }
+
+    @Transactional(readOnly = true)
+    public CompetitionDto getCompetitionWithDetails(Long id) {
+        Competition competition = repository.findCompetitionWithDetails(id)
+            .orElseThrow(() -> new RuntimeException("Competition not found with id: " + id));
+        return mapper.modelToDto(competition);
     }
 }

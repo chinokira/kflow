@@ -1,0 +1,55 @@
+<div class="import-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Import de compétition</mat-card-title>
+      <mat-card-subtitle>Sélectionnez un fichier JSON contenant les données de la compétition</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="file-upload-section">
+        <button mat-raised-button color="primary" (click)="fileInput.click()">
+          <mat-icon>upload_file</mat-icon>
+          Sélectionner un fichier
+        </button>
+        <input #fileInput type="file" accept=".json" (change)="onFileSelected($event)" style="display: none">
+      </div>
+
+      <div class="json-editor">
+        <mat-form-field appearance="outline" class="editor-field">
+          <textarea matInput
+                    [(ngModel)]="jsonContent"
+                    (ngModelChange)="onJsonChange()"
+                    placeholder="Collez votre JSON ici"
+                    rows="20"></textarea>
+        </mat-form-field>
+      </div>
+
+      <div *ngIf="importErrors.length > 0" class="errors-section">
+        <h3 class="error-title">Erreurs de validation</h3>
+        <mat-list>
+          <mat-list-item *ngFor="let error of importErrors" class="error-item">
+            <mat-icon matListItemIcon color="warn">error</mat-icon>
+            <div matListItemTitle>
+              <span *ngIf="error.line">Ligne {{error.line}} : </span>
+              {{error.message}}
+            </div>
+          </mat-list-item>
+        </mat-list>
+      </div>
+    </mat-card-content>
+
+    <mat-card-actions align="end">
+      <button mat-button (click)="validateImport()" [disabled]="!jsonContent || isValidating">
+        Valider
+      </button>
+      <button mat-raised-button color="primary" (click)="importCompetition()" 
+              [disabled]="!jsonContent || importErrors.length > 0">
+        Importer
+      </button>
+    </mat-card-actions>
+
+    <mat-card-footer>
+      <mat-progress-bar *ngIf="isValidating" mode="indeterminate"></mat-progress-bar>
+    </mat-card-footer>
+  </mat-card>
+</div> 

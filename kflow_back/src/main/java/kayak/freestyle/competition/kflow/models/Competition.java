@@ -1,12 +1,14 @@
 package kayak.freestyle.competition.kflow.models;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -18,30 +20,47 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
+@Entity
+@Getter
+@Setter
 @NoArgsConstructor
 @SuperBuilder
-@Setter
-@Getter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
-@Entity
+@EqualsAndHashCode
 public class Competition {
 
-    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
-    private String startDate;
+    @Column(nullable = false)
+    private LocalDate startDate;
 
-    private String endDate;
+    @Column(nullable = false)
+    private LocalDate endDate;
 
-    private String level;
-
+    @Column(nullable = false)
     private String place;
 
-    @OneToMany(mappedBy = "competition", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
-    private List<Categorie> categories;
+    @Column(nullable = false)
+    private String level;
 
+    @OneToMany(mappedBy = "competition", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference("competition-categories")
+    private List<Categorie> categories = new ArrayList<>();
+
+    public void addCategorie(Categorie categorie) {
+        if (categories == null) {
+            categories = new ArrayList<>();
+        }
+        categories.add(categorie);
+        categorie.setCompetition(this);
+    }
+
+    public void removeCategorie(Categorie categorie) {
+        if (categories != null) {
+            categories.remove(categorie);
+            categorie.setCompetition(null);
+        }
+    }
 }

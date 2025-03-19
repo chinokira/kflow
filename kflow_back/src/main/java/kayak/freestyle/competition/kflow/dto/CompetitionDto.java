@@ -1,15 +1,12 @@
 package kayak.freestyle.competition.kflow.dto;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import kayak.freestyle.competition.kflow.models.Categorie;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +15,7 @@ import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 @NoArgsConstructor
+@AllArgsConstructor
 @SuperBuilder
 @Setter
 @Getter
@@ -29,20 +27,24 @@ public class CompetitionDto implements HasId {
     private long id;
 
     @DateTimeFormat(style = "SS")
-    private String startDate;
+    private LocalDate startDate;
 
     @DateTimeFormat(style = "SS")
-    private String endDate;
+    private LocalDate endDate;
 
     private String level;
 
     private String place;
 
-    @JsonIgnore
-    private List<Categorie> categories;
+    private List<CategorieDto> categories = new ArrayList<>();
 
-    @PostMapping
-    public ResponseEntity<CompetitionDto> save(@RequestBody CompetitionDto competitionDto) {
-        return ResponseEntity.ok(competitionDto);
+    @Override
+    public long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(long id) {
+        this.id = id;
     }
 }

@@ -33,6 +33,8 @@ public class ParticipantDto implements HasId {
 
     private int bibNb;
 
+    private String club;
+
     @JsonIgnore
     private List<Categorie> categories;
 

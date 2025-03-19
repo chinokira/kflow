@@ -1,22 +1,23 @@
 import { FormControl, FormGroup } from "@angular/forms";
-import { Categorie } from "./categorie.model";
+import { Categorie } from "./competition-detail.model";
 
 export interface Competition {
     id: number;
-    date: string;
+    startDate: string;
+    endDate: string;
     level: string;
     place: string;
-    categories: Categorie[];
+    categories?: Categorie[];
 }
 
 export namespace Competition {
     export function formGroup(competition?: Competition) {
         return new FormGroup({
             id: new FormControl(competition?.id ?? 0, { nonNullable: true }),
-            date: new FormControl(competition?.id ?? 0, { nonNullable: true }),
-            level: new FormControl(competition?.id ?? 0, { nonNullable: true }),
-            place: new FormControl(competition?.id ?? 0, { nonNullable: true })/*,
-            categorie:  new FormControl(competition?.id ?? 0, { nonNullable: true })*/
+            startDate: new FormControl(competition?.startDate ?? '', { nonNullable: true }),
+            endDate: new FormControl(competition?.endDate ?? '', { nonNullable: true }),
+            level: new FormControl(competition?.level ?? '', { nonNullable: true }),
+            place: new FormControl(competition?.place ?? '', { nonNullable: true })
         })
     }
 }

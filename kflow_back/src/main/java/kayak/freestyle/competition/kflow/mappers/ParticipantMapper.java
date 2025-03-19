@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 
 import kayak.freestyle.competition.kflow.dto.ParticipantDto;
 import kayak.freestyle.competition.kflow.models.Categorie;
-import kayak.freestyle.competition.kflow.models.Run;
 import kayak.freestyle.competition.kflow.models.Participant;
+import kayak.freestyle.competition.kflow.models.Run;
 import kayak.freestyle.competition.kflow.services.CategorieService;
 import kayak.freestyle.competition.kflow.services.RunService;
 

@@ -58,4 +58,8 @@ public class GenericService<MODEL, DTO extends HasId, REPOSITORY extends JpaRepo
             throw new NotFoundException("no entity with id " + id + " exists");
         }
     }
+
+    public MODEL saveModel(MODEL model) {
+        return repository.save(model);
+    }
 }

@@ -1,11 +1,13 @@
 package kayak.freestyle.competition.kflow.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -21,33 +23,49 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
+@Entity
+@Getter
+@Setter
 @NoArgsConstructor
 @SuperBuilder
-@Setter
-@Getter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
-@Entity
+@EqualsAndHashCode
 public class Stage {
 
-    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
-    private int nbRun;
+    @Column(nullable = false)
+    private String name;
 
+    @Column(nullable = false)
+    private Integer nbRun;
+
+    @Column(nullable = false)
     private String rules;
 
-    private int nbCompetitor;
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "categorie_id")
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JoinColumn(name = "categorie_id", nullable = false)
+    @JsonBackReference("categorie-stages")
     private Categorie categorie;
 
-    @OneToMany(mappedBy = "stage", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JsonIgnore
-    private List<Run> runs;
+    @OneToMany(mappedBy = "stage", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference("stage-runs")
+    private List<Run> runs = new ArrayList<>();
 
+    public void addRun(Run run) {
+        if (runs == null) {
+            runs = new ArrayList<>();
+        }
+        runs.add(run);
+        run.setStage(this);
+    }
+
+    public void removeRun(Run run) {
+        if (runs != null) {
+            runs.remove(run);
+            run.setStage(null);
+        }
+    }
 }

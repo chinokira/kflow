@@ -1,10 +1,13 @@
 package kayak.freestyle.competition.kflow.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -21,32 +24,64 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
+@Entity
+@Getter
+@Setter
 @NoArgsConstructor
 @SuperBuilder
-@Setter
-@Getter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
-@Entity
+@EqualsAndHashCode
 public class Categorie {
 
-    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
+    @Column(nullable = false)
     private String name;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
-    @JsonIgnore
-    private List<Participant> participants;
-
-    @OneToMany(mappedBy = "categorie", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JsonIgnore
-    private List<Stage> stages;
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "competition_id")
-    @JsonIgnore
+    @JoinColumn(name = "competition_id", nullable = false)
+    @JsonBackReference("competition-categories")
     private Competition competition;
+
+    @OneToMany(mappedBy = "categorie", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference("categorie-stages")
+    private List<Stage> stages = new ArrayList<>();
+
+    @ManyToMany
+    @JsonManagedReference("categorie-participants")
+    private List<Participant> participants = new ArrayList<>();
+
+    public void addStage(Stage stage) {
+        if (stages == null) {
+            stages = new ArrayList<>();
+        }
+        stages.add(stage);
+        stage.setCategorie(this);
+    }
+
+    public void removeStage(Stage stage) {
+        if (stages != null) {
+            stages.remove(stage);
+            stage.setCategorie(null);
+        }
+    }
+
+    public void addParticipant(Participant participant) {
+        if (participants == null) {
+            participants = new ArrayList<>();
+        }
+        participants.add(participant);
+        if (!participant.getCategories().contains(this)) {
+            participant.getCategories().add(this);
+        }
+    }
+
+    public void removeParticipant(Participant participant) {
+        if (participants != null) {
+            participants.remove(participant);
+            participant.getCategories().remove(this);
+        }
+    }
 }

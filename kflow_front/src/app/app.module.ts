@@ -18,20 +18,13 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { FooterComponent } from './components/footer/footer.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { UsersComponent } from './pages/users/users.component';
 import { ProjectsComponent } from './pages/projects/projects.component';
 import { TasksComponent } from './pages/tasks/tasks.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    NavbarComponent,
-    DashboardComponent,
-    UsersComponent,
-    ProjectsComponent,
-    TasksComponent
-  ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -55,9 +48,15 @@ import { TasksComponent } from './pages/tasks/tasks.component';
     MatInputModule,
     MatFormFieldModule,
     MatDialogModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    AppComponent,
+    NavbarComponent,
+    FooterComponent,
+    DashboardComponent,
+    UsersComponent,
+    ProjectsComponent,
+    TasksComponent
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: []
 })
 export class AppModule { } 

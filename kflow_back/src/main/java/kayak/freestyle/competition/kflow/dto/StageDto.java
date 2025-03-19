@@ -21,7 +21,6 @@ import lombok.experimental.SuperBuilder;
 
 @NoArgsConstructor
 @SuperBuilder
-
 @Setter
 @Getter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -37,7 +36,7 @@ public class StageDto implements HasId {
     @NotBlank
     private String rules;
 
-    private int nbCompetitor;
+    private String name;
 
     @JsonIgnore
     private Categorie categorie;

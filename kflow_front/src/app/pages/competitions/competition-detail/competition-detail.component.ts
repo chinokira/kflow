@@ -1,87 +1,159 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { environment } from '../../../../environments/environment';
-import { MatTabsModule } from '@angular/material/tabs';
 import { CommonModule } from '@angular/common';
-import { MatTableModule } from '@angular/material/table';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { catchError, finalize } from 'rxjs/operators';
-import { of } from 'rxjs';
-
-interface Competition {
-  id: number;
-  nom: string;
-  lieu: string;
-  dateDebut: string;
-  dateFin: string;
-  stages?: Stage[];
-}
-
-interface Stage {
-  id: number;
-  nom: string;
-  phase: string;
-  runs: Run[];
-}
-
-interface Run {
-  id: number;
-  score: number;
-  participant: Participant;
-  numero: number;
-  phase?: string;
-}
-
-interface Participant {
-  id: number;
-  nom: string;
-  prenom: string;
-  club: string;
-  dossard: string;
-}
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { CompetitionService } from '../../../services/competition.service';
+import { Competition } from '../../../models/competition-detail.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-competition-detail',
-  templateUrl: './competition-detail.component.html',
-  styleUrls: ['./competition-detail.component.scss'],
   standalone: true,
   imports: [
-    CommonModule,
-    HttpClientModule,
-    MatTabsModule,
-    MatTableModule,
-    MatIconModule,
-    MatButtonModule,
-    MatProgressSpinnerModule
-  ]
+    CommonModule, 
+    MatProgressSpinnerModule,
+    MatCardModule,
+    MatDividerModule,
+    MatExpansionModule
+  ],
+  providers: [CompetitionService],
+  template: `
+    <div class="competition-detail">
+      <div *ngIf="loading" class="loading">
+        <mat-spinner></mat-spinner>
+      </div>
+      <div *ngIf="error" class="error">
+        {{ error }}
+      </div>
+      <div *ngIf="competition && !loading" class="content">
+        <mat-card class="competition-header">
+          <mat-card-header>
+            <mat-card-title>{{ competition.place }}</mat-card-title>
+            <mat-card-subtitle>{{ competition.level }}</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <p class="dates">Du {{ competition.startDate | date:'dd/MM/yyyy' }} au {{ competition.endDate | date:'dd/MM/yyyy' }}</p>
+          </mat-card-content>
+        </mat-card>
+
+        <div class="categories-section">
+          <h2>Catégories</h2>
+          <div class="categories-grid">
+            <mat-card *ngFor="let category of competition.categories || []" class="category-card">
+              <mat-card-header>
+                <mat-card-title>{{ category.name }}</mat-card-title>
+                <mat-card-subtitle>{{ (category.participants || []).length }} participants</mat-card-subtitle>
+              </mat-card-header>
+              <mat-card-content>
+                <mat-accordion>
+                  <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                      <mat-panel-title>
+                        Liste des participants
+                      </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div *ngFor="let participant of category.participants || []" class="participant-item">
+                      <strong>{{ participant.name }}</strong>
+                      <span class="bib-number">Dossard #{{ participant.bibNb }}</span>
+                      <div class="runs-list">
+                        <div *ngFor="let run of participant.runs || []" class="run-item">
+                          <span class="stage-name">{{ run.stageName }}</span>
+                          <span class="run-details">Durée: {{ run.duration }}s - Score: {{ run.score }}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </mat-expansion-panel>
+                </mat-accordion>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </div>
+      </div>
+    </div>
+  `,
+  styles: [`
+    .competition-detail {
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .loading {
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+    }
+    .error {
+      color: red;
+      padding: 20px;
+      text-align: center;
+    }
+    .competition-header {
+      margin-bottom: 2rem;
+    }
+    .dates {
+      font-size: 1.1em;
+      color: #666;
+      margin-top: 1rem;
+    }
+    .categories-section {
+      margin-top: 2rem;
+    }
+    .categories-section h2 {
+      margin-bottom: 1rem;
+      color: #333;
+    }
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1rem;
+    }
+    .category-card {
+      margin-bottom: 1rem;
+    }
+    .participant-item {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #eee;
+    }
+    .participant-item:last-child {
+      border-bottom: none;
+    }
+    .bib-number {
+      color: #666;
+      margin-left: 1rem;
+    }
+    .runs-list {
+      margin-top: 0.5rem;
+      padding-left: 1rem;
+    }
+    .run-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.25rem 0;
+      font-size: 0.9em;
+    }
+    .stage-name {
+      font-weight: 500;
+      color: #444;
+    }
+    .run-details {
+      color: #666;
+    }
+  `]
 })
-export class CompetitionDetailComponent implements OnInit {
-  competitionId: string | null = null;
+export class CompetitionDetailComponent implements OnInit, OnDestroy {
   competition: Competition | null = null;
-  participants: (Participant & { runs: Run[] })[] = [];
-  displayedColumns: string[] = [
-    'position',
-    'dossard',
-    'nom',
-    'club',
-    'qualification_run1',
-    'qualification_run2',
-    'qualification_total',
-    'demiFinale_run1',
-    'demiFinale_run2',
-    'finale_run1',
-    'finale_run2',
-    'finale_run3'
-  ];
-  isLoading = false;
+  loading = true;
   error: string | null = null;
+  private competitionId: string | null = null;
+  private subscription: Subscription | null = null;
 
   constructor(
     private route: ActivatedRoute,
-    private http: HttpClient
+    private competitionService: CompetitionService
   ) {}
 
   ngOnInit() {
@@ -90,81 +162,33 @@ export class CompetitionDetailComponent implements OnInit {
       this.loadCompetitionData();
     } else {
       this.error = "ID de compétition non trouvé";
+      this.loading = false;
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
     }
   }
 
   private loadCompetitionData() {
     if (!this.competitionId) return;
-
-    this.isLoading = true;
+    
+    this.loading = true;
     this.error = null;
-
-    // Charger la compétition avec ses stages et runs
-    this.http.get<Competition>(`${environment.apiUrl}/competitions/${this.competitionId}`)
-      .pipe(
-        catchError(error => {
+    
+    this.subscription = this.competitionService.findById(Number(this.competitionId))
+      .subscribe({
+        next: (data) => {
+          this.competition = data;
+          this.loading = false;
+        },
+        error: (error) => {
           console.error('Erreur lors du chargement de la compétition:', error);
           this.error = "Impossible de charger la compétition. Vérifiez que le serveur est démarré et que la compétition existe.";
-          return of(null);
-        }),
-        finalize(() => {
-          this.isLoading = false;
-        })
-      )
-      .subscribe(competition => {
-        if (!competition) return;
-        
-        this.competition = competition;
-
-        if (!competition.stages || competition.stages.length === 0) {
-          this.error = "Aucun stage trouvé pour cette compétition";
-          return;
-        }
-
-        // Organiser les données pour l'affichage
-        const participantsMap = new Map<number, Participant & { runs: Run[] }>();
-
-        // Parcourir tous les stages et leurs runs
-        competition.stages.forEach(stage => {
-          stage.runs.forEach(run => {
-            const participant = run.participant;
-            if (!participantsMap.has(participant.id)) {
-              participantsMap.set(participant.id, {
-                ...participant,
-                runs: []
-              });
-            }
-            participantsMap.get(participant.id)?.runs.push({
-              ...run,
-              phase: stage.phase
-            });
-          });
-        });
-
-        this.participants = Array.from(participantsMap.values());
-
-        if (this.participants.length === 0) {
-          this.error = "Aucun participant trouvé pour cette compétition";
+          this.loading = false;
         }
       });
-  }
-
-  getRunValue(participant: Participant & { runs: Run[] }, phase: string, runNumber: number): number | null {
-    const run = participant.runs.find(r => r.phase === phase && r.numero === runNumber);
-    return run ? run.score : null;
-  }
-
-  getPhaseTotal(participant: Participant & { runs: Run[] }, phase: string): number | null {
-    const phaseRuns = participant.runs.filter(r => r.phase === phase);
-    if (phaseRuns.length === 0) return null;
-    
-    // Pour la qualification, on prend la somme des deux meilleurs runs
-    if (phase === 'QUALIFICATION') {
-      const scores = phaseRuns.map(r => r.score).sort((a, b) => b - a);
-      return scores.slice(0, 2).reduce((sum, score) => sum + score, 0);
-    }
-    
-    // Pour les autres phases, on prend le meilleur score
-    return Math.max(...phaseRuns.map(r => r.score));
   }
 } 

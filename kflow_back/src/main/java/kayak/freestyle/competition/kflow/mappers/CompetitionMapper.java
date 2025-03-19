@@ -1,61 +1,54 @@
 package kayak.freestyle.competition.kflow.mappers;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.stream.Collectors;
 
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import kayak.freestyle.competition.kflow.dto.CompetitionDto;
-import kayak.freestyle.competition.kflow.models.Categorie;
 import kayak.freestyle.competition.kflow.models.Competition;
-import kayak.freestyle.competition.kflow.services.CategorieService;
 
 @Component
 public class CompetitionMapper implements GenericMapper<Competition, CompetitionDto> {
 
-    private final CategorieService categorieService;
+    private final CategorieMapper categorieMapper;
 
-    public CompetitionMapper(@Lazy CategorieService categorieService) {
-        this.categorieService = categorieService;
+    public CompetitionMapper(CategorieMapper categorieMapper) {
+        this.categorieMapper = categorieMapper;
     }
 
     @Override
-    public CompetitionDto modelToDto(Competition m) {
-        return CompetitionDto.builder()
-                .id(m.getId())
-                .startDate(m.getStartDate())
-                .endDate(m.getEndDate())
-                .level(m.getLevel())
-                .place(m.getPlace())
-                .categories(m.getCategories())
-                .build();
-    }
-
-    @Override
-    public Competition dtoToModel(CompetitionDto d) {
-        Competition competition = Competition.builder()
-                .id(d.getId())
-                .startDate(d.getStartDate())
-                .endDate(d.getEndDate())
-                .level(d.getLevel())
-                .place(d.getPlace())
-                .build();
-
-        List<Categorie> dtoCategories = new ArrayList<>();
-        if (d.getCategories() != null && !d.getCategories().isEmpty()) {
-            for (Categorie cat : d.getCategories()) {
-                if (cat != null && cat.getId() > 0) {
-                    Categorie findById = categorieService.findById(cat.getId());
-                    if (findById != null) {
-                        dtoCategories.add(findById);
-                    }
-                }
-            }
-            competition.setCategories(dtoCategories);
-        } else {
-            competition.setCategories(new ArrayList<>());
+    public CompetitionDto modelToDto(Competition model) {
+        if (model == null) {
+            return null;
         }
-        return competition;
+
+        return CompetitionDto.builder()
+                .id(model.getId())
+                .startDate(model.getStartDate())
+                .endDate(model.getEndDate())
+                .place(model.getPlace())
+                .level(model.getLevel())
+                .categories(model.getCategories().stream()
+                        .map(categorieMapper::modelToDto)
+                        .collect(Collectors.toList()))
+                .build();
+    }
+
+    @Override
+    public Competition dtoToModel(CompetitionDto dto) {
+        if (dto == null) {
+            return null;
+        }
+
+        return Competition.builder()
+                .id(dto.getId())
+                .startDate(dto.getStartDate())
+                .endDate(dto.getEndDate())
+                .place(dto.getPlace())
+                .level(dto.getLevel())
+                .categories(dto.getCategories().stream()
+                        .map(categorieMapper::dtoToModel)
+                        .collect(Collectors.toList()))
+                .build();
     }
 }

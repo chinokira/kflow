@@ -1,7 +1,9 @@
 package kayak.freestyle.competition.kflow.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonGetter;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -16,31 +18,37 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
+@Entity
+@Getter
+@Setter
 @NoArgsConstructor
 @SuperBuilder
-@Setter
-@Getter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
-@Entity
+@EqualsAndHashCode
 public class Run {
 
-    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
-    private int duration;
+    @Column(nullable = false)
+    private Integer duration;
 
-    private float score;
+    @Column(nullable = false)
+    private Float score;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "stage_id")
-    @JsonIgnore
+    @JoinColumn(name = "stage_id", nullable = false)
+    @JsonBackReference("stage-runs")
     private Stage stage;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "participant_id")
-    @JsonIgnore
+    @JoinColumn(name = "participant_id", nullable = false)
+    @JsonBackReference("participant-runs")
     private Participant participant;
+
+    @JsonGetter("stageName")
+    public String getStageName() {
+        return stage != null ? stage.getName() : null;
+    }
 }

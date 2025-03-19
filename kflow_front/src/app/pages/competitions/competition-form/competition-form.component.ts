@@ -9,6 +9,9 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { CompetitionService } from '../../../services/competition.service';
 import { Router } from '@angular/router';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatIconModule } from '@angular/material/icon';
+import { Competition } from '../../../models/competition-detail.model';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-competition-form',
@@ -23,7 +26,8 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
     MatButtonModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatIconModule
   ]
 })
 export class CompetitionFormComponent {
@@ -45,13 +49,17 @@ export class CompetitionFormComponent {
     });
   }
 
+  goToImport(): void {
+    this.router.navigate(['/competitions/import']);
+  }
+
   onSubmit() {
     if (this.competitionForm.valid) {
       this.isLoading = true;
       this.error = null;
 
-      this.competitionService.save(this.competitionForm.value).subscribe({
-        next: (competition) => {
+      this.competitionService.create(this.competitionForm.value).subscribe({
+        next: (competition: Competition) => {
           this.snackBar.open('Compétition créée avec succès', 'Fermer', {
             duration: 3000,
             horizontalPosition: 'end',
@@ -59,7 +67,7 @@ export class CompetitionFormComponent {
           });
           this.router.navigate(['/competitions', competition.id]);
         },
-        error: (error) => {
+        error: (error: HttpErrorResponse) => {
           console.error('Erreur lors de la création:', error);
           this.error = 'Erreur lors de la création de la compétition';
           this.snackBar.open('Erreur lors de la création de la compétition', 'Fermer', {

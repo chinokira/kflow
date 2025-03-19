@@ -9,23 +9,20 @@ import org.springframework.stereotype.Component;
 import kayak.freestyle.competition.kflow.dto.CategorieDto;
 import kayak.freestyle.competition.kflow.models.Categorie;
 import kayak.freestyle.competition.kflow.models.Competition;
-import kayak.freestyle.competition.kflow.models.Stage;
 import kayak.freestyle.competition.kflow.models.Participant;
 import kayak.freestyle.competition.kflow.services.CompetitionService;
-import kayak.freestyle.competition.kflow.services.StageService;
 import kayak.freestyle.competition.kflow.services.ParticipantService;
+import kayak.freestyle.competition.kflow.services.StageService;
 
 @Component
 public class CategorieMapper implements GenericMapper<Categorie, CategorieDto> {
 
     private final CompetitionService competitionService;
     private final ParticipantService participantService;
-    private final StageService stageService;
 
     public CategorieMapper(@Lazy CompetitionService competitionService, @Lazy ParticipantService participantService, @Lazy StageService stageService) {
         this.competitionService = competitionService;
         this.participantService = participantService;
-        this.stageService = stageService;
     }
 
     @Override
@@ -34,7 +31,6 @@ public class CategorieMapper implements GenericMapper<Categorie, CategorieDto> {
                 .id(m.getId())
                 .name(m.getName())
                 .participants(m.getParticipants() != null ? m.getParticipants() : null)
-                .stages(m.getStages() != null ? m.getStages() : null)
                 .competition(m.getCompetition() != null ? m.getCompetition() : null)
                 .build();
     }
@@ -62,20 +58,6 @@ public class CategorieMapper implements GenericMapper<Categorie, CategorieDto> {
                 }
             }
             categorie.setParticipants(dtoParticipants);
-        }
-        List<Stage> dtoStage = new ArrayList<>();
-        List<Stage> stages = d.getStages();
-        if (!stages.isEmpty()) {
-            for (Stage stage : stages) {
-                long id = stage.getId();
-                if (id > 0) {
-                    Stage findById = stageService.findById(id);
-                    if (findById != null) {
-                        dtoStage.add(findById);
-                    }
-                }
-            }
-            categorie.setStages(dtoStage);
         }
         long competitionId = d.getCompetition().getId();
         if (competitionId > 0) {

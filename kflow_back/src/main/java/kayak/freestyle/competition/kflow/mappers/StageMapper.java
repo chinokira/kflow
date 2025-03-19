@@ -26,7 +26,6 @@ public class StageMapper implements GenericMapper<Stage, StageDto> {
                 .id(m.getId())
                 .nbRun(m.getNbRun())
                 .rules(m.getRules())
-                .nbCompetitor(m.getNbCompetitor() != 0 ? m.getNbCompetitor() : 0)
                 .build();
         if (m.getCategorie() != null) {
             stageDto.setCategorie(m.getCategorie());
@@ -43,7 +42,6 @@ public class StageMapper implements GenericMapper<Stage, StageDto> {
                 .id(d.getId())
                 .nbRun(d.getNbRun())
                 .rules(d.getRules())
-                .nbCompetitor(d.getNbCompetitor() != 0 ? d.getNbCompetitor() : 0)
                 // .categorie(d.getCategorie() != null ? d.getCategorie() : null)
                 // .runs(d.getRuns() != null ? d.getRuns() : null)
                 .build();
