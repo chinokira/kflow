@@ -3,7 +3,6 @@ package kayak.freestyle.competition.kflow.models;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
@@ -43,8 +42,8 @@ public class Participant {
     @Column
     private String club;
 
-    @ManyToMany(mappedBy = "participants")
-    @JsonBackReference("categorie-participants")
+    @ManyToMany
+    @JsonManagedReference("participant-categories")
     private List<Categorie> categories = new ArrayList<>();
 
     @OneToMany(mappedBy = "participant", cascade = CascadeType.ALL, orphanRemoval = true)

@@ -49,8 +49,8 @@ public class Categorie {
     @JsonManagedReference("categorie-stages")
     private List<Stage> stages = new ArrayList<>();
 
-    @ManyToMany
-    @JsonManagedReference("categorie-participants")
+    @ManyToMany(mappedBy = "categories")
+    @JsonBackReference("participant-categories")
     private List<Participant> participants = new ArrayList<>();
 
     public void addStage(Stage stage) {
