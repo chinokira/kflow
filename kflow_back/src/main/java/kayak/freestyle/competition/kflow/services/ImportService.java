@@ -17,6 +17,8 @@ import kayak.freestyle.competition.kflow.models.Participant;
 import kayak.freestyle.competition.kflow.models.Run;
 import kayak.freestyle.competition.kflow.models.Stage;
 import lombok.RequiredArgsConstructor;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Service
 @RequiredArgsConstructor
@@ -36,10 +38,10 @@ public class ImportService {
             throw new IllegalArgumentException("Erreurs de validation : " + String.join(", ", errors));
         }
 
-        // Créer la compétition
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE;
         Competition competition = Competition.builder()
-                .startDate(importDto.getStartDate())
-                .endDate(importDto.getEndDate())
+                .startDate(LocalDate.parse(importDto.getStartDate(), formatter))
+                .endDate(LocalDate.parse(importDto.getEndDate(), formatter))
                 .level(importDto.getLevel())
                 .place(importDto.getPlace())
                 .build();
