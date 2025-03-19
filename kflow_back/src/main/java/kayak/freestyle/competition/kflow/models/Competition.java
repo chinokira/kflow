@@ -32,13 +32,15 @@ public class Competition {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private String date;
+    private String startDate;
+
+    private String endDate;
 
     private String level;
 
     private String place;
 
-    @OneToMany(mappedBy = "competition", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(mappedBy = "competition", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Categorie> categories;
 

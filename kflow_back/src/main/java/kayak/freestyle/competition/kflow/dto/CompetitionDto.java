@@ -29,7 +29,10 @@ public class CompetitionDto implements HasId {
     private long id;
 
     @DateTimeFormat(style = "SS")
-    private String date;
+    private String startDate;
+
+    @DateTimeFormat(style = "SS")
+    private String endDate;
 
     private String level;
 

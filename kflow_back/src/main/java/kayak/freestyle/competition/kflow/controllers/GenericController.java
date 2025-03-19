@@ -50,6 +50,7 @@ public class GenericController<DTO extends HasId, SERVICE extends GenericService
         service.save(user);
     }
 
+    @Transactional
     @DeleteMapping("{id}")
     public void deleteById(@PathVariable long id) {
         service.deleteById(id);

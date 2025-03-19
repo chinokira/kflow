@@ -1,0 +1,51 @@
+<div class="categories-container">
+  <div class="header">
+    <h1>Catégories</h1>
+    <button mat-raised-button color="primary">
+      <mat-icon>add</mat-icon>
+      Nouvelle catégorie
+    </button>
+  </div>
+
+  <table mat-table [dataSource]="categories" class="mat-elevation-z8">
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef>ID</th>
+      <td mat-cell *matCellDef="let category">{{category.id}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>Nom</th>
+      <td mat-cell *matCellDef="let category">{{category.name}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="description">
+      <th mat-header-cell *matHeaderCellDef>Description</th>
+      <td mat-cell *matCellDef="let category">{{category.description}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="ageMin">
+      <th mat-header-cell *matHeaderCellDef>Âge minimum</th>
+      <td mat-cell *matCellDef="let category">{{category.ageMin}} ans</td>
+    </ng-container>
+
+    <ng-container matColumnDef="ageMax">
+      <th mat-header-cell *matHeaderCellDef>Âge maximum</th>
+      <td mat-cell *matCellDef="let category">{{category.ageMax}} ans</td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
+      <td mat-cell *matCellDef="let category">
+        <button mat-icon-button color="primary">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div> 

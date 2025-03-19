@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import jakarta.transaction.Transactional;
 import kayak.freestyle.competition.kflow.dto.HasId;
 import kayak.freestyle.competition.kflow.exceptions.NotFoundException;
 import kayak.freestyle.competition.kflow.mappers.GenericMapper;
@@ -41,6 +42,7 @@ public class GenericService<MODEL, DTO extends HasId, REPOSITORY extends JpaRepo
         repository.save(mapper.dtoToModel(dto));
     }
 
+    @Transactional
     public void deleteById(long id) {
         throwIfNotExist(id);
         repository.deleteById(id);

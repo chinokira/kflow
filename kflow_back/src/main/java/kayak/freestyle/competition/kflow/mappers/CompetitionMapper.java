@@ -24,10 +24,11 @@ public class CompetitionMapper implements GenericMapper<Competition, Competition
     public CompetitionDto modelToDto(Competition m) {
         return CompetitionDto.builder()
                 .id(m.getId())
-                .date(m.getDate())
+                .startDate(m.getStartDate())
+                .endDate(m.getEndDate())
                 .level(m.getLevel())
                 .place(m.getPlace())
-                .categories(m.getCategories() != null ? m.getCategories() : null)
+                .categories(m.getCategories())
                 .build();
     }
 
@@ -35,25 +36,25 @@ public class CompetitionMapper implements GenericMapper<Competition, Competition
     public Competition dtoToModel(CompetitionDto d) {
         Competition competition = Competition.builder()
                 .id(d.getId())
-                .date(d.getDate())
+                .startDate(d.getStartDate())
+                .endDate(d.getEndDate())
                 .level(d.getLevel())
                 .place(d.getPlace())
-                // .categories(d.getCategories() != null ? d.getCategories() : null)
                 .build();
 
         List<Categorie> dtoCategories = new ArrayList<>();
-        List<Categorie> categories = d.getCategories();
-        if (!categories.isEmpty()) {
-            for (Categorie cat : categories) {
-                long id = cat.getId();
-                if (id > 0) {
-                    Categorie findById = categorieService.findById(id);
+        if (d.getCategories() != null && !d.getCategories().isEmpty()) {
+            for (Categorie cat : d.getCategories()) {
+                if (cat != null && cat.getId() > 0) {
+                    Categorie findById = categorieService.findById(cat.getId());
                     if (findById != null) {
                         dtoCategories.add(findById);
                     }
                 }
             }
             competition.setCategories(dtoCategories);
+        } else {
+            competition.setCategories(new ArrayList<>());
         }
         return competition;
     }

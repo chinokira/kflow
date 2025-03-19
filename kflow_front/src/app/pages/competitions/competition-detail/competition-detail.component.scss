@@ -1,0 +1,159 @@
+.competition-detail {
+  padding: 20px;
+
+  .competition-header {
+    padding: 20px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    margin-bottom: 20px;
+
+    h1 {
+      margin: 0;
+      color: #333;
+      font-size: 24px;
+    }
+
+    .competition-info {
+      margin-top: 10px;
+      display: flex;
+      gap: 20px;
+
+      p {
+        margin: 0;
+        color: #666;
+      }
+    }
+  }
+
+  .results-table-container {
+    margin: 20px;
+    overflow-x: auto;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    .results-table {
+      width: 100%;
+      border-collapse: collapse;
+
+      th {
+        background-color: #f5f5f5;
+        color: #333;
+        font-weight: 500;
+        text-align: center;
+        padding: 12px;
+        white-space: nowrap;
+      }
+
+      td {
+        text-align: center;
+        padding: 12px;
+        border-top: 1px solid #eee;
+      }
+
+      tr:hover {
+        background-color: #f8f8f8;
+      }
+
+      // Colonnes spécifiques
+      .mat-column-position {
+        width: 60px;
+      }
+
+      .mat-column-dossard {
+        width: 80px;
+      }
+
+      .mat-column-nom {
+        text-align: left;
+        min-width: 200px;
+      }
+
+      .mat-column-club {
+        text-align: left;
+        min-width: 150px;
+      }
+
+      // Styles pour les scores
+      [class*="qualification_"],
+      [class*="demiFinale_"],
+      [class*="finale_"] {
+        width: 80px;
+      }
+
+      // Mettre en évidence les totaux
+      .mat-column-qualification_total {
+        font-weight: bold;
+        background-color: #f0f0f0;
+      }
+    }
+  }
+
+  .tab-content {
+    padding: 20px 0;
+  }
+
+  table {
+    width: 100%;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+  }
+
+  th.mat-header-cell {
+    background-color: #f5f5f5;
+    color: #333;
+    font-weight: 500;
+    padding: 12px 16px;
+  }
+
+  td.mat-cell {
+    padding: 12px 16px;
+  }
+
+  .mat-chip-list {
+    .mat-chip {
+      font-size: 12px;
+    }
+  }
+
+  button[mat-icon-button] {
+    margin: 0 4px;
+  }
+
+  tr.mat-row:hover {
+    background-color: #f8f8f8;
+  }
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  
+  p {
+    margin-top: 16px;
+    color: #666;
+  }
+}
+
+.error-message {
+  padding: 20px;
+  margin: 20px;
+  background-color: #fee;
+  border: 1px solid #fcc;
+  border-radius: 8px;
+  color: #c00;
+  text-align: center;
+}
+
+.no-data-message {
+  padding: 40px;
+  text-align: center;
+  color: #666;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  margin: 20px;
+} 
