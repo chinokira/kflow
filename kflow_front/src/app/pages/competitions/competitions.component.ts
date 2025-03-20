@@ -94,8 +94,8 @@ export class CompetitionsComponent implements OnInit {
   competitions: Competition[] = [];
 
   constructor(
-    private competitionService: CompetitionService,
-    private snackBar: MatSnackBar
+    private readonly competitionService: CompetitionService,
+    private readonly snackBar: MatSnackBar
   ) {}
 
   ngOnInit() {

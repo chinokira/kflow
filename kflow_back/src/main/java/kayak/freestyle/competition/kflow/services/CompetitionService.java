@@ -23,7 +23,7 @@ public class CompetitionService extends GenericService<Competition, CompetitionD
     @Transactional(readOnly = true)
     public CompetitionDto getCompetitionWithDetails(Long id) {
         Competition competition = repository.findCompetitionWithDetails(id)
-            .orElseThrow(() -> new RuntimeException("Competition not found with id: " + id));
+                .orElseThrow(() -> new RuntimeException("Competition not found with id: " + id));
         return mapper.modelToDto(competition);
     }
 }

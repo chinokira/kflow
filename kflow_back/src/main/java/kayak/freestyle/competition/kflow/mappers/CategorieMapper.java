@@ -27,43 +27,54 @@ public class CategorieMapper implements GenericMapper<Categorie, CategorieDto> {
 
     @Override
     public CategorieDto modelToDto(Categorie m) {
+        if (m == null) {
+            return null;
+        }
         return CategorieDto.builder()
                 .id(m.getId())
                 .name(m.getName())
-                .participants(m.getParticipants() != null ? m.getParticipants() : null)
-                .competition(m.getCompetition() != null ? m.getCompetition() : null)
+                .participants(m.getParticipants())
+                .competition(m.getCompetition())
+                .stages(m.getStages())
                 .build();
     }
 
     @Override
     public Categorie dtoToModel(CategorieDto d) {
+        if (d == null) {
+            return null;
+        }
         Categorie categorie = Categorie.builder()
                 .id(d.getId())
                 .name(d.getName())
-                // .participants(d.getparticipants() != null ? d.getparticipants() : null)
-                // .competition(d.getCompetition() != null ? d.getCompetition() : null)
-                // .stages(d.getStages() != null ? d.getStages() : null)
                 .build();
 
-        List<Participant> dtoParticipants = new ArrayList<>();
-        List<Participant> participants = d.getParticipants();
-        if (!participants.isEmpty()) {
-            for (Participant participant : participants) {
-                long id = participant.getId();
-                if (id > 0) {
-                    Participant findById = participantService.findById(id);
-                    if (findById != null) {
-                        dtoParticipants.add(findById);
+        if (d.getParticipants() != null) {
+            List<Participant> participants = new ArrayList<>();
+            for (Participant participant : d.getParticipants()) {
+                if (participant.getId() > 0) {
+                    Participant existingParticipant = participantService.findById(participant.getId());
+                    if (existingParticipant != null) {
+                        participants.add(existingParticipant);
+                        if (!existingParticipant.getCategories().contains(categorie)) {
+                            existingParticipant.getCategories().add(categorie);
+                        }
                     }
                 }
             }
-            categorie.setParticipants(dtoParticipants);
+            categorie.setParticipants(participants);
         }
-        long competitionId = d.getCompetition().getId();
-        if (competitionId > 0) {
-            Competition findById = competitionService.findById(competitionId);
-            categorie.setCompetition(findById == null ? null : findById);
+
+        if (d.getCompetition() != null && d.getCompetition().getId() > 0) {
+            Competition competition = competitionService.findById(d.getCompetition().getId());
+            if (competition != null) {
+                categorie.setCompetition(competition);
+                if (!competition.getCategories().contains(categorie)) {
+                    competition.getCategories().add(categorie);
+                }
+            }
         }
+
         return categorie;
     }
 

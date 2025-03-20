@@ -17,6 +17,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -47,10 +48,12 @@ public class Categorie {
 
     @OneToMany(mappedBy = "categorie", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("categorie-stages")
+    @Builder.Default
     private List<Stage> stages = new ArrayList<>();
 
     @ManyToMany(mappedBy = "categories")
     @JsonBackReference("participant-categories")
+@Builder.Default
     private List<Participant> participants = new ArrayList<>();
 
     public void addStage(Stage stage) {

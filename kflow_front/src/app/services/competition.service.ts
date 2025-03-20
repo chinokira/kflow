@@ -8,9 +8,9 @@ import { Competition } from '../models/competition-detail.model';
   providedIn: 'root'
 })
 export class CompetitionService {
-  private apiUrl = `${environment.apiUrl}/competitions`;
+  private readonly apiUrl = `${environment.apiUrl}/competitions`;
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private readonly httpClient: HttpClient) {}
 
   findAll(): Observable<Competition[]> {
     return this.httpClient.get<Competition[]>(this.apiUrl);

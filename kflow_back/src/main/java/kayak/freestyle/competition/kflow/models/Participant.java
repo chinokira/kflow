@@ -13,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -44,10 +45,12 @@ public class Participant {
 
     @ManyToMany
     @JsonManagedReference("participant-categories")
+    @Builder.Default
     private List<Categorie> categories = new ArrayList<>();
 
     @OneToMany(mappedBy = "participant", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("participant-runs")
+    @Builder.Default
     private List<Run> runs = new ArrayList<>();
 
     public void addRun(Run run) {

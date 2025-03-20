@@ -22,51 +22,66 @@ public class StageMapper implements GenericMapper<Stage, StageDto> {
 
     @Override
     public StageDto modelToDto(Stage m) {
-        StageDto stageDto = StageDto.builder()
+        if (m == null) {
+            return null;
+        }
+        return StageDto.builder()
                 .id(m.getId())
+                .name(m.getName())
                 .nbRun(m.getNbRun())
                 .rules(m.getRules())
+                .categorie(m.getCategorie())
+                .runs(m.getRuns())
                 .build();
-        if (m.getCategorie() != null) {
-            stageDto.setCategorie(m.getCategorie());
-        }
-        if (m.getRuns() != null) {
-            stageDto.setRuns(m.getRuns());
-        }
-        return stageDto;
     }
 
     @Override
     public Stage dtoToModel(StageDto d) {
+        if (d == null) {
+            return null;
+        }
         Stage stage = Stage.builder()
                 .id(d.getId())
+                .name(d.getName())
                 .nbRun(d.getNbRun())
                 .rules(d.getRules())
-                // .categorie(d.getCategorie() != null ? d.getCategorie() : null)
-                // .runs(d.getRuns() != null ? d.getRuns() : null)
                 .build();
-        Categorie categorie = d.getCategorie();
-        if (categorie != null) {
-            long id = categorie.getId();
-            if (id > 0) {
-                stage.setCategorie(categorieService.findById(id));
-            }
-        }
-        List<Run> dtoRuns = new ArrayList<>();
-        List<Run> runs = d.getRuns();
-        if (!runs.isEmpty()) {
-            for (Run run : runs) {
-                long id = run.getId();
-                if (id > 0) {
-                    Run findById = runService.findById(id);
-                    if (findById != null) {
-                        dtoRuns.add(findById);
-                    }
+
+        setCategorie(stage, d.getCategorie());
+        setRuns(stage, d.getRuns());
+        return stage;
+    }
+
+    private void setCategorie(Stage stage, Categorie categorie) {
+        if (categorie != null && categorie.getId() > 0) {
+            Categorie existingCategorie = categorieService.findById(categorie.getId());
+            if (existingCategorie != null) {
+                stage.setCategorie(existingCategorie);
+                if (!existingCategorie.getStages().contains(stage)) {
+                    existingCategorie.getStages().add(stage);
                 }
             }
-            stage.setRuns(dtoRuns);
         }
-        return stage;
+    }
+
+    private void setRuns(Stage stage, List<Run> runs) {
+        if (runs != null) {
+            List<Run> stageRuns = new ArrayList<>();
+            for (Run run : runs) {
+                if (run.getId() > 0) {
+                    addExistingRun(stage, stageRuns, run);
+                }
+            }
+            stage.setRuns(stageRuns);
+        }
+    }
+
+    private void addExistingRun(Stage stage, List<Run> stageRuns, Run run) {
+        Run existingRun = runService.findById(run.getId());
+        if (existingRun != null) {
+            stageRuns.add(existingRun);
+            existingRun.setStage(stage);
+        }
     }
 
 }
