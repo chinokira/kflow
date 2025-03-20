@@ -1,17 +1,23 @@
 package kayak.freestyle.competition.kflow.controllers;
 
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import kayak.freestyle.competition.kflow.dto.CategorieDto;
+import kayak.freestyle.competition.kflow.models.Categorie;
 import kayak.freestyle.competition.kflow.services.CategorieService;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/categories")
-public class CategorieController extends GenericController<CategorieDto, CategorieService> {
+@RequiredArgsConstructor
+public class CategorieController {
 
-    public CategorieController(CategorieService service) {
-        super(service);
+    private final CategorieService categorieService;
+
+    @GetMapping("/{id}/participants")
+    public Categorie getCategorieWithParticipants(@PathVariable Long id) {
+        return categorieService.getCategorieWithParticipants(id);
     }
-
 }

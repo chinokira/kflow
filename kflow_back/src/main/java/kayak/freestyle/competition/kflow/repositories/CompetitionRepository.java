@@ -18,8 +18,6 @@ public interface CompetitionRepository extends JpaRepository<Competition, Long> 
 
     @Query("SELECT DISTINCT c FROM Competition c "
             + "LEFT JOIN FETCH c.categories cat "
-            + "LEFT JOIN FETCH cat.participants p "
-            + "LEFT JOIN FETCH p.runs r "
             + "WHERE c.id = :id")
     Optional<Competition> findCompetitionWithDetails(@Param("id") Long id);
 }

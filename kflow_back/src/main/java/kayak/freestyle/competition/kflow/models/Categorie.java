@@ -51,9 +51,9 @@ public class Categorie {
     @Builder.Default
     private List<Stage> stages = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "categories")
-    @JsonBackReference("participant-categories")
-@Builder.Default
+    @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
+    @JsonManagedReference("participant-categories")
+    @Builder.Default
     private List<Participant> participants = new ArrayList<>();
 
     public void addStage(Stage stage) {

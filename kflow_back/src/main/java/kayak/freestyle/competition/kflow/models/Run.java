@@ -2,6 +2,7 @@ package kayak.freestyle.competition.kflow.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -44,7 +45,7 @@ public class Run {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "participant_id", nullable = false)
-    @JsonBackReference("participant-runs")
+    @JsonIgnore
     private Participant participant;
 
     @JsonGetter("stageName")

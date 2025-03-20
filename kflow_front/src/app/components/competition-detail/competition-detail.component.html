@@ -1,0 +1,150 @@
+<div class="competition-detail" *ngIf="competition">
+    <h2>{{ competition.name }}</h2>
+    <p>Lieu : {{ competition.place }}</p>
+    <p>Date : {{ competition.startDate | date:'dd/MM/yyyy' }} - {{ competition.endDate| date:'dd/MM/yyyy' }}</p>
+
+    <div class="categories-list">
+        <h3>Catégories</h3>
+        <mat-accordion>
+            <mat-expansion-panel *ngFor="let categorie of competition.categories"
+                (opened)="loadCategorieParticipants(categorie)" [expanded]="selectedCategorie?.id === categorie.id">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        {{ categorie.name }}
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <ng-container *ngIf="selectedCategorie && selectedCategorie.id === categorie.id">
+                    <div class="results-table"
+                        *ngIf="selectedCategorie.participants && selectedCategorie.participants.length > 0">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="rank-col">#</th>
+                                    <th class="bibNb-col">Bib</th>
+                                    <th class="name-col">Nom</th>
+                                    <th class="club-col">Club</th>
+                                    <th class="runs-col">Runs</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let participant of selectedCategorie.participants; let i = index">
+                                    <td class="rank-col">{{ i + 1 }}</td>
+                                    <td class="bibNb-col">{{ participant.bibNb }}</td>
+                                    <td class="name-col">{{ participant.name }}</td>
+                                    <td class="club-col">{{ participant.club }}</td>
+                                    <td class="runs-col">
+                                        <div class="runs-list" *ngIf="participant.runs && participant.runs.length > 0">
+                                            <div class="run-item" *ngFor="let run of participant.runs">
+                                                <strong>{{ run.stageName }}</strong>
+                                                <span class="run-score">Score: {{ run.score }}</span>
+                                            </div>
+                                        </div>
+                                        <span *ngIf="!participant.runs || participant.runs.length === 0"
+                                            class="no-runs">
+                                            Aucun run
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p *ngIf="!selectedCategorie.participants || selectedCategorie.participants.length === 0">
+                        Aucun participant dans cette catégorie.
+                    </p>
+                </ng-container>
+
+            </mat-expansion-panel>
+        </mat-accordion>
+    </div>
+</div>
+
+<div class="loading" *ngIf="loading">
+    <mat-spinner></mat-spinner>
+</div>
+
+<style>
+    .competition-detail {
+        padding: 20px;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    .categories-list {
+        margin-top: 20px;
+    }
+
+    .results-table {
+        margin-top: 16px;
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: white;
+    }
+
+    th,
+    td {
+        padding: 12px;
+        text-align: left;
+        border: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f5f5f5;
+        font-weight: 500;
+    }
+
+    .rank-col {
+        width: 50px;
+        text-align: center;
+    }
+
+    .name-col {
+        width: 200px;
+    }
+
+    .club-col {
+        width: 150px;
+    }
+
+    .runs-col {
+        min-width: 300px;
+    }
+
+    .runs-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .run-item {
+        background-color: #f5f5f5;
+        padding: 8px 12px;
+        border-radius: 4px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .run-item strong {
+        color: #2196f3;
+    }
+
+    .run-score {
+        color: #4caf50;
+    }
+
+    .no-runs {
+        color: #999;
+        font-style: italic;
+    }
+
+    .loading {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+</style>

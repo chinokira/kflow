@@ -3,11 +3,13 @@ package kayak.freestyle.competition.kflow.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -43,13 +45,12 @@ public class Participant {
     @Column
     private String club;
 
-    @ManyToMany
-    @JsonManagedReference("participant-categories")
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JsonBackReference("participant-categories")
     @Builder.Default
     private List<Categorie> categories = new ArrayList<>();
 
-    @OneToMany(mappedBy = "participant", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference("participant-runs")
+    @OneToMany(mappedBy = "participant", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @Builder.Default
     private List<Run> runs = new ArrayList<>();
 

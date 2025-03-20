@@ -1,25 +1,26 @@
 export interface Competition {
   id: number;
+  name: string;
+  place: string;
+  level: string;
   startDate: string;
   endDate: string;
-  level: string;
-  place: string;
   categories: Categorie[];
 }
 
 export interface Categorie {
   id: number;
   name: string;
-  participants: Participant[];
+  participants?: Participant[];
   stages: Stage[];
 }
 
 export interface Participant {
   id: number;
-  name: string;
   bibNb: number;
+  name: string;
   club: string;
-  runs: Run[];
+  runs?: Run[];
 }
 
 export interface Run {
