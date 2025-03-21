@@ -152,8 +152,8 @@ export class CompetitionDetailComponent implements OnInit, OnDestroy {
     private subscription: Subscription | null = null;
 
     constructor(
-        private route: ActivatedRoute,
-        private competitionService: CompetitionService
+        private readonly route: ActivatedRoute,
+        private readonly competitionService: CompetitionService
     ) { }
 
     ngOnInit() {
