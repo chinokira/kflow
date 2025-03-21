@@ -11,5 +11,5 @@ export class UserService extends GenericService<User> {
 
   constructor(httpClient: HttpClient) {
     super(httpClient, environment.apiUrl + "users");
-   }
+  }
 }

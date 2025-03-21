@@ -36,10 +36,10 @@ export class CompetitionFormComponent {
   error: string | null = null;
 
   constructor(
-    private fb: FormBuilder,
-    private competitionService: CompetitionService,
-    private router: Router,
-    private snackBar: MatSnackBar
+    private readonly fb: FormBuilder,
+    private readonly competitionService: CompetitionService,
+    private readonly router: Router,
+    private readonly snackBar: MatSnackBar
   ) {
     this.competitionForm = this.fb.group({
       startDate: ['', Validators.required],

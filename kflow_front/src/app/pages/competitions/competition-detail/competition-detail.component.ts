@@ -10,17 +10,17 @@ import { Competition } from '../../../models/competition-detail.model';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-competition-detail',
-  standalone: true,
-  imports: [
-    CommonModule, 
-    MatProgressSpinnerModule,
-    MatCardModule,
-    MatDividerModule,
-    MatExpansionModule
-  ],
-  providers: [CompetitionService],
-  template: `
+    selector: 'app-competition-detail',
+    standalone: true,
+    imports: [
+        CommonModule,
+        MatProgressSpinnerModule,
+        MatCardModule,
+        MatDividerModule,
+        MatExpansionModule
+    ],
+    providers: [CompetitionService],
+    template: `
     <div class="competition-detail">
       <div *ngIf="loading" class="loading">
         <mat-spinner></mat-spinner>
@@ -74,7 +74,7 @@ import { Subscription } from 'rxjs';
       </div>
     </div>
   `,
-  styles: [`
+    styles: [`
     .competition-detail {
       padding: 20px;
       max-width: 1200px;
@@ -145,50 +145,50 @@ import { Subscription } from 'rxjs';
   `]
 })
 export class CompetitionDetailComponent implements OnInit, OnDestroy {
-  competition: Competition | null = null;
-  loading = true;
-  error: string | null = null;
-  private competitionId: string | null = null;
-  private subscription: Subscription | null = null;
+    competition: Competition | null = null;
+    loading = true;
+    error: string | null = null;
+    private competitionId: string | null = null;
+    private subscription: Subscription | null = null;
 
-  constructor(
-    private route: ActivatedRoute,
-    private competitionService: CompetitionService
-  ) {}
+    constructor(
+        private route: ActivatedRoute,
+        private competitionService: CompetitionService
+    ) { }
 
-  ngOnInit() {
-    this.competitionId = this.route.snapshot.paramMap.get('id');
-    if (this.competitionId) {
-      this.loadCompetitionData();
-    } else {
-      this.error = "ID de compétition non trouvé";
-      this.loading = false;
-    }
-  }
-
-  ngOnDestroy() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-  }
-
-  private loadCompetitionData() {
-    if (!this.competitionId) return;
-    
-    this.loading = true;
-    this.error = null;
-    
-    this.subscription = this.competitionService.findById(Number(this.competitionId))
-      .subscribe({
-        next: (data) => {
-          this.competition = data;
-          this.loading = false;
-        },
-        error: (error) => {
-          console.error('Erreur lors du chargement de la compétition:', error);
-          this.error = "Impossible de charger la compétition. Vérifiez que le serveur est démarré et que la compétition existe.";
-          this.loading = false;
+    ngOnInit() {
+        this.competitionId = this.route.snapshot.paramMap.get('id');
+        if (this.competitionId) {
+            this.loadCompetitionData();
+        } else {
+            this.error = "ID de compétition non trouvé";
+            this.loading = false;
         }
-      });
-  }
+    }
+
+    ngOnDestroy() {
+        if (this.subscription) {
+            this.subscription.unsubscribe();
+        }
+    }
+
+    private loadCompetitionData() {
+        if (!this.competitionId) return;
+
+        this.loading = true;
+        this.error = null;
+
+        this.subscription = this.competitionService.findById(Number(this.competitionId))
+            .subscribe({
+                next: (data) => {
+                    this.competition = data;
+                    this.loading = false;
+                },
+                error: (error) => {
+                    console.error('Erreur lors du chargement de la compétition:', error);
+                    this.error = "Impossible de charger la compétition. Vérifiez que le serveur est démarré et que la compétition existe.";
+                    this.loading = false;
+                }
+            });
+    }
 } 

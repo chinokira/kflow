@@ -36,10 +36,10 @@ export class CompetitionImportComponent {
   importErrors: Array<{ message: string; line?: number }> = [];
   
   constructor(
-    private importService: ImportService,
-    private snackBar: MatSnackBar,
-    private router: Router,
-    private sanitizer: DomSanitizer
+    private readonly importService: ImportService,
+    private readonly snackBar: MatSnackBar,
+    private readonly router: Router,
+    private readonly sanitizer: DomSanitizer
   ) {}
 
   onJsonChange(): void {
@@ -86,15 +86,7 @@ export class CompetitionImportComponent {
       const lineNumber = index + 1;
       const isErrorLine = errorLines.has(lineNumber);
       const lineClass = isErrorLine ? 'error-line' : '';
-      
-      // Coloration syntaxique basique
-      const coloredLine = line
-        .replace(/(".*?")/g, '<span class="json-string">$1</span>')
-        .replace(/\b(true|false|null)\b/g, '<span class="json-keyword">$1</span>')
-        .replace(/\b(\d+\.?\d*)\b/g, '<span class="json-number">$1</span>')
-        .replace(/({|}|\[|\]|,|:)/g, '<span class="json-punctuation">$1</span>');
-
-      return `<div class="json-line ${lineClass}">${coloredLine}</div>`;
+      return `<div class="json-line ${lineClass}">${line}</div>`;
     }).join('');
 
     this.highlightedJson = this.sanitizer.bypassSecurityTrustHtml(highlightedLines);

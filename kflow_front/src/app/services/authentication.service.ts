@@ -27,9 +27,9 @@ interface JwtCustomPayload extends JwtPayload {
 export class AuthenticationService {
 
   connectedUser = new BehaviorSubject<ConnectedUser | undefined>(undefined);
-  private url = environment.apiUrl + "authenticate";
+  private readonly url = environment.apiUrl + "authenticate";
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private readonly httpClient: HttpClient) { }
 
   init() {
     const json = localStorage.getItem('user');

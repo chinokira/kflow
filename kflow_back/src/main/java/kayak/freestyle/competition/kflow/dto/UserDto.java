@@ -1,7 +1,5 @@
 package kayak.freestyle.competition.kflow.dto;
 
-import java.util.List;
-
 import org.hibernate.validator.constraints.Length;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

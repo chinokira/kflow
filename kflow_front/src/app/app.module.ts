@@ -21,24 +21,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { FooterComponent } from './components/footer/footer.component';
-import { DashboardComponent } from './pages/dashboard/dashboard.component';
-import { UsersComponent } from './pages/users/users.component';
-import { ProjectsComponent } from './pages/projects/projects.component';
-import { TasksComponent } from './pages/tasks/tasks.component';
-import { CompetitionDetailComponent } from './components/competition-detail/competition-detail.component';
 
 @NgModule({
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     AppComponent,
-    RouterModule.forRoot([
-      { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
-      { path: 'dashboard', component: DashboardComponent },
-      { path: 'users', component: UsersComponent },
-      { path: 'projects', component: ProjectsComponent },
-      { path: 'tasks', component: TasksComponent }
-    ]),
     MatToolbarModule,
     MatButtonModule,
     MatIconModule,
@@ -55,11 +43,7 @@ import { CompetitionDetailComponent } from './components/competition-detail/comp
     MatExpansionModule,
     MatProgressSpinnerModule,
     NavbarComponent,
-    FooterComponent,
-    DashboardComponent,
-    UsersComponent,
-    ProjectsComponent,
-    TasksComponent
+    FooterComponent
   ],
   providers: []
 })

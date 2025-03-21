@@ -40,9 +40,9 @@ export interface ImportRunDto {
   providedIn: 'root'
 })
 export class ImportService {
-  private apiUrl = `${environment.apiUrl}/api/import`;
+  private readonly apiUrl = `${environment.apiUrl}/api/import`;
 
-  constructor(private http: HttpClient) { }
+  constructor(private readonly http: HttpClient) { }
 
   validateImport(importData: ImportCompetitionDto): Observable<string[]> {
     return this.http.post<string[]>(`${this.apiUrl}/validate`, importData);

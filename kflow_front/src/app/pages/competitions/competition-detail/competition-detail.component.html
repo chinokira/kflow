@@ -1,72 +1,150 @@
-<!-- État de chargement -->
-<div class="loading-container" *ngIf="isLoading">
-  <mat-spinner diameter="40"></mat-spinner>
-  <p>Chargement des données...</p>
-</div>
+<div class="competition-detail" *ngIf="competition">
+    <h2>{{ competition.name }}</h2>
+    <p>Lieu : {{ competition.place }}</p>
+    <p>Date : {{ competition.startDate | date:'dd/MM/yyyy' }} - {{ competition.endDate| date:'dd/MM/yyyy' }}</p>
 
-<!-- Message d'erreur -->
-<div class="error-message" *ngIf="error">
-  <p>{{ error }}</p>
-</div>
+    <div class="categories-list">
+        <h3>Catégories</h3>
+        <mat-accordion>
+            <mat-expansion-panel *ngFor="let categorie of competition.categories"
+                (opened)="loadCategorieParticipants(categorie)" [expanded]="selectedCategorie?.id === categorie.id">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        {{ categorie.name }}
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
 
-<!-- Contenu principal -->
-<div class="competition-detail" *ngIf="!isLoading && !error">
-  <!-- En-tête de la compétition -->
-  <div class="competition-header" *ngIf="competition">
-    <h1>Compétition de {{ competition.place }}</h1>
-    <div class="competition-info">
-      <p><strong>Niveau:</strong> {{ competition.level }}</p>
-      <p><strong>Date:</strong> {{ competition.startDate | date:'dd/MM/yyyy' }} - {{ competition.endDate | date:'dd/MM/yyyy' }}</p>
+                <ng-container *ngIf="selectedCategorie && selectedCategorie.id === categorie.id">
+                    <div class="results-table"
+                        *ngIf="selectedCategorie.participants && selectedCategorie.participants.length > 0">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="rank-col">#</th>
+                                    <th class="bibNb-col">Bib</th>
+                                    <th class="name-col">Nom</th>
+                                    <th class="club-col">Club</th>
+                                    <th class="runs-col">Runs</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let participant of selectedCategorie.participants; let i = index">
+                                    <td class="rank-col">{{ i + 1 }}</td>
+                                    <td class="bibNb-col">{{ participant.bibNb }}</td>
+                                    <td class="name-col">{{ participant.name }}</td>
+                                    <td class="club-col">{{ participant.club }}</td>
+                                    <td class="runs-col">
+                                        <div class="runs-list" *ngIf="participant.runs && participant.runs.length > 0">
+                                            <div class="run-item" *ngFor="let run of participant.runs">
+                                                <strong>{{ run.stageName }}</strong>
+                                                <span class="run-score">Score: {{ run.score }}</span>
+                                            </div>
+                                        </div>
+                                        <span *ngIf="!participant.runs || participant.runs.length === 0"
+                                            class="no-runs">
+                                            Aucun run
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p *ngIf="!selectedCategorie.participants || selectedCategorie.participants.length === 0">
+                        Aucun participant dans cette catégorie.
+                    </p>
+                </ng-container>
+
+            </mat-expansion-panel>
+        </mat-accordion>
     </div>
-  </div>
+</div>
 
-  <!-- Onglets pour les catégories -->
-  <mat-tab-group *ngIf="categories.length">
-    <mat-tab *ngFor="let categorie of categories" [label]="categorie.name">
-      <div class="tab-content">
-        <!-- Tableau des participants -->
-        <div class="results-table-container">
-          <table mat-table [dataSource]="categorie.participants" class="results-table">
-            <!-- Position -->
-            <ng-container matColumnDef="position">
-              <th mat-header-cell *matHeaderCellDef>Pos.</th>
-              <td mat-cell *matCellDef="let participant; let i = index">{{ i + 1 }}</td>
-            </ng-container>
+<div class="loading" *ngIf="loading">
+    <mat-spinner></mat-spinner>
+</div>
 
-            <!-- Dossard -->
-            <ng-container matColumnDef="bibNb">
-              <th mat-header-cell *matHeaderCellDef>Dossard</th>
-              <td mat-cell *matCellDef="let participant">{{ participant.bibNb }}</td>
-            </ng-container>
+<style>
+    .competition-detail {
+        padding: 20px;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
 
-            <!-- Nom -->
-            <ng-container matColumnDef="name">
-              <th mat-header-cell *matHeaderCellDef>Participant</th>
-              <td mat-cell *matCellDef="let participant">{{ participant.name }}</td>
-            </ng-container>
+    .categories-list {
+        margin-top: 20px;
+    }
 
-            <!-- Club -->
-            <ng-container matColumnDef="club">
-              <th mat-header-cell *matHeaderCellDef>Club</th>
-              <td mat-cell *matCellDef="let participant">{{ participant.club }}</td>
-            </ng-container>
+    .results-table {
+        margin-top: 16px;
+        overflow-x: auto;
+    }
 
-            <!-- Runs -->
-            <ng-container matColumnDef="runs">
-              <th mat-header-cell *matHeaderCellDef>Runs</th>
-              <td mat-cell *matCellDef="let participant">{{ getParticipantRuns(participant) }}</td>
-            </ng-container>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: white;
+    }
 
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-          </table>
-        </div>
-      </div>
-    </mat-tab>
-  </mat-tab-group>
+    th,
+    td {
+        padding: 12px;
+        text-align: left;
+        border: 1px solid #ddd;
+    }
 
-  <!-- Message si aucune catégorie -->
-  <div class="no-data-message" *ngIf="competition && categories.length === 0">
-    <p>Aucune catégorie trouvée pour cette compétition</p>
-  </div>
-</div> 
+    th {
+        background-color: #f5f5f5;
+        font-weight: 500;
+    }
+
+    .rank-col {
+        width: 50px;
+        text-align: center;
+    }
+
+    .name-col {
+        width: 200px;
+    }
+
+    .club-col {
+        width: 150px;
+    }
+
+    .runs-col {
+        min-width: 300px;
+    }
+
+    .runs-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .run-item {
+        background-color: #f5f5f5;
+        padding: 8px 12px;
+        border-radius: 4px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .run-item strong {
+        color: #2196f3;
+    }
+
+    .run-score {
+        color: #4caf50;
+    }
+
+    .no-runs {
+        color: #999;
+        font-style: italic;
+    }
+
+    .loading {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+</style>
