@@ -1,28 +1,32 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-footer',
-  template: `
-    <footer class="footer">
-      <div class="footer-content">
-        <p>&copy; 2024 KFlow. Tous droits réservés.</p>
-      </div>
-    </footer>
-  `,
-  styles: [`
-    .footer {
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      background-color: #f5f5f5;
-      padding: 1rem;
-      text-align: center;
-      border-top: 1px solid #ddd;
-    }
-    .footer-content {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-  `]
+  standalone: true,
+  imports: [CommonModule, MatIconModule],
+  templateUrl: './footer.component.html',
+  styleUrls: ['./footer.component.scss']
 })
-export class FooterComponent {} 
+export class FooterComponent implements OnInit, OnDestroy {
+  isVisible = false;
+
+  @HostListener('window:scroll')
+  onScroll() {
+    const scrollPosition = window.scrollY + window.innerHeight;
+    const documentHeight = document.documentElement.scrollHeight;
+    const threshold = 50; // Réduit de 100px à 50px pour une apparition plus tardive
+
+    this.isVisible = scrollPosition >= documentHeight - threshold;
+  }
+
+  ngOnInit() {
+    // Vérifier la position initiale
+    this.onScroll();
+  }
+
+  ngOnDestroy() {
+    // Nettoyage si nécessaire
+  }
+} 

@@ -1,11 +1,13 @@
 .competitions-container {
   padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
 
   .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 2rem;
 
     h1 {
       margin: 0;
@@ -66,5 +68,35 @@
       color: rgba(0, 0, 0, 0.54);
       margin-bottom: 20px;
     }
+  }
+
+  .competitions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+  }
+
+  .competition-card {
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+  }
+
+  .competition-card:hover {
+    transform: translateY(-5px);
+  }
+
+  mat-card-content {
+    margin-top: 1rem;
+  }
+
+  mat-card-content p {
+    margin: 0.5rem 0;
+    color: #666;
+  }
+
+  mat-card-actions {
+    display: flex;
+    justify-content: flex-end;
+    padding: 8px;
   }
 } 
