@@ -1,0 +1,428 @@
+{
+    "startDate": "2024-03-18",
+    "endDate": "2024-03-18",
+    "level": "Regional",
+    "place": "Clermont-Ferrand",
+    "categories": [
+        {
+            "name": "Kayak Monoplace Homme Senior",
+            "participants": [
+                {
+                    "bibNb": 20,
+                    "name": "Valentin PARASME",
+                    "club": "ISTRES ENTRESSEN CANOE KAYAK",
+                    "runs": [
+                        {
+                            "duration": 45,
+                            "score": 600.0,
+                            "stageName": "Qualification"
+                        },
+                        {
+                            "duration": 45,
+                            "score": 260.0,
+                            "stageName": "Qualification"
+                        },
+                        {
+                            "duration": 45,
+                            "score": 675.0,
+                            "stageName": "Quart"
+                        },
+                        {
+                            "duration": 45,
+                            "score": 645.0,
+                            "stageName": "Quart"
+                        },
+                        {
+                            "duration": 45,
+                            "score": 580.0,
+                            "stageName": "Demi"
+                        },
+                        {
+                            "duration": 45,
+                            "score": 385.0,
+                            "stageName": "Finale"
+                        },
+                        {
+                            "duration": 45,
+                            "score": 420.0,
+                            "stageName": "Finale"
+                        }
+                    ]
+                },
+                {
+                    "bibNb": 4,
+                    "name": "François ANDRIEUX",
+                    "club": "CLERMONT COMMUNAUTE CANOE KAYAK",
+                    "runs": [
+                        {
+                            "duration": 45,
+                            "score": 540.0,
+                            "stageName": "Qualification"
+                        },
+                        {
+                            "duration": 45,
+                            "score": 450.0,
+                            "stageName": "Qualification"
+                        },
+                        {
+                            "duration": 45,
+                            "score": 535.0,
+                            "stageName": "Quart"
+                        },
+                        {
+                            "duration": 45,
+                            "score": 580.0,
+                            "stageName": "Quart"
+                        },
+                        {
+                            "duration": 45,
+                            "score": 380.0,
+                            "stageName": "Demi"
+                        },
+                        {
+                            "duration": 45,
+                            "score": 420.0,
+                            "stageName": "Finale"
+                        },
+                        {
+                            "duration": 45,
+                            "score": 495.0,
+                            "stageName": "Finale"
+                        }
+                    ]
+                },
+                {
+                    "bibNb": 36,
+                    "name": "Alexandre ROZANO",
+                    "club": "ISTRES ENTRESSEN CANOE KAYAK",
+                    "runs": [
+                        {
+                            "duration": 45,
+                            "score": 135.0,
+                            "stageName": "Qualification"
+                        },
+                        {
+                            "duration": 45,
+                            "score": 425.0,
+                            "stageName": "Qualification"
+                        },
+                        {
+                            "duration": 45,
+                            "score": 535.0,
+                            "stageName": "Quart"
+                        },
+                        {
+                            "duration": 45,
+                            "score": 515.0,
+                            "stageName": "Quart"
+                        },
+                        {
+                            "duration": 45,
+                            "score": 515.0,
+                            "stageName": "Demi"
+                        },
+                        {
+                            "duration": 45,
+                            "score": 515.0,
+                            "stageName": "Finale"
+                        },
+                        {
+                            "duration": 45,
+                            "score": 515.0,
+                            "stageName": "Finale"
+                        }
+                    ]
+                },
+                {
+                    "bibNb": 14,
+                    "name": "Jean Baptiste BAL",
+                    "club": "NO PASA NADA",
+                    "runs": [
+                        {
+                            "duration": 45,
+                            "score": 255.0,
+                            "stageName": "Qualification"
+                        },
+                        {
+                            "duration": 45,
+                            "score": 320.0,
+                            "stageName": "Qualification"
+                        },
+                        {
+                            "duration": 45,
+                            "score": 290.0,
+                            "stageName": "Quart"
+                        },
+                        {
+                            "duration": 45,
+                            "score": 325.0,
+                            "stageName": "Quart"
+                        },
+                        {
+                            "duration": 45,
+                            "score": 290.0,
+                            "stageName": "Demi"
+                        },
+                        {
+                            "duration": 45,
+                            "score": 530.0,
+                            "stageName": "Finale"
+                        },
+                        {
+                            "duration": 45,
+                            "score": 0.0,
+                            "stageName": "Finale"
+                        }
+                    ]
+                },
+                {
+                    "bibNb": 5,
+                    "name": "Florient BARACHON",
+                    "club": "A.D.S.C. ECUELLES",
+                    "runs": [
+                        {
+                            "duration": 45,
+                            "score": 270.0,
+                            "stageName": "Qualification"
+                        },
+                        {
+                            "duration": 45,
+                            "score": 120.0,
+                            "stageName": "Qualification"
+                        },
+                        {
+                            "duration": 45,
+                            "score": 325.0,
+                            "stageName": "Quart"
+                        },
+                        {
+                            "duration": 45,
+                            "score": 275.0,
+                            "stageName": "Quart"
+                        }
+                    ]
+                },
+                {
+                    "bibNb": 16,
+                    "name": "Remy GARCIA",
+                    "club": "TRAVERSES PAGAIES",
+                    "runs": [
+                        {
+                            "duration": 45,
+                            "score": 200.0,
+                            "stageName": "Qualification"
+                        },
+                        {
+                            "duration": 45,
+                            "score": 90.0,
+                            "stageName": "Qualification"
+                        },
+                        {
+                            "duration": 45,
+                            "score": 225.0,
+                            "stageName": "Quart"
+                        },
+                        {
+                            "duration": 45,
+                            "score": 180.0,
+                            "stageName": "Quart"
+                        }
+                    ]
+                },
+                {
+                    "bibNb": 31,
+                    "name": "Charlie NGUYEN",
+                    "club": "S5k clermont communauté",
+                    "runs": [
+                        {
+                            "duration": 45,
+                            "score": 100.0,
+                            "stageName": "Qualification"
+                        },
+                        {
+                            "duration": 45,
+                            "score": 180.0,
+                            "stageName": "Qualification"
+                        },
+                        {
+                            "duration": 45,
+                            "score": 160.0,
+                            "stageName": "Quart"
+                        },
+                        {
+                            "duration": 45,
+                            "score": 225.0,
+                            "stageName": "Quart"
+                        }
+                    ]
+                },
+                {
+                    "bibNb": 8,
+                    "name": "Samuel ROUX",
+                    "club": "LOISIRS EAUX VIVES BEAUGENCY",
+                    "runs": [
+                        {
+                            "duration": 45,
+                            "score": 110.0,
+                            "stageName": "Qualification"
+                        },
+                        {
+                            "duration": 45,
+                            "score": 60.0,
+                            "stageName": "Qualification"
+                        },
+                        {
+                            "duration": 45,
+                            "score": 170.0,
+                            "stageName": "Quart"
+                        },
+                        {
+                            "duration": 45,
+                            "score": 180.0,
+                            "stageName": "Quart"
+                        }
+                    ]
+                },
+                {
+                    "bibNb": 27,
+                    "name": "Julien FAYOL",
+                    "club": "CNLorgues",
+                    "runs": [
+                        {
+                            "duration": 45,
+                            "score": 95.0,
+                            "stageName": "Qualification"
+                        },
+                        {
+                            "duration": 45,
+                            "score": 110.0,
+                            "stageName": "Qualification"
+                        },
+                        {
+                            "duration": 45,
+                            "score": 135.0,
+                            "stageName": "Quart"
+                        },
+                        {
+                            "duration": 45,
+                            "score": 40.0,
+                            "stageName": "Quart"
+                        }
+                    ]
+                },
+                {
+                    "bibNb": 13,
+                    "name": "NIls BERTRAND",
+                    "club": "CLERMONT COMMUNAUTE CANOE KAYAK",
+                    "runs": [
+                        {
+                            "duration": 45,
+                            "score": 165.0,
+                            "stageName": "Qualification"
+                        },
+                        {
+                            "duration": 45,
+                            "score": 60.0,
+                            "stageName": "Qualification"
+                        },
+                        {
+                            "duration": 45,
+                            "score": 225.0,
+                            "stageName": "Quart"
+                        },
+                        {
+                            "duration": 45,
+                            "score": 50.0,
+                            "stageName": "Quart"
+                        }
+                    ]
+                },
+                {
+                    "bibNb": 45,
+                    "name": "Yasin GULAY",
+                    "club": "S.V. VAULX EN VELIN",
+                    "runs": [
+                        {
+                            "duration": 45,
+                            "score": 50.0,
+                            "stageName": "Qualification"
+                        },
+                        {
+                            "duration": 45,
+                            "score": 90.0,
+                            "stageName": "Qualification"
+                        }
+                    ]
+                },
+                {
+                    "bibNb": 35,
+                    "name": "Cyril DE RYCKE",
+                    "club": "CLERMONT COMMUNAUTE CANOE KAYAK",
+                    "runs": [
+                        {
+                            "duration": 45,
+                            "score": 20.0,
+                            "stageName": "Qualification"
+                        },
+                        {
+                            "duration": 45,
+                            "score": 20.0,
+                            "stageName": "Qualification"
+                        }
+                    ]
+                },
+                {
+                    "bibNb": 12,
+                    "name": "Jean DOUSSON",
+                    "club": "CLERMONT COMMUNAUTE CANOE KAYAK",
+                    "runs": [
+                        {
+                            "duration": 45,
+                            "score": 20.0,
+                            "stageName": "Qualification"
+                        },
+                        {
+                            "duration": 45,
+                            "score": 20.0,
+                            "stageName": "Qualification"
+                        }
+                    ]
+                },
+                {
+                    "bibNb": 30,
+                    "name": "Maxime MOUILLAUD",
+                    "club": "S5k clermont communauté",
+                    "runs": [
+                        {
+                            "duration": 45,
+                            "score": 0.0,
+                            "stageName": "Qualification"
+                        },
+                        {
+                            "duration": 45,
+                            "score": 30.0,
+                            "stageName": "Qualification"
+                        }
+                    ]
+                },
+                {
+                    "bibNb": 38,
+                    "name": "Ugo DE BARROS",
+                    "club": "CLUB NAUTIQUE DE LONGUES",
+                    "runs": [
+                        {
+                            "duration": 45,
+                            "score": 20.0,
+                            "stageName": "Qualification"
+                        },
+                        {
+                            "duration": 45,
+                            "score": 0.0,
+                            "stageName": "Qualification"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
