@@ -1,4 +1,4 @@
-package kayak.freestyle.competition.kflow.configs;
+package kayak.freestyle.competition.kflow.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
