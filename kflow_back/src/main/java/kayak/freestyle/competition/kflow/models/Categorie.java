@@ -1,7 +1,9 @@
 package kayak.freestyle.competition.kflow.models;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -54,7 +56,7 @@ public class Categorie {
     @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
     @JsonManagedReference("participant-categories")
     @Builder.Default
-    private List<Participant> participants = new ArrayList<>();
+    private Set<Participant> participants = new HashSet<>();
 
     public void addStage(Stage stage) {
         if (stages == null) {
@@ -73,7 +75,7 @@ public class Categorie {
 
     public void addParticipant(Participant participant) {
         if (participants == null) {
-            participants = new ArrayList<>();
+            participants = new HashSet<>();
         }
         participants.add(participant);
         if (!participant.getCategories().contains(this)) {

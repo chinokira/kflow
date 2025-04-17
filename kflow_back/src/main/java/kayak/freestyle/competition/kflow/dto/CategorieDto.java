@@ -1,6 +1,7 @@
 package kayak.freestyle.competition.kflow.dto;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,7 +32,7 @@ public class CategorieDto implements HasId {
     @NotBlank
     private String name;
 
-    private List<Participant> participants;
+    private Set<Participant> participants;
 
     private Competition competition;
 

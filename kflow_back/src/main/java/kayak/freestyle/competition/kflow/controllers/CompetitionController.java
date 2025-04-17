@@ -19,6 +19,7 @@ public class CompetitionController extends GenericController<CompetitionDto, Com
 
     @GetMapping("/{id}/details")
     public ResponseEntity<CompetitionDto> getCompetitionDetails(@PathVariable Long id) {
-        return ResponseEntity.ok(service.getCompetitionWithDetails(id));
+        CompetitionDto competitionDto = service.getCompetitionWithDetails(id);
+        return ResponseEntity.ok(competitionDto);
     }
 }

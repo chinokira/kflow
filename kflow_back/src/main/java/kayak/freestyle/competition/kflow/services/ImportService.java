@@ -67,7 +67,7 @@ public class ImportService {
                 .name(categoryDto.getName())
                 .competition(competition)
                 .stages(new ArrayList<>())
-                .participants(new ArrayList<>())
+                .participants(new HashSet<>())
                 .build();
         return categorieService.saveModel(category);
     }

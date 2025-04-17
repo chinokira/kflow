@@ -1,7 +1,5 @@
 package kayak.freestyle.competition.kflow.mappers;
 
-import java.util.stream.Collectors;
-
 import org.springframework.stereotype.Component;
 
 import kayak.freestyle.competition.kflow.dto.CompetitionDto;
@@ -21,7 +19,6 @@ public class CompetitionMapper implements GenericMapper<Competition, Competition
         if (model == null) {
             return null;
         }
-
         return CompetitionDto.builder()
                 .id(model.getId())
                 .startDate(model.getStartDate())
@@ -30,7 +27,7 @@ public class CompetitionMapper implements GenericMapper<Competition, Competition
                 .level(model.getLevel())
                 .categories(model.getCategories().stream()
                         .map(categorieMapper::modelToDto)
-                        .collect(Collectors.toList()))
+                        .toList())
                 .build();
     }
 
@@ -48,7 +45,7 @@ public class CompetitionMapper implements GenericMapper<Competition, Competition
                 .level(dto.getLevel())
                 .categories(dto.getCategories().stream()
                         .map(categorieMapper::dtoToModel)
-                        .collect(Collectors.toList()))
+                        .toList())
                 .build();
     }
 }

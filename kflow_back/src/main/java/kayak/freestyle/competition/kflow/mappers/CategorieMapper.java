@@ -1,7 +1,10 @@
 package kayak.freestyle.competition.kflow.mappers;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -33,7 +36,7 @@ public class CategorieMapper implements GenericMapper<Categorie, CategorieDto> {
         return CategorieDto.builder()
                 .id(m.getId())
                 .name(m.getName())
-                .participants(m.getParticipants())
+                .participants(m.getParticipants().stream().collect(Collectors.toSet()))
                 .competition(m.getCompetition())
                 .stages(m.getStages())
                 .build();
@@ -50,7 +53,7 @@ public class CategorieMapper implements GenericMapper<Categorie, CategorieDto> {
                 .build();
 
         if (d.getParticipants() != null) {
-            List<Participant> participants = new ArrayList<>();
+            Set<Participant> participants = new HashSet<>();
             for (Participant participant : d.getParticipants()) {
                 if (participant.getId() > 0) {
                     Participant existingParticipant = participantService.findById(participant.getId());
