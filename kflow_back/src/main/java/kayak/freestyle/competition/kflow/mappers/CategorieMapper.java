@@ -1,14 +1,14 @@
 package kayak.freestyle.competition.kflow.mappers;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
+import jakarta.validation.constraints.NotBlank;
 import kayak.freestyle.competition.kflow.dto.CategorieDto;
 import kayak.freestyle.competition.kflow.models.Categorie;
 import kayak.freestyle.competition.kflow.models.Competition;
@@ -43,10 +43,7 @@ public class CategorieMapper implements GenericMapper<Categorie, CategorieDto> {
     }
 
     @Override
-    public Categorie dtoToModel(CategorieDto d) {
-        if (d == null) {
-            return null;
-        }
+    public Categorie dtoToModel(@NotBlank CategorieDto d) {
         Categorie categorie = Categorie.builder()
                 .id(d.getId())
                 .name(d.getName())
@@ -54,20 +51,17 @@ public class CategorieMapper implements GenericMapper<Categorie, CategorieDto> {
 
         if (d.getParticipants() != null) {
             Set<Participant> participants = new HashSet<>();
-            for (Participant participant : d.getParticipants()) {
-                if (participant.getId() > 0) {
-                    Participant existingParticipant = participantService.findById(participant.getId());
-                    if (existingParticipant != null) {
-                        participants.add(existingParticipant);
-                        if (!existingParticipant.getCategories().contains(categorie)) {
-                            existingParticipant.getCategories().add(categorie);
+            d.getParticipants()
+                    .forEach(participant -> {
+                        if (participant.getId() > 0) {
+                            Participant existingParticipant = participantService.findById(participant.getId());
+                            if (existingParticipant != null) {
+                                participants.add(existingParticipant);
+                            }
                         }
-                    }
-                }
-            }
+                    });
             categorie.setParticipants(participants);
         }
-
         if (d.getCompetition() != null && d.getCompetition().getId() > 0) {
             Competition competition = competitionService.findById(d.getCompetition().getId());
             if (competition != null) {
@@ -77,8 +71,6 @@ public class CategorieMapper implements GenericMapper<Categorie, CategorieDto> {
                 }
             }
         }
-
         return categorie;
     }
-
 }

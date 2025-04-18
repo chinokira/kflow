@@ -1,0 +1,23 @@
+
+<div id="content">
+  <h1>Login</h1>
+
+  <form (ngSubmit)="onSubmit()" [formGroup]="credentials">
+    <mat-form-field appearance="outline">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Mot de passe</mat-label>
+      <input matInput type="password" formControlName="password">
+    </mat-form-field>
+
+    <div class="errors">
+      {{error}}
+    </div>
+
+    <div class="actions">
+      <button mat-raised-button color="primary">Valider</button>
+    </div>
+  </form>
+</div>

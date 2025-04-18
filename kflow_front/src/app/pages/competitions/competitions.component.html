@@ -1,47 +1,61 @@
 <div class="competitions-container">
   <div class="header">
     <h1>Compétitions</h1>
-    <button mat-raised-button color="primary" routerLink="/competitions/new">
-      <mat-icon>add</mat-icon>
-      Nouvelle compétition
-    </button>
+    @if (isAdmin) {
+      <button mat-raised-button color="primary" routerLink="/competitions/new">
+        <mat-icon>add</mat-icon>
+        Nouvelle compétition
+      </button>
+    }
   </div>
 
-  <div *ngIf="isLoading" class="loading-container">
-    <mat-spinner diameter="50"></mat-spinner>
-    <p>Chargement des compétitions...</p>
-  </div>
+  @if (isLoading) {
+    <div class="loading-container">
+      <mat-spinner diameter="50"></mat-spinner>
+      <p>Chargement des compétitions...</p>
+    </div>
+  }
 
-  <div *ngIf="error" class="error-container">
-    <p class="error-message">{{error}}</p>
-    <button mat-raised-button color="primary" (click)="loadCompetitions()">Réessayer</button>
-  </div>
+  @if (error) {
+    <div class="error-container">
+      <p class="error-message">{{error}}</p>
+      <button mat-raised-button color="primary" (click)="loadCompetitions()">Réessayer</button>
+    </div>
+  }
 
   <div class="competitions-grid">
-    <mat-card *ngFor="let competition of competitions" class="competition-card">
-      <mat-card-header>
-        <mat-card-title>{{ competition.place }}</mat-card-title>
-        <mat-card-subtitle>{{ competition.level }}</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <p>{{ competition.categories.length }} catégories</p>
-        <p>Du {{ competition.startDate | date:'dd/MM/yyyy' }} au {{ competition.endDate | date:'dd/MM/yyyy' }}</p>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-button [routerLink]="['/competitions', competition.id]">
-          <mat-icon>visibility</mat-icon> Voir
-        </button>
-        <button mat-button color="warn" (click)="deleteCompetition(competition.id)">
-          <mat-icon>delete</mat-icon> Supprimer
-        </button>
-      </mat-card-actions>
-    </mat-card>
+    @for (competition of competitions; track competition.id) {
+      <mat-card class="competition-card">
+        <mat-card-header>
+          <mat-card-title>{{ competition.place }}</mat-card-title>
+          <mat-card-subtitle>{{ competition.level }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <p>{{ competition.categories.length }} catégories</p>
+          <p>Du {{ competition.startDate | date:'dd/MM/yyyy' }} au {{ competition.endDate | date:'dd/MM/yyyy' }}</p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button [routerLink]="['/competitions', competition.id]">
+            <mat-icon>visibility</mat-icon> Voir
+          </button>
+          @if (isAdmin) {
+            <button mat-button color="warn" (click)="deleteCompetition(competition.id)">
+              <mat-icon>delete</mat-icon> Supprimer
+            </button>
+          }
+        </mat-card-actions>
+      </mat-card>
+    }
   </div>
 
-  <div *ngIf="!isLoading && !error && competitions.length === 0" class="no-data">
-    <p>Aucune compétition n'a été créée</p>
-    <button mat-raised-button color="primary" routerLink="/competitions/new">
-      Créer une compétition
-    </button>
-  </div>
+  @if (!isLoading && !error && competitions.length === 0) {
+    <div class="no-data">
+      <p>Aucune compétition n'a été créée</p>
+      @if (isAdmin) {
+        <button mat-raised-button color="primary" routerLink="/competitions/new">
+          Créer une compétition
+        </button>
+      }
+    </div>
+  }
 </div> 

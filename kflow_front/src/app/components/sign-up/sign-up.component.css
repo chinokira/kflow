@@ -1,0 +1,14 @@
+#content {
+  max-width: 1024px;
+  margin: 15px auto;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.actions {
+  display: flex;
+
+  justify-content: center;
+}

@@ -9,6 +9,7 @@ import { Competition } from '../../models/competition-detail.model';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { AuthenticationService } from '../../services/authentication.service';
 
 @Component({
   selector: 'app-competitions',
@@ -29,11 +30,17 @@ export class CompetitionsComponent implements OnInit {
   competitions: Competition[] = [];
   isLoading = false;
   error: string | null = null;
+  isAdmin = false;
 
   constructor(
     private readonly competitionService: CompetitionService,
-    private readonly snackBar: MatSnackBar
-  ) {}
+    private readonly snackBar: MatSnackBar,
+    private readonly authService: AuthenticationService
+  ) {
+    this.authService.connectedUser$.subscribe(user => {
+      this.isAdmin = user?.role === 'ADMIN';
+    });
+  }
 
   ngOnInit() {
     this.loadCompetitions();

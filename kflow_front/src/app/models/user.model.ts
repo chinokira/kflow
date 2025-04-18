@@ -1,27 +1,34 @@
-import { FormControl, FormGroup } from "@angular/forms";
-import { Categorie } from "./categorie.model";
-import { Run } from "./run.model";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
+
+export enum Role {
+    USER = 'USER',
+    ADMIN = 'ADMIN'
+}
 
 export interface User {
     id: number;
-    bibNb: number;
     name: string;
     email: string;
     password: string;
-    categories: Categorie[];
-    runs: Run[];
+    role: Role;
 }
 
 export namespace User {
     export function formGroup(user?: User) {
         return new FormGroup({
-        id: new FormControl(user?.id ?? 0, { nonNullable: true }),
-        bibNb: new FormControl(user?.name ?? '', { nonNullable: true }),
-        name:  new FormControl(user?.id ?? 0, { nonNullable: true }),
-        email:  new FormControl(user?.id ?? 0, { nonNullable: true }),
-        password:  new FormControl(user?.id ?? 0, { nonNullable: true }),
-        categories:  new FormControl(user?.id ?? 0, { nonNullable: true }),
-        runs:  new FormControl(user?.id ?? 0, { nonNullable: true })
-        })
+            id: new FormControl(user?.id ?? 0),
+            name: new FormControl(user?.name ?? '', [
+                Validators.required
+            ]),
+            email: new FormControl(user?.email ?? '', [
+                Validators.required,
+                Validators.email
+            ]),
+            password: new FormControl(user?.password ?? '', [
+                Validators.required,
+                Validators.minLength(8)
+            ]),
+            role: new FormControl(user?.role ?? Role.USER)
+        });
     }
 }

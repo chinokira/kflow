@@ -1,54 +1,62 @@
 <div class="competition-detail">
-  <div *ngIf="loading" class="loading">
-    <mat-spinner></mat-spinner>
-  </div>
-  <div *ngIf="error" class="error">
-    {{ error }}
-  </div>
-  <div *ngIf="competition && !loading" class="content">
-    <mat-card class="competition-header">
-      <mat-card-header>
-        <mat-card-title>{{ competition.place }}</mat-card-title>
-        <mat-card-subtitle>{{ competition.level }}</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <p class="dates">Du {{ competition.startDate | date:'dd/MM/yyyy' }} au {{ competition.endDate | date:'dd/MM/yyyy' }}</p>
-      </mat-card-content>
-    </mat-card>
+  @if (loading) {
+    <div class="loading">
+      <mat-spinner></mat-spinner>
+    </div>
+  }
+  @if (error) {
+    <div class="error">
+      {{ error }}
+    </div>
+  }
+  @if (competition && !loading) {
+    <div class="content">
+      <mat-card class="competition-header">
+        <mat-card-header>
+          <mat-card-title>{{ competition.place }}</mat-card-title>
+          <mat-card-subtitle>{{ competition.level }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <p class="dates">Du {{ competition.startDate | date:'dd/MM/yyyy' }} au {{ competition.endDate | date:'dd/MM/yyyy' }}</p>
+        </mat-card-content>
+      </mat-card>
 
-    <div class="categories-section">
-      <h2>Catégories</h2>
-      <div class="categories-grid">
-        <mat-card *ngFor="let category of competition.categories || []" class="category-card">
-          <mat-card-header>
-            <mat-card-title>{{ category.name }}</mat-card-title>
-            <mat-card-subtitle>participants: {{ (category.participants || []).length }}</mat-card-subtitle>
-          </mat-card-header>
-          <mat-card-content>
-            <mat-accordion>
-              <mat-expansion-panel>
-                <mat-expansion-panel-header>
-                  <mat-panel-title>
-                    Liste des participants
-                  </mat-panel-title>
-                </mat-expansion-panel-header>
-                <div *ngFor="let participant of category.participants || []" class="participant-item">
-                  <strong>{{ participant.name }}</strong>
-                  <span class="bib-number">Dossard #{{ participant.bibNb }}</span>
-                  <div class="runs-list">
-                    <div *ngFor="let run of participant.runs || []" class="run-item">
-                      <span class="stage-name">{{ run.stageName }}</span>
-                      <span class="run-details">Durée: {{ run.duration }}s - Score: {{ run.score }}</span>
+      <div class="categories-section">
+        <h2>Catégories</h2>
+        <div class="categories-grid">
+          @for (category of competition.categories || []; track category.id) {
+            <mat-card class="category-card">
+              <mat-card-header>
+                <mat-card-title>{{ category.name }}</mat-card-title>
+                <mat-card-subtitle>participants: {{ (category.participants || []).length }}</mat-card-subtitle>
+              </mat-card-header>
+              <mat-card-content>
+                <mat-accordion>
+                  <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                      <mat-panel-title>
+                        Liste des participants
+                      </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div *ngFor="let participant of category.participants || []" class="participant-item">
+                      <strong>{{ participant.name }}</strong>
+                      <span class="bib-number">Dossard #{{ participant.bibNb }}</span>
+                      <div class="runs-list">
+                        <div *ngFor="let run of participant.runs || []" class="run-item">
+                          <span class="stage-name">{{ run.stageName }}</span>
+                          <span class="run-details">Durée: {{ run.duration }}s - Score: {{ run.score }}</span>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              </mat-expansion-panel>
-            </mat-accordion>
-          </mat-card-content>
-        </mat-card>
+                  </mat-expansion-panel>
+                </mat-accordion>
+              </mat-card-content>
+            </mat-card>
+          }
+        </div>
       </div>
     </div>
-  </div>
+  }
 </div>
 
 <style>

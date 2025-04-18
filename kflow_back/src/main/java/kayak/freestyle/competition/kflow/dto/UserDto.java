@@ -1,14 +1,11 @@
 package kayak.freestyle.competition.kflow.dto;
 
 import org.hibernate.validator.constraints.Length;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import kayak.freestyle.competition.kflow.models.Role;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -28,24 +25,17 @@ public class UserDto implements HasId {
     @EqualsAndHashCode.Include
     private long id;
 
-    @NotBlank
+    @NotBlank(message = "Le nom ne doit pas être vide")
     private String name;
 
-    @Email
-    @JsonProperty("email")
+    @NotBlank(message = "L'email ne doit pas être vide")
+    @Email(message = "L'email doit être valide")
     private String email;
 
-    @NotBlank
-    @Length(min = 8)
     @NotBlank(message = "Le mot de passe ne doit pas être vide")
-    @JsonProperty("password")
+    @Length(min = 8, message = "Le mot de passe doit faire au moins 8 caractères")
     private String password;
 
-    @NotBlank
+    @NotNull(message = "Le rôle ne doit pas être null")
     private Role role;
-
-    @PostMapping
-    public ResponseEntity<ParticipantDto> save(@RequestBody ParticipantDto userDto) {
-        return ResponseEntity.ok(userDto);
-    }
 }
