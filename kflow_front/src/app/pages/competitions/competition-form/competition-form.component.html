@@ -13,9 +13,11 @@
       <input matInput [matDatepicker]="startPicker" formControlName="startDate">
       <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
       <mat-datepicker #startPicker></mat-datepicker>
-      <mat-error *ngIf="competitionForm.get('startDate')?.errors?.['required']">
-        La date de début est requise
-      </mat-error>
+      @if (competitionForm.get('startDate')?.errors?.['required']) {
+        <mat-error>
+          La date de début est requise
+        </mat-error>
+      }
     </mat-form-field>
 
     <mat-form-field appearance="fill">
@@ -23,25 +25,31 @@
       <input matInput [matDatepicker]="endPicker" formControlName="endDate">
       <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
       <mat-datepicker #endPicker></mat-datepicker>
-      <mat-error *ngIf="competitionForm.get('endDate')?.errors?.['required']">
-        La date de fin est requise
-      </mat-error>
+      @if (competitionForm.get('endDate')?.errors?.['required']) {
+        <mat-error>
+          La date de fin est requise
+        </mat-error>
+      }
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Lieu</mat-label>
       <input matInput formControlName="place" placeholder="Entrez le lieu">
-      <mat-error *ngIf="competitionForm.get('place')?.errors?.['required']">
-        Le lieu est requis
-      </mat-error>
+      @if (competitionForm.get('place')?.errors?.['required']) {
+        <mat-error>
+          Le lieu est requis
+        </mat-error>
+      }
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Niveau</mat-label>
       <input matInput formControlName="level" placeholder="Entrez le niveau">
-      <mat-error *ngIf="competitionForm.get('level')?.errors?.['required']">
-        Le niveau est requis
-      </mat-error>
+      @if (competitionForm.get('level')?.errors?.['required']) {
+        <mat-error>
+          Le niveau est requis
+        </mat-error>
+      }
     </mat-form-field>
 
     <div class="form-actions">
@@ -50,8 +58,10 @@
       </button>
     </div>
 
-    <div *ngIf="error" class="error-message">
-      {{ error }}
-    </div>
+    @if (error) {
+      <div class="error-message">
+        {{ error }}
+      </div>
+    }
   </form>
 </div> 

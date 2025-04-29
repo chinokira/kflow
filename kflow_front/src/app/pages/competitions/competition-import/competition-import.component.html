@@ -24,18 +24,21 @@
         </mat-form-field>
       </div>
 
-      <div *ngIf="importErrors.length > 0" class="errors-section">
-        <h3 class="error-title">Erreurs de validation</h3>
-        <mat-list>
-          <mat-list-item *ngFor="let error of importErrors" class="error-item">
-            <mat-icon matListItemIcon color="warn">error</mat-icon>
-            <div matListItemTitle>
-              <span *ngIf="error.line">Ligne {{error.line}} : </span>
-              {{error.message}}
-            </div>
-          </mat-list-item>
-        </mat-list>
-      </div>
+      @if (importErrors.length > 0) {
+        <div class="errors-section">
+          <h3>Erreurs d'importation</h3>
+          <mat-list>
+            @for (error of importErrors; track error) {
+              <mat-list-item class="error-item">
+                @if (error.line) {
+                  <span>Ligne {{error.line}} : </span>
+                }
+                {{error.message}}
+              </mat-list-item>
+            }
+          </mat-list>
+        </div>
+      }
     </mat-card-content>
 
     <mat-card-actions align="end">

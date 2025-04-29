@@ -31,7 +31,7 @@
           <mat-card-subtitle>{{ competition.level }}</mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
-          <p>{{ competition.categories.length }} catégories</p>
+          <p>{{ competition.categories?.length ?? 0 }} catégories</p>
           <p>Du {{ competition.startDate | date:'dd/MM/yyyy' }} au {{ competition.endDate | date:'dd/MM/yyyy' }}</p>
         </mat-card-content>
         <mat-card-actions>
