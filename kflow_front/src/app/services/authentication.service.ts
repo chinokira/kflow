@@ -62,6 +62,7 @@ export class AuthenticationService {
     }).pipe(
       tap(res => {
         const decodedAccessToken = jwtDecode<JwtCustomPayload>(res.accessToken);
+        console.log('JWT decoded:', decodedAccessToken);
         const user = {
           accessToken: res.accessToken,
           refreshToken: res.refreshToken,
@@ -69,6 +70,7 @@ export class AuthenticationService {
           name: decodedAccessToken.username,
           role: decodedAccessToken.role
         };
+        console.log('User created:', user);
         this.connectedUser.next(user);
         localStorage.setItem('user', JSON.stringify(user));
       }),

@@ -95,6 +95,7 @@ public class AuthenticationController {
                 .expiresAt(Instant.now().plusSeconds(1 * 60))
                 .subject(String.valueOf(user.getId()))
                 .claim("username", user.getName())
+                .claim("role", user.getRole().name())
                 .build();
         return jwtEncoder.encode(JwtEncoderParameters.from(jwtClaimsSet)).getTokenValue();
     }
