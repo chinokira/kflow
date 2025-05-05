@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
@@ -9,6 +9,7 @@ import { Competition } from '../models/competition-detail.model';
 })
 export class CompetitionService {
   private readonly apiUrl = `${environment.apiUrl}/competitions`;
+  private readonly headers = new HttpHeaders().set('Content-Type', 'application/json');
 
   constructor(private readonly httpClient: HttpClient) {}
 
@@ -21,11 +22,11 @@ export class CompetitionService {
   }
 
   create(competition: Competition): Observable<Competition> {
-    return this.httpClient.post<Competition>(this.apiUrl, competition);
+    return this.httpClient.post<Competition>(this.apiUrl, competition, { headers: this.headers });
   }
 
   update(id: number, competition: Competition): Observable<Competition> {
-    return this.httpClient.put<Competition>(`${this.apiUrl}/${id}`, competition);
+    return this.httpClient.put<Competition>(`${this.apiUrl}/${id}`, competition, { headers: this.headers });
   }
 
   delete(id: number): Observable<void> {
