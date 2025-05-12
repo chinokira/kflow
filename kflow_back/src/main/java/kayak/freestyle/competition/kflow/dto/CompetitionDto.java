@@ -25,10 +25,10 @@ public class CompetitionDto implements HasId {
     @EqualsAndHashCode.Include
     private long id;
 
-    @DateTimeFormat(style = "SS")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate startDate;
 
-    @DateTimeFormat(style = "SS")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate endDate;
 
     private String level;

@@ -121,6 +121,6 @@ export class CompetitionFormComponent implements OnInit {
       return date;
     }
     const d = new Date(date);
-    return d.toISOString().slice(0, 10);
+    return d.toISOString().split('T')[0];
   }
 } 
