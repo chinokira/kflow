@@ -38,16 +38,20 @@
                         Liste des participants
                       </mat-panel-title>
                     </mat-expansion-panel-header>
-                    <div *ngFor="let participant of category.participants || []" class="participant-item">
-                      <strong>{{ participant.name }}</strong>
-                      <span class="bib-number">Dossard #{{ participant.bibNb }}</span>
-                      <div class="runs-list">
-                        <div *ngFor="let run of participant.runs || []" class="run-item">
-                          <span class="stage-name">{{ run.stageName }}</span>
-                          <span class="run-details">Durée: {{ run.duration }}s - Score: {{ run.score }}</span>
+                    @for (participant of category.participants || []; track participant) {
+                      <div class="participant-item">
+                        <strong>{{ participant.name }}</strong>
+                        <span class="bib-number">Dossard #{{ participant.bibNb }}</span>
+                        <div class="runs-list">
+                          @for (run of participant.runs || []; track run) {
+                            <div class="run-item">
+                              <span class="stage-name">{{ run.stageName }}</span>
+                              <span class="run-details">Durée: {{ run.duration }}s - Score: {{ run.score }}</span>
+                            </div>
+                          }
                         </div>
                       </div>
-                    </div>
+                    }
                   </mat-expansion-panel>
                 </mat-accordion>
               </mat-card-content>
