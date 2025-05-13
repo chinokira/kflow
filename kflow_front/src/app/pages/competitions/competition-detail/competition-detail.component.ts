@@ -57,7 +57,7 @@ export class CompetitionDetailComponent implements OnInit, OnDestroy {
         this.loading = true;
         this.error = null;
 
-        this.subscription = this.competitionService.findById(Number(this.competitionId))
+        this.subscription = this.competitionService.getCompetitionWithDetails(Number(this.competitionId))
             .subscribe({
                 next: (data) => {
                     this.competition = data;

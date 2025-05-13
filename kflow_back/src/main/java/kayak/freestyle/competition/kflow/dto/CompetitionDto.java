@@ -1,6 +1,7 @@
 package kayak.freestyle.competition.kflow.dto;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -23,7 +24,7 @@ import lombok.experimental.SuperBuilder;
 public class CompetitionDto implements HasId {
 
     @EqualsAndHashCode.Include
-    private long id;
+    private Long id;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate startDate;
@@ -35,15 +36,15 @@ public class CompetitionDto implements HasId {
 
     private String place;
 
-    private List<CategorieDto> categories;
+    private List<CategorieDto> categories = new ArrayList<>();
 
     @Override
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
     @Override
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 }

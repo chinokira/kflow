@@ -19,7 +19,7 @@ import lombok.experimental.SuperBuilder;
 public class RunDto implements HasId {
 
     @EqualsAndHashCode.Include
-    private long id;
+    private Long id;
 
     private int duration;
 

@@ -55,5 +55,4 @@ public class GenericController<DTO extends HasId, SERVICE extends GenericService
     public void deleteById(@PathVariable long id) {
         service.deleteById(id);
     }
-
 }

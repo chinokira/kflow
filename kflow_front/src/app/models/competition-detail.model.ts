@@ -1,6 +1,5 @@
 export interface Competition {
   id: number;
-  name: string;
   place: string;
   level: string;
   startDate: string;
@@ -11,23 +10,9 @@ export interface Competition {
 export interface Categorie {
   id: number;
   name: string;
-  participants?: Participant[];
+  competition?: Competition;
   stages: Stage[];
-}
-
-export interface Participant {
-  id: number;
-  bibNb: number;
-  name: string;
-  club: string;
-  runs?: Run[];
-}
-
-export interface Run {
-  id: number;
-  duration: number;
-  score: number;
-  stageName: string;
+  participants: Participant[];
 }
 
 export interface Stage {
@@ -35,4 +20,23 @@ export interface Stage {
   name: string;
   nbRun: number;
   rules: string;
+  categorie?: Categorie;
+  runs: Run[];
+}
+
+export interface Run {
+  id: number;
+  duration: number;
+  score: number;
+  stage?: Stage;
+  participant?: Participant;
+}
+
+export interface Participant {
+  id: number;
+  name: string;
+  bibNb: number;
+  club?: string;
+  categories: Categorie[];
+  runs: Run[];
 } 

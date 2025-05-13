@@ -49,6 +49,7 @@ public class Competition {
     @OneToMany(mappedBy = "competition", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("competition-categories")
     @Builder.Default
+    @Column(nullable = true)
     private List<Categorie> categories = new ArrayList<>();
 
     public void addCategorie(Categorie categorie) {

@@ -11,23 +11,18 @@ import jakarta.validation.constraints.NotBlank;
 import kayak.freestyle.competition.kflow.models.Competition;
 import kayak.freestyle.competition.kflow.models.Stage;
 import kayak.freestyle.competition.kflow.models.Participant;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.experimental.SuperBuilder;
 
+@Data
+@Builder
 @NoArgsConstructor
-@SuperBuilder
-@Setter
-@Getter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@ToString
+@AllArgsConstructor
 public class CategorieDto implements HasId {
 
-    @EqualsAndHashCode.Include
-    private long id;
+    private Long id;
 
     @NotBlank
     private String name;

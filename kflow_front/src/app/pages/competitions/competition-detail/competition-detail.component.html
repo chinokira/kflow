@@ -38,14 +38,14 @@
                         Liste des participants
                       </mat-panel-title>
                     </mat-expansion-panel-header>
-                    @for (participant of category.participants || []; track participant) {
+                    @for (participant of category.participants || []; track participant.id) {
                       <div class="participant-item">
                         <strong>{{ participant.name }}</strong>
                         <span class="bib-number">Dossard #{{ participant.bibNb }}</span>
                         <div class="runs-list">
-                          @for (run of participant.runs || []; track run) {
+                          @for (run of participant.runs || []; track run.id) {
                             <div class="run-item">
-                              <span class="stage-name">{{ run.stageName }}</span>
+                              <span class="stage-name">{{ run.stage?.name }}</span>
                               <span class="run-details">Durée: {{ run.duration }}s - Score: {{ run.score }}</span>
                             </div>
                           }

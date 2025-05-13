@@ -19,7 +19,7 @@ public class CompetitionMapper implements GenericMapper<Competition, Competition
         if (model == null) {
             return null;
         }
-        return CompetitionDto.builder()
+        CompetitionDto dto = CompetitionDto.builder()
                 .id(model.getId())
                 .startDate(model.getStartDate())
                 .endDate(model.getEndDate())
@@ -29,6 +29,7 @@ public class CompetitionMapper implements GenericMapper<Competition, Competition
                         .map(categorieMapper::modelToDto)
                         .toList())
                 .build();
+        return dto;
     }
 
     @Override
@@ -37,7 +38,7 @@ public class CompetitionMapper implements GenericMapper<Competition, Competition
             return null;
         }
 
-        return Competition.builder()
+        Competition model = Competition.builder()
                 .id(dto.getId())
                 .startDate(dto.getStartDate())
                 .endDate(dto.getEndDate())
@@ -47,5 +48,6 @@ public class CompetitionMapper implements GenericMapper<Competition, Competition
                         .map(categorieMapper::dtoToModel)
                         .toList())
                 .build();
+        return model;
     }
 }
