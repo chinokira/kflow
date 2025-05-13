@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import kayak.freestyle.competition.kflow.dto.CategorieDto;
 
 @Data
 @Builder
@@ -19,12 +20,13 @@ public class UpdateCompetitionDto implements HasId {
     private String place;
     private List<CategorieDto> categories;
 
-    @Data
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class CategorieDto implements HasId {
-        private Long id;
-        private String name;
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
     }
 } 

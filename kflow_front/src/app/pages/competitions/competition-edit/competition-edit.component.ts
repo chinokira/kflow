@@ -11,7 +11,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { CompetitionService } from '../../../services/competition.service';
+import { CompetitionService, UpdateCompetitionDto } from '../../../services/competition.service';
 import { Competition } from '../../../models/competition-detail.model';
 
 @Component({
@@ -100,7 +100,7 @@ export class CompetitionEditComponent implements OnInit {
         formValue.endDate.toISOString().split('T')[0] : 
         formValue.endDate;
 
-      const updatedCompetition: Partial<Competition> = {
+      const updateDto: UpdateCompetitionDto = {
         id: this.competition.id,
         place: formValue.place,
         level: formValue.level,
@@ -109,9 +109,9 @@ export class CompetitionEditComponent implements OnInit {
         categories: this.competition.categories || []
       };
 
-      console.log('Sending competition update:', updatedCompetition);
+      console.log('Sending competition update:', updateDto);
 
-      this.competitionService.update(updatedCompetition).subscribe({
+      this.competitionService.update(updateDto).subscribe({
         next: () => {
           this.snackBar.open('Compétition mise à jour avec succès', 'Fermer', {
             duration: 3000

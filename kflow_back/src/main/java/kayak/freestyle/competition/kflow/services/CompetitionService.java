@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kayak.freestyle.competition.kflow.dto.CompetitionDto;
 import kayak.freestyle.competition.kflow.dto.UpdateCompetitionDto;
+import kayak.freestyle.competition.kflow.dto.CategorieDto;
 import kayak.freestyle.competition.kflow.mappers.CompetitionMapper;
 import kayak.freestyle.competition.kflow.models.Categorie;
 import kayak.freestyle.competition.kflow.models.Competition;
@@ -61,7 +62,7 @@ public class CompetitionService extends GenericService<Competition, CompetitionD
 
             List<Categorie> updatedCategories = new ArrayList<>();
 
-            for (UpdateCompetitionDto.CategorieDto catDto : updateDto.getCategories()) {
+            for (CategorieDto catDto : updateDto.getCategories()) {
                 Categorie categorie;
                 if (catDto.getId() != null && existingCategories.containsKey(catDto.getId())) {
                     categorie = existingCategories.get(catDto.getId());

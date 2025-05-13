@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
-import { Competition } from '../models/competition-detail.model';
+import { Competition, Categorie } from '../models/competition-detail.model';
 import { GenericService } from './generic.service';
 
 export interface UpdateCompetitionDto {
@@ -11,10 +11,7 @@ export interface UpdateCompetitionDto {
   endDate: string;
   level: string;
   place: string;
-  categories: {
-    id: number;
-    name: string;
-  }[];
+  categories: Categorie[];
 }
 
 @Injectable({
@@ -45,24 +42,12 @@ export class CompetitionService extends GenericService<Competition> {
     return this.httpClient.post<Competition>(this.apiUrl, competition, { headers: this.getHeaders() });
   }
 
-  override update(t: Partial<Competition>): Observable<Competition> {
-    if (!t.id) {
+  override update(updateDto: UpdateCompetitionDto): Observable<Competition> {
+    if (!updateDto.id) {
       throw new Error('Competition ID is required for update');
     }
 
-    const updateDto: UpdateCompetitionDto = {
-      id: t.id,
-      startDate: t.startDate || '',
-      endDate: t.endDate || '',
-      level: t.level || '',
-      place: t.place || '',
-      categories: (t.categories || []).map(cat => ({
-        id: cat.id,
-        name: cat.name
-      }))
-    };
-
-    return this.httpClient.put<Competition>(`${this.apiUrl}/${t.id}`, updateDto, { headers: this.getHeaders() });
+    return this.httpClient.put<Competition>(`${this.apiUrl}/${updateDto.id}`, updateDto, { headers: this.getHeaders() });
   }
 
   delete(id: number): Observable<void> {
