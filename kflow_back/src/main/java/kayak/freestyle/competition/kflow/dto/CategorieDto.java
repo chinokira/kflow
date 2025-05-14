@@ -1,25 +1,37 @@
 package kayak.freestyle.competition.kflow.dto;
 
 import java.util.List;
-import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString
 public class CategorieDto implements HasId {
+    @EqualsAndHashCode.Include
     private Long id;
 
     @NotBlank
     private String name;
 
-    private Set<ParticipantDto> participants;
+    @JsonIgnore
+    private List<ParticipantDto> participants;
+
+    @JsonIgnore
     private List<StageDto> stages;
 
     @Override

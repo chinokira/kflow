@@ -28,30 +28,38 @@
             <mat-card class="category-card">
               <mat-card-header>
                 <mat-card-title>{{ category.name }}</mat-card-title>
-                <mat-card-subtitle>participants: {{ (category.participants || []).length }}</mat-card-subtitle>
+                <!-- <mat-card-subtitle>participants: {{ (category.participants || []).length }}</mat-card-subtitle> -->
               </mat-card-header>
               <mat-card-content>
                 <mat-accordion>
-                  <mat-expansion-panel>
+                  <mat-expansion-panel (opened)="loadParticipantsForCategorie(category)">
                     <mat-expansion-panel-header>
                       <mat-panel-title>
                         Liste des participants
                       </mat-panel-title>
                     </mat-expansion-panel-header>
-                    @for (participant of category.participants || []; track participant.id) {
-                      <div class="participant-item">
-                        <strong>{{ participant.name }}</strong>
-                        <span class="bib-number">Dossard #{{ participant.bibNb }}</span>
-                        <div class="runs-list">
-                          @for (run of participant.runs || []; track run.id) {
-                            <div class="run-item">
-                              <span class="stage-name">{{ run.stage?.name }}</span>
-                              <span class="run-details">Durée: {{ run.duration }}s - Score: {{ run.score }}</span>
-                            </div>
-                          }
+                    <ng-container *ngIf="!loadingParticipants[category.id]; else loadingPart">
+                      @for (participant of category.participants || []; track participant.id) {
+                        <div class="participant-item">
+                          <strong>{{ participant.name }}</strong>
+                          <span class="bib-number">Dossard #{{ participant.bibNb }}</span>
+                          <div class="runs-list">
+                            @for (run of participant.runs || []; track run.id) {
+                              <div class="run-item">
+                                <span class="stage-name">{{ run.stage?.name }}</span>
+                                <span class="run-details">Durée: {{ run.duration }}s - Score: {{ run.score }}</span>
+                              </div>
+                            }
+                          </div>
                         </div>
+                      }
+                      <div *ngIf="(category.participants || []).length === 0">
+                        Aucun participant.
                       </div>
-                    }
+                    </ng-container>
+                    <ng-template #loadingPart>
+                      <div class="loading"><mat-spinner diameter="24"></mat-spinner></div>
+                    </ng-template>
                   </mat-expansion-panel>
                 </mat-accordion>
               </mat-card-content>

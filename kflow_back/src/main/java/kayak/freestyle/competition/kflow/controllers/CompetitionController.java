@@ -35,17 +35,7 @@ public class CompetitionController extends GenericController<CompetitionDto, Com
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CompetitionDto> updateCompetition(@PathVariable Long id, @RequestBody UpdateCompetitionDto updateDto) {
-        logger.info("Received PUT request for competition with id: {}", id);
-        logger.info("Request content type: {}", MediaType.APPLICATION_JSON_VALUE);
-        logger.info("Request body: {}", updateDto);
-        
-        try {
-            CompetitionDto updatedCompetition = service.updateCompetition(id, updateDto);
-            logger.info("Updated competition: {}", updatedCompetition);
-            return ResponseEntity.ok(updatedCompetition);
-        } catch (Exception e) {
-            logger.error("Error updating competition: {}", e.getMessage(), e);
-            throw e;
-        }
+        CompetitionDto updatedCompetition = service.updateCompetition(id, updateDto);
+        return ResponseEntity.ok(updatedCompetition);
     }
 }

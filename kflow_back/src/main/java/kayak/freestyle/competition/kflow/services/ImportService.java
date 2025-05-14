@@ -1,23 +1,32 @@
 package kayak.freestyle.competition.kflow.services;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import kayak.freestyle.competition.kflow.dto.ImportCompetitionDto;
+import kayak.freestyle.competition.kflow.dto.CategorieDto;
+import kayak.freestyle.competition.kflow.dto.ParticipantDto;
+import kayak.freestyle.competition.kflow.dto.RunDto;
+import kayak.freestyle.competition.kflow.dto.StageDto;
+import kayak.freestyle.competition.kflow.dto.importDto.ImportCompetitionDto;
+import kayak.freestyle.competition.kflow.mappers.CategorieMapper;
+import kayak.freestyle.competition.kflow.mappers.ParticipantMapper;
+import kayak.freestyle.competition.kflow.mappers.RunMapper;
+import kayak.freestyle.competition.kflow.mappers.StageMapper;
 import kayak.freestyle.competition.kflow.models.Categorie;
 import kayak.freestyle.competition.kflow.models.Competition;
 import kayak.freestyle.competition.kflow.models.Participant;
 import kayak.freestyle.competition.kflow.models.Run;
 import kayak.freestyle.competition.kflow.models.Stage;
 import lombok.RequiredArgsConstructor;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 @Service
 @RequiredArgsConstructor
@@ -28,10 +37,13 @@ public class ImportService {
     private final ParticipantService participantService;
     private final StageService stageService;
     private final RunService runService;
+    private final CategorieMapper categorieMapper;
+    private final ParticipantMapper participantMapper;
+    private final StageMapper stageMapper;
+    private final RunMapper runMapper;
 
     @Transactional
     public Competition importCompetition(ImportCompetitionDto importDto) {
-        // Valider l'import avant de commencer
         List<String> errors = validateImport(importDto);
         if (!errors.isEmpty()) {
             throw new IllegalArgumentException("Erreurs de validation : " + String.join(", ", errors));
@@ -46,25 +58,27 @@ public class ImportService {
                 .build();
         competition = competitionService.saveModel(competition);
 
-        // Importer les catégories
-        for (ImportCompetitionDto.ImportCategoryDto categoryDto : importDto.getCategories()) {
-            Categorie category = importCategory(categoryDto, competition);
-            competition.addCategorie(category);
+        if (importDto.getCategories() != null) {
+            for (CategorieDto CategoryDto : importDto.getCategories()) {
+                Categorie category = importCategory(CategoryDto, competition);
+                competition.addCategorie(category);
+            }
         }
-
         return competition;
     }
 
-    private Categorie importCategory(ImportCompetitionDto.ImportCategoryDto categoryDto, Competition competition) {
-        Categorie category = createAndSaveCategory(categoryDto, competition);
-        Map<String, Stage> stageMap = createAndSaveStages(categoryDto, category);
-        createAndSaveParticipantsWithRuns(categoryDto, category, stageMap);
+    private Categorie importCategory(CategorieDto CategoryDto, Competition competition) {
+        Categorie category = createAndSaveCategory(CategoryDto, competition);
+        Map<String, Stage> stageMap = createAndSaveStages(CategoryDto, category);
+        if (CategoryDto.getParticipants() != null) {
+            createAndSaveParticipantsWithRuns(CategoryDto, category, stageMap);
+        }
         return categorieService.saveModel(category);
     }
 
-    private Categorie createAndSaveCategory(ImportCompetitionDto.ImportCategoryDto categoryDto, Competition competition) {
+    private Categorie createAndSaveCategory(CategorieDto CategoryDto, Competition competition) {
         Categorie category = Categorie.builder()
-                .name(categoryDto.getName())
+                .name(CategoryDto.getName())
                 .competition(competition)
                 .stages(new ArrayList<>())
                 .participants(new HashSet<>())
@@ -72,32 +86,38 @@ public class ImportService {
         return categorieService.saveModel(category);
     }
 
-    private Map<String, Stage> createAndSaveStages(ImportCompetitionDto.ImportCategoryDto categoryDto, Categorie category) {
-        Set<String> stageNames = collectStageNames(categoryDto);
+    private Map<String, Stage> createAndSaveStages(CategorieDto CategoryDto, Categorie categoryEntity) {
+        Set<String> stageNames = collectStageNames(CategoryDto);
         Map<String, Stage> stageMap = new HashMap<>();
 
+        CategorieDto tempCategorieDtoForStageMapping = CategorieDto.builder().id(categoryEntity.getId()).name(categoryEntity.getName()).build();
+
         for (String stageName : stageNames) {
-            Stage stage = Stage.builder()
+            if (stageName == null || stageName.trim().isEmpty()) continue;
+
+            StageDto stageDto = StageDto.builder()
                     .name(stageName)
                     .nbRun(2)
                     .rules("Standard")
-                    .categorie(category)
-                    .runs(new ArrayList<>())
+                    .categorie(tempCategorieDtoForStageMapping)
                     .build();
+            Stage stage = stageMapper.dtoToModel(stageDto);
             stage = stageService.saveModel(stage);
             stageMap.put(stageName, stage);
-            category.getStages().add(stage);
+            categoryEntity.getStages().add(stage);
         }
         return stageMap;
     }
 
-    private Set<String> collectStageNames(ImportCompetitionDto.ImportCategoryDto categoryDto) {
+    private Set<String> collectStageNames(CategorieDto CategoryDto) {
         Set<String> stageNames = new HashSet<>();
-        for (ImportCompetitionDto.ImportParticipantDto participant : categoryDto.getParticipants()) {
-            if (participant.getRuns() != null) {
-                for (ImportCompetitionDto.ImportRunDto run : participant.getRuns()) {
-                    if (run.getStageName() != null && !run.getStageName().isEmpty()) {
-                        stageNames.add(run.getStageName());
+        if (CategoryDto.getParticipants() != null) {
+            for (ParticipantDto participant : CategoryDto.getParticipants()) {
+                if (participant.getRuns() != null) {
+                    for (RunDto run : participant.getRuns()) {
+                        if (run.getStageName() != null && !run.getStageName().trim().isEmpty()) {
+                            stageNames.add(run.getStageName());
+                        }
                     }
                 }
             }
@@ -105,49 +125,53 @@ public class ImportService {
         return stageNames;
     }
 
-    private void createAndSaveParticipantsWithRuns(ImportCompetitionDto.ImportCategoryDto categoryDto, Categorie category, Map<String, Stage> stageMap) {
-        for (ImportCompetitionDto.ImportParticipantDto participantDto : categoryDto.getParticipants()) {
-            Participant participant = createAndSaveParticipant(participantDto, category);
-            createAndSaveRuns(participantDto, participant, stageMap);
+    private void createAndSaveParticipantsWithRuns(CategorieDto CategoryDto, Categorie categoryEntity, Map<String, Stage> stageMap) {
+        for (ParticipantDto ParticipantDto : CategoryDto.getParticipants()) {
+            Participant participant = createAndSaveParticipant(ParticipantDto, categoryEntity);
+            if (ParticipantDto.getRuns() != null) {
+                createAndSaveRuns(ParticipantDto, participant, stageMap);
+            }
             participantService.saveModel(participant);
         }
     }
 
-    private Participant createAndSaveParticipant(ImportCompetitionDto.ImportParticipantDto participantDto, Categorie category) {
-        Participant participant = Participant.builder()
-                .bibNb(participantDto.getBibNb())
-                .name(participantDto.getName())
-                .club(participantDto.getClub())
-                .categories(new ArrayList<>())
-                .runs(new ArrayList<>())
-                .build();
+    private Participant createAndSaveParticipant(ParticipantDto participantDtoIncoming, Categorie categoryEntity) {
+        ParticipantDto participantDtoForSave = ParticipantDto.builder()
+            .name(participantDtoIncoming.getName())
+            .bibNb(participantDtoIncoming.getBibNb())
+            .club(participantDtoIncoming.getClub())
+            .build();
 
-        participant.getCategories().add(category);
-        category.getParticipants().add(participant);
-        return participantService.saveModel(participant);
+        Participant participant = participantMapper.dtoToModel(participantDtoForSave);
+
+        categoryEntity.addParticipant(participant);
+
+        participant = participantService.saveModel(participant);
+
+        return participant;
     }
 
-    private void createAndSaveRuns(ImportCompetitionDto.ImportParticipantDto participantDto, Participant participant, Map<String, Stage> stageMap) {
-        if (participantDto.getRuns() != null) {
-            for (ImportCompetitionDto.ImportRunDto runDto : participantDto.getRuns()) {
-                if (runDto.getStageName() != null && stageMap.containsKey(runDto.getStageName())) {
-                    Stage stage = stageMap.get(runDto.getStageName());
-                    Run run = Run.builder()
-                            .duration(runDto.getDuration())
-                            .score((float) runDto.getScore())
-                            .stage(stage)
-                            .participant(participant)
-                            .build();
+    private void createAndSaveRuns(ParticipantDto ParticipantDto, Participant participantEntity, Map<String, Stage> stageMap) {
+        for (RunDto RunDto : ParticipantDto.getRuns()) {
+            String stageName = RunDto.getStageName();
+            if (stageName != null && !stageName.trim().isEmpty() && stageMap.containsKey(stageName)) {
+                Stage stageEntity = stageMap.get(stageName);
+                
+                StageDto tempStageDto = StageDto.builder().name(stageEntity.getName()).id(stageEntity.getId()).build();
+                RunDto runDto = RunDto.builder()
+                    .duration(RunDto.getDuration())
+                    .score(RunDto.getScore())
+                    .stage(tempStageDto)
+                    .build(); 
 
-                    run = runService.saveModel(run);
-                    participant.getRuns().add(run);
-                    stage.getRuns().add(run);
-                }
+                Run run = runMapper.dtoToModel(runDto);
+                run.setParticipant(participantEntity);
+                run = runService.saveModel(run);
+                participantEntity.addRun(run);
             }
         }
     }
 
-    // Méthode de validation
     public List<String> validateImport(ImportCompetitionDto importDto) {
         List<String> errors = new ArrayList<>();
         validateDates(importDto, errors);
@@ -166,11 +190,11 @@ public class ImportService {
         if (importDto.getStartDate() != null && importDto.getEndDate() != null
                 && !importDto.getStartDate().isEmpty() && !importDto.getEndDate().isEmpty()) {
             try {
-                if (importDto.getStartDate().compareTo(importDto.getEndDate()) > 0) {
+                if (LocalDate.parse(importDto.getStartDate()).isAfter(LocalDate.parse(importDto.getEndDate()))) {
                     errors.add("La date de début ne peut pas être postérieure à la date de fin");
                 }
             } catch (Exception e) {
-                errors.add("Format de date invalide");
+                errors.add("Format de date invalide pour startDate ou endDate (attendu YYYY-MM-DD)");
             }
         }
     }
@@ -190,7 +214,7 @@ public class ImportService {
     private void validateCategories(ImportCompetitionDto importDto, List<String> errors) {
         if (importDto.getCategories() != null) {
             Set<String> categoryNames = new HashSet<>();
-            for (ImportCompetitionDto.ImportCategoryDto category : importDto.getCategories()) {
+            for (CategorieDto category : importDto.getCategories()) {
                 if (category.getName() != null && !categoryNames.add(category.getName())) {
                     errors.add("Le nom de catégorie '" + category.getName() + "' est en double");
                 }
@@ -199,65 +223,54 @@ public class ImportService {
         }
     }
 
-    private void validateCategory(ImportCompetitionDto.ImportCategoryDto category, List<String> errors) {
+    private void validateCategory(CategorieDto category, List<String> errors) {
         validateCategoryBasics(category, errors);
-        if (category.getParticipants() != null) {
-            validateParticipants(category, errors);
-        }
+        validateParticipants(category, errors);
     }
 
-    private void validateCategoryBasics(ImportCompetitionDto.ImportCategoryDto category, List<String> errors) {
+    private void validateCategoryBasics(CategorieDto category, List<String> errors) {
         if (category.getName() == null || category.getName().isEmpty()) {
             errors.add("Le nom de la catégorie est requis");
         }
-        if (category.getParticipants() == null || category.getParticipants().isEmpty()) {
-            errors.add("Au moins un participant est requis par catégorie");
+    }
+
+    private void validateParticipants(CategorieDto category, List<String> errors) {
+        if (category.getParticipants() != null) {
+            Set<Integer> bibNumbers = new HashSet<>();
+            for (ParticipantDto participant : category.getParticipants()) {
+                validateParticipant(participant, category.getName(), bibNumbers, errors);
+            }
         }
     }
 
-    private void validateParticipants(ImportCompetitionDto.ImportCategoryDto category, List<String> errors) {
-        Set<Integer> bibNumbers = new HashSet<>();
-        for (ImportCompetitionDto.ImportParticipantDto participant : category.getParticipants()) {
-            validateParticipant(participant, category.getName(), bibNumbers, errors);
-        }
-    }
-
-    private void validateParticipant(ImportCompetitionDto.ImportParticipantDto participant, String categoryName, Set<Integer> bibNumbers, List<String> errors) {
+    private void validateParticipant(ParticipantDto participant, String categoryName, Set<Integer> bibNumbers, List<String> errors) {
         validateParticipantBasics(participant, categoryName, bibNumbers, errors);
         validateParticipantRuns(participant, errors);
     }
 
-    private void validateParticipantBasics(ImportCompetitionDto.ImportParticipantDto participant, String categoryName, Set<Integer> bibNumbers, List<String> errors) {
+    private void validateParticipantBasics(ParticipantDto participant, String categoryName, Set<Integer> bibNumbers, List<String> errors) {
         if (participant.getName() == null || participant.getName().isEmpty()) {
-            errors.add("Le nom du participant est requis");
+            errors.add("Le nom du participant est requis dans la catégorie " + categoryName);
         }
         if (participant.getBibNb() <= 0) {
-            errors.add("Le numéro de dossard doit être positif");
+            errors.add("Le numéro de dossard doit être positif pour le participant '" + participant.getName() + "' dans la catégorie " + categoryName);
         }
-        if (participant.getBibNb() > 0 && !bibNumbers.add(participant.getBibNb())) {
+        if (!bibNumbers.add(participant.getBibNb())) {
             errors.add("Le numéro de dossard " + participant.getBibNb() + " est en double dans la catégorie " + categoryName);
         }
     }
 
-    private void validateParticipantRuns(ImportCompetitionDto.ImportParticipantDto participant, List<String> errors) {
-        if (participant.getRuns() == null || participant.getRuns().isEmpty()) {
-            errors.add("Le participant " + participant.getName() + " doit avoir au moins un run");
-        } else {
-            for (ImportCompetitionDto.ImportRunDto run : participant.getRuns()) {
+    private void validateParticipantRuns(ParticipantDto participant, List<String> errors) {
+        if (participant.getRuns() != null) {
+            for (RunDto run : participant.getRuns()) {
                 validateRun(run, errors);
             }
         }
     }
 
-    private void validateRun(ImportCompetitionDto.ImportRunDto run, List<String> errors) {
-        if (run.getStageName() == null || run.getStageName().isEmpty()) {
-            errors.add("Le nom du stage est requis pour chaque run");
-        }
-        if (run.getDuration() <= 0) {
-            errors.add("La durée du run doit être positive");
-        }
-        if (run.getScore() < 0) {
-            errors.add("Le score du run ne peut pas être négatif");
+    private void validateRun(RunDto run, List<String> errors) {
+        if (run.getStageName() == null || run.getStageName().trim().isEmpty()) {
+            errors.add("Le nom de l'étape (stageName) est requis pour chaque run.");
         }
     }
 }

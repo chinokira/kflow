@@ -6,8 +6,11 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { CompetitionService } from '../../../services/competition.service';
-import { Competition } from '../../../models/competition-detail.model';
+import { CategorieService } from '../../../services/categorie.service';
+import { Competition, Categorie, Participant, Run } from '../../../models/competition-detail.model';
 import { Subscription } from 'rxjs';
+import { ParticipantService } from '../../../services/participant.service';
+
 
 @Component({
     selector: 'app-competition-detail',
@@ -19,7 +22,7 @@ import { Subscription } from 'rxjs';
         MatDividerModule,
         MatExpansionModule
     ],
-    providers: [CompetitionService],
+    providers: [CompetitionService, CategorieService, ParticipantService],
     templateUrl: './competition-detail.component.html',
     styleUrls: ['./competition-detail.component.scss']
 })
@@ -29,10 +32,14 @@ export class CompetitionDetailComponent implements OnInit, OnDestroy {
     error: string | null = null;
     private competitionId: string | null = null;
     private subscription: Subscription | null = null;
+    loadingParticipants: { [categorieId: number]: boolean } = {};
+    loadingRuns: { [participantId: number]: boolean } = {};
 
     constructor(
         private readonly route: ActivatedRoute,
-        private readonly competitionService: CompetitionService
+        private readonly competitionService: CompetitionService,
+        private readonly categorieService: CategorieService,
+        private readonly participantService: ParticipantService,
     ) { }
 
     ngOnInit() {
@@ -69,5 +76,43 @@ export class CompetitionDetailComponent implements OnInit, OnDestroy {
                     this.loading = false;
                 }
             });
+    }
+
+    loadParticipantsForCategorie(categorie: Categorie) {
+        if (!categorie || (categorie.participants && categorie.participants.length > 0)) {
+            return;
+        }
+        this.loadingParticipants[categorie.id] = true;
+        this.categorieService.getParticipants(categorie.id).subscribe({
+            next: (participants: Participant[]) => {
+                console.log('Participants reçus pour catégorie', categorie.name, ':', participants);
+                categorie.participants = participants;
+                if (participants) {
+                    participants.forEach(p => this.loadRunsForParticipant(p));
+                }
+                this.loadingParticipants[categorie.id] = false;
+            },
+            error: () => {
+                categorie.participants = [];
+                this.loadingParticipants[categorie.id] = false;
+            }
+        });
+    }
+
+    loadRunsForParticipant(participant: Participant) {
+        if (!participant || (participant.runs && participant.runs.length > 0)) {
+            return;
+        }
+        this.loadingRuns[participant.id] = true;
+        this.participantService.getRuns(participant.id).subscribe({
+            next: (runs: Run[]) => {
+                participant.runs = runs;
+                this.loadingRuns[participant.id] = false;
+            },
+            error: () => {
+                participant.runs = [];
+                this.loadingRuns[participant.id] = false;
+            }
+        });
     }
 } 

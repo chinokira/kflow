@@ -1,5 +1,6 @@
 package kayak.freestyle.competition.kflow.mappers;
 
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import kayak.freestyle.competition.kflow.dto.CompetitionDto;
@@ -10,7 +11,7 @@ public class CompetitionMapper implements GenericMapper<Competition, Competition
 
     private final CategorieMapper categorieMapper;
 
-    public CompetitionMapper(CategorieMapper categorieMapper) {
+    public CompetitionMapper(@Lazy CategorieMapper categorieMapper) {
         this.categorieMapper = categorieMapper;
     }
 
@@ -25,10 +26,14 @@ public class CompetitionMapper implements GenericMapper<Competition, Competition
                 .endDate(model.getEndDate())
                 .place(model.getPlace())
                 .level(model.getLevel())
-                .categories(model.getCategories().stream()
-                        .map(categorieMapper::modelToDto)
-                        .toList())
                 .build();
+
+        if (model.getCategories() != null) {
+            dto.setCategories(model.getCategories().stream()
+                    .map(categorieMapper::modelToDto)
+                    .toList());
+        }
+
         return dto;
     }
 
@@ -44,10 +49,14 @@ public class CompetitionMapper implements GenericMapper<Competition, Competition
                 .endDate(dto.getEndDate())
                 .place(dto.getPlace())
                 .level(dto.getLevel())
-                .categories(dto.getCategories().stream()
-                        .map(categorieMapper::dtoToModel)
-                        .toList())
                 .build();
+
+        if (dto.getCategories() != null) {
+            model.setCategories(dto.getCategories().stream()
+                    .map(categorieMapper::dtoToModel)
+                    .toList());
+        }
+
         return model;
     }
 }

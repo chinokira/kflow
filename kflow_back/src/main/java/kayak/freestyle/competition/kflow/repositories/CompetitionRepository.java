@@ -1,5 +1,6 @@
 package kayak.freestyle.competition.kflow.repositories;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;

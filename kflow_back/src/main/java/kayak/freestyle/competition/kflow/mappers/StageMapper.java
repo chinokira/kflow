@@ -1,87 +1,66 @@
 package kayak.freestyle.competition.kflow.mappers;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import kayak.freestyle.competition.kflow.dto.StageDto;
 import kayak.freestyle.competition.kflow.models.Categorie;
-import kayak.freestyle.competition.kflow.models.Run;
 import kayak.freestyle.competition.kflow.models.Stage;
 import kayak.freestyle.competition.kflow.services.CategorieService;
 import kayak.freestyle.competition.kflow.services.RunService;
-import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 @Component
 public class StageMapper implements GenericMapper<Stage, StageDto> {
 
     private final RunService runService;
     private final CategorieService categorieService;
+    private final RunMapper runMapper;
+    private final CategorieMapper categorieMapper;
 
-    @Override
-    public StageDto modelToDto(Stage m) {
-        if (m == null) {
-            return null;
-        }
-        return StageDto.builder()
-                .id(m.getId())
-                .name(m.getName())
-                .nbRun(m.getNbRun())
-                .rules(m.getRules())
-                .categorie(m.getCategorie())
-                .runs(m.getRuns())
-                .build();
+    public StageMapper(@Lazy RunService runService, @Lazy CategorieService categorieService, @Lazy RunMapper runMapper, @Lazy CategorieMapper categorieMapper) {
+        this.runService = runService;
+        this.categorieService = categorieService;
+        this.runMapper = runMapper;
+        this.categorieMapper = categorieMapper;
     }
 
     @Override
-    public Stage dtoToModel(StageDto d) {
-        if (d == null) {
+    public StageDto modelToDto(Stage model) {
+        if (model == null) {
             return null;
         }
-        Stage stage = Stage.builder()
-                .id(d.getId())
-                .name(d.getName())
-                .nbRun(d.getNbRun())
-                .rules(d.getRules())
+        StageDto dto = StageDto.builder()
+                .id(model.getId())
+                .name(model.getName())
+                .nbRun(model.getNbRun())
+                .rules(model.getRules())
                 .build();
 
-        setCategorie(stage, d.getCategorie());
-        setRuns(stage, d.getRuns());
-        return stage;
+        return dto;
     }
 
-    private void setCategorie(Stage stage, Categorie categorie) {
-        if (categorie != null && categorie.getId() > 0) {
-            Categorie existingCategorie = categorieService.findById(categorie.getId());
-            if (existingCategorie != null) {
-                stage.setCategorie(existingCategorie);
-                if (!existingCategorie.getStages().contains(stage)) {
-                    existingCategorie.getStages().add(stage);
-                }
-            }
+    @Override
+    public Stage dtoToModel(StageDto dto) {
+        if (dto == null) {
+            return null;
         }
-    }
 
-    private void setRuns(Stage stage, List<Run> runs) {
-        if (runs != null) {
-            List<Run> stageRuns = new ArrayList<>();
-            for (Run run : runs) {
-                if (run.getId() > 0) {
-                    addExistingRun(stage, stageRuns, run);
-                }
-            }
-            stage.setRuns(stageRuns);
+        Stage model = Stage.builder()
+                .id(dto.getId())
+                .name(dto.getName())
+                .nbRun(dto.getNbRun())
+                .rules(dto.getRules())
+                .build();
+
+        // Associer la catégorie si elle est fournie dans le DTO
+        if (dto.getCategorie() != null && dto.getCategorie().getId() != null) {
+            Categorie categorieRef = categorieMapper.dtoToModel(dto.getCategorie()); // Utiliser le CategorieMapper est plus propre
+            // Ou si CategorieMapper.dtoToModel ne gère pas bien les références partielles :
+            // Categorie categorieRef = new Categorie();
+            // categorieRef.setId(dto.getCategorie().getId());
+            model.setCategorie(categorieRef);
         }
-    }
 
-    private void addExistingRun(Stage stage, List<Run> stageRuns, Run run) {
-        Run existingRun = runService.findById(run.getId());
-        if (existingRun != null) {
-            stageRuns.add(existingRun);
-            existingRun.setStage(stage);
-        }
+        return model;
     }
-
 }

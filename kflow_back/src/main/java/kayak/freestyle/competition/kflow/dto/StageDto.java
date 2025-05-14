@@ -10,8 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
-import kayak.freestyle.competition.kflow.models.Categorie;
-import kayak.freestyle.competition.kflow.models.Run;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -34,10 +32,10 @@ public class StageDto implements HasId {
     private String name;
 
     @JsonIgnore
-    private Categorie categorie;
+    private CategorieDto categorie;
 
     @JsonIgnore
-    private List<Run> runs;
+    private List<RunDto> runs;
 
     @PostMapping
     public ResponseEntity<StageDto> save(@RequestBody StageDto stageDto) {

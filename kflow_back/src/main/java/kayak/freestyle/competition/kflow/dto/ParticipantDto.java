@@ -14,13 +14,21 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
-@Data
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
+@SuperBuilder
+@Setter
+@Getter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString
 public class ParticipantDto implements HasId {
 
+    @EqualsAndHashCode.Include
     private Long id;
 
     @NotBlank
@@ -31,10 +39,10 @@ public class ParticipantDto implements HasId {
     private String club;
 
     @JsonIgnore
-    private List<Categorie> categories;
+    private List<CategorieDto> categories;
 
     @JsonIgnore
-    private List<Run> runs;
+    private List<RunDto> runs;
 
     @PostMapping
     public ResponseEntity<ParticipantDto> save(@RequestBody ParticipantDto participantDto) {
