@@ -46,6 +46,11 @@
                             "duration": 45,
                             "score": 420.0,
                             "stage": { "name": "Finale" }
+                        },
+                        {
+                            "duration": 45,
+                            "score": 420.0,
+                            "stage": { "name": "Finale" }
                         }
                     ]
                 },

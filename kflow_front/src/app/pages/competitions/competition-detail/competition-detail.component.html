@@ -44,10 +44,19 @@
                           <strong>{{ participant.name }}</strong>
                           <span class="bib-number">Dossard #{{ participant.bibNb }}</span>
                           <div class="runs-list">
-                            @for (run of participant.runs || []; track run.id) {
+                            @for (stageGroup of groupRunsByStage(participant.runs || []); track stageGroup.stageName) {
                               <div class="run-item">
-                                <span class="stage-name">{{ run.stage?.name }}</span>
-                                <span class="run-details">Durée: {{ run.duration }}s - Score: {{ run.score }}</span>
+                                <span class="stage-name">
+                                  {{ stageGroup.stageName }}
+                                  @if (stageGroup.stageName === getUniqueStages(participant)[getUniqueStages(participant).length - 1]) {
+                                    <span class="classement-score">(Score classement : {{ getClassementScore(participant, getUniqueStages(participant)) }})</span>
+                                  }
+                                </span>
+                                <div class="runs-scores">
+                                  @for (run of stageGroup.runs; track run.id) {
+                                    <span class="run-score">Run {{ $index + 1 }}: {{ run.score }}</span>
+                                  }
+                                </div>
                               </div>
                             }
                           </div>
@@ -74,7 +83,7 @@
 <style>
     .competition-detail {
         padding: 20px;
-        max-width: 1400px;
+        width: 100%;
         margin: 0 auto;
     }
 
@@ -154,5 +163,35 @@
         display: flex;
         justify-content: center;
         margin-top: 20px;
+    }
+
+    .categories-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 20px;
+        width: 100%;
+    }
+
+    .category-card {
+        width: 100%;
+    }
+
+    .runs-scores {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        margin-top: 4px;
+    }
+
+    .run-score {
+        color: #4caf50;
+        font-size: 0.9em;
+    }
+
+    .classement-score {
+        color: #ff9800;
+        font-size: 0.95em;
+        margin-left: 8px;
+        font-style: italic;
     }
 </style>
