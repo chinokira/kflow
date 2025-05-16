@@ -17,22 +17,14 @@ public interface CompetitionRepository extends JpaRepository<Competition, Long> 
 
     Optional<Competition> findById(int id);
 
-    @Query("SELECT c FROM Competition c LEFT JOIN FETCH c.categories WHERE c.id = :id")
-    Optional<Competition> findCompetitionWithCategories(@Param("id") Long id);
+    @Query("SELECT DISTINCT c FROM Competition c " +
+           "LEFT JOIN FETCH c.categories cat " +
+           "LEFT JOIN FETCH cat.participants p " +
+           "LEFT JOIN FETCH p.runs " +
+           "WHERE c.id = :id")
+    Optional<Competition> findCompetitionWithDetails(@Param("id") Long id);
 
-    default Optional<Competition> findCompetitionWithDetails(Long id) {
-        Optional<Competition> competitionOpt = findCompetitionWithCategories(id);
-        if (competitionOpt.isPresent()) {
-            Competition competition = competitionOpt.get();
-            // Initialiser les stages pour chaque catégorie
-            competition.getCategories().forEach(categorie -> {
-                categorie.getStages().size(); // Force le chargement des stages
-                // Initialiser les runs pour chaque stage
-                categorie.getStages().forEach(stage -> {
-                    stage.getRuns().size(); // Force le chargement des runs
-                });
-            });
-        }
-        return competitionOpt;
-    }
+    @Query("SELECT DISTINCT c FROM Competition c " +
+           "LEFT JOIN FETCH c.categories")
+    List<Competition> findAll();
 }
