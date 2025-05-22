@@ -33,6 +33,14 @@ import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 
+/**
+ * Configuration class for Spring Security.
+ * This class configures authentication, authorization, CORS, and JWT handling
+ * for the K-FLOW application.
+ *
+ * @author K-FLOW Team
+ * @version 1.0
+ */
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(securedEnabled = true)
@@ -40,12 +48,28 @@ public class SecurityConfig {
 
     private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
 
+    /**
+     * RSA public key used for JWT verification.
+     * Injected from application properties.
+     */
     @Value("${rsa.public-key}")
     RSAPublicKey publicKey;
 
+    /**
+     * RSA private key used for JWT signing.
+     * Injected from application properties.
+     */
     @Value("${rsa.private-key}")
     RSAPrivateKey privateKey;
 
+    /**
+     * Configures the security filter chain for the application.
+     * Sets up authorization rules, CORS, CSRF, session management, and JWT handling.
+     *
+     * @param http The HttpSecurity object to configure
+     * @return The configured SecurityFilterChain
+     * @throws Exception if an error occurs during configuration
+     */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -66,6 +90,12 @@ public class SecurityConfig {
         return http.build();
     }
 
+    /**
+     * Configures CORS (Cross-Origin Resource Sharing) settings.
+     * Allows requests from the frontend application running on localhost:4200.
+     *
+     * @return The configured CorsConfigurationSource
+     */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
@@ -81,6 +111,12 @@ public class SecurityConfig {
         return source;
     }
 
+    /**
+     * Configures the JWT authentication converter.
+     * Sets up how JWT claims are converted to Spring Security authorities.
+     *
+     * @return The configured JwtAuthenticationConverter
+     */
     @Bean
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter grantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
@@ -93,16 +129,34 @@ public class SecurityConfig {
         return jwtAuthenticationConverter;
     }
 
+    /**
+     * Creates a password encoder bean.
+     * Uses Spring Security's delegating password encoder.
+     *
+     * @return The configured PasswordEncoder
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
+    /**
+     * Creates a JWT decoder bean.
+     * Uses the RSA public key for token verification.
+     *
+     * @return The configured JwtDecoder
+     */
     @Bean
     JwtDecoder jwtDecoder() {
         return NimbusJwtDecoder.withPublicKey(publicKey).build();
     }
 
+    /**
+     * Creates a JWT encoder bean.
+     * Uses the RSA key pair for token signing.
+     *
+     * @return The configured JwtEncoder
+     */
     @Bean
     JwtEncoder jwtEncoder() {
         JWK jwk = new RSAKey.Builder(publicKey).privateKey(privateKey).build();
