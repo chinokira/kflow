@@ -7,23 +7,18 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import kayak.freestyle.competition.kflow.models.Role;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.experimental.SuperBuilder;
 
+@Data
+@Builder
 @NoArgsConstructor
-@SuperBuilder
-@Setter
-@Getter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@ToString
+@AllArgsConstructor
 public class UserDto implements HasId {
 
-    @EqualsAndHashCode.Include
-    private long id;
+    private Long id;
 
     @NotBlank(message = "Le nom ne doit pas être vide")
     private String name;
@@ -38,4 +33,14 @@ public class UserDto implements HasId {
 
     @NotNull(message = "Le rôle ne doit pas être null")
     private Role role;
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

@@ -1,22 +1,32 @@
-package kayak.freestyle.competition.kflow.dto.importDto;
+package kayak.freestyle.competition.kflow.dto;
 
 import java.util.List;
 
-import kayak.freestyle.competition.kflow.dto.CategorieDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import kayak.freestyle.competition.kflow.dto.CategorieDto;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ImportCompetitionDto{
-
+public class UpdateCompetitionDto implements HasId {
+    private Long id;
     private String startDate;
     private String endDate;
     private String level;
     private String place;
     private List<CategorieDto> categories;
-}
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+    }
+} 

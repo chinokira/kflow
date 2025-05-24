@@ -135,9 +135,9 @@ export class CompetitionImportComponent {
   validateImport(): void {
     this.isValidating = true;
     this.importErrors = [];
-    
     try {
-      const importData: ImportCompetitionDto = JSON.parse(this.jsonContent);
+      let importData: ImportCompetitionDto = JSON.parse(this.jsonContent);
+      importData = this.completeImportDto(importData);
       this.importService.validateImport(importData).subscribe({
         next: (errors) => {
           this.importErrors = errors.map(error => ({
@@ -197,9 +197,9 @@ export class CompetitionImportComponent {
       this.snackBar.open('Veuillez corriger les erreurs avant d\'importer', 'Fermer', { duration: 3000 });
       return;
     }
-
     try {
-      const importData: ImportCompetitionDto = JSON.parse(this.jsonContent);
+      let importData: ImportCompetitionDto = JSON.parse(this.jsonContent);
+      importData = this.completeImportDto(importData);
       this.importService.importCompetition(importData).subscribe({
         next: (competition) => {
           this.snackBar.open('Compétition importée avec succès !', 'Fermer', { duration: 3000 });
@@ -213,6 +213,54 @@ export class CompetitionImportComponent {
     } catch (e) {
       this.handleJsonParseError(e as Error);
     }
+  }
+
+  private completeImportDto(obj: any): ImportCompetitionDto {
+    // Champs attendus pour ImportCompetitionDto
+    const base = {
+      startDate: null,
+      endDate: null,
+      level: null,
+      place: null,
+      categories: []
+    };
+    const result: any = { ...base, ...obj };
+    result.categories = (result.categories || []).map((cat: any) => {
+      const catBase = {
+        name: null,
+        participants: [],
+        stages: []
+      };
+      const catResult: any = { ...catBase, ...cat };
+      catResult.participants = (catResult.participants || []).map((p: any) => {
+        const pBase = {
+          bibNb: null,
+          name: null,
+          club: null,
+          runs: []
+        };
+        const pResult: any = { ...pBase, ...p };
+        pResult.runs = (pResult.runs || []).map((r: any) => {
+          const rBase = {
+            duration: null,
+            score: null,
+            stageName: null
+          };
+          return { ...rBase, ...r };
+        });
+        return pResult;
+      });
+      catResult.stages = (catResult.stages || []).map((s: any) => {
+        const sBase = {
+          nbRun: null,
+          rules: null,
+          name: null
+        };
+        return { ...sBase, ...s };
+      });
+      return catResult;
+    });
+    return result;
   }
 
   getLineNumbers(): string {

@@ -10,25 +10,18 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
-import kayak.freestyle.competition.kflow.models.Categorie;
-import kayak.freestyle.competition.kflow.models.Run;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.experimental.SuperBuilder;
 
+@Data
+@Builder
 @NoArgsConstructor
-@SuperBuilder
-@Setter
-@Getter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@ToString
+@AllArgsConstructor
 public class StageDto implements HasId {
 
-    @EqualsAndHashCode.Include
-    private long id;
+    private Long id;
 
     @Positive
     private int nbRun;
@@ -39,10 +32,10 @@ public class StageDto implements HasId {
     private String name;
 
     @JsonIgnore
-    private Categorie categorie;
+    private CategorieDto categorie;
 
     @JsonIgnore
-    private List<Run> runs;
+    private List<RunDto> runs;
 
     @PostMapping
     public ResponseEntity<StageDto> save(@RequestBody StageDto stageDto) {

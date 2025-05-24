@@ -2,9 +2,9 @@
   <div class="header">
     <h1>Compétitions</h1>
     @if (isAdmin) {
-      <button mat-raised-button color="primary" routerLink="/competitions/new">
-        <mat-icon>add</mat-icon>
-        Nouvelle compétition
+      <button mat-raised-button color="primary" routerLink="/competitions/import">
+        <mat-icon>upload_file</mat-icon>
+        Importer une compétition
       </button>
     }
   </div>
@@ -39,6 +39,9 @@
             <mat-icon>visibility</mat-icon> Voir
           </button>
           @if (isAdmin) {
+            <button mat-button color="primary" [routerLink]="['/competitions', competition.id, 'edit']">
+              <mat-icon>edit</mat-icon> Modifier
+            </button>
             <button mat-button color="warn" (click)="deleteCompetition(competition.id)">
               <mat-icon>delete</mat-icon> Supprimer
             </button>
@@ -52,8 +55,9 @@
     <div class="no-data">
       <p>Aucune compétition n'a été créée</p>
       @if (isAdmin) {
-        <button mat-raised-button color="primary" routerLink="/competitions/new">
-          Créer une compétition
+        <button mat-raised-button color="primary" routerLink="/competitions/import">
+          <mat-icon>upload_file</mat-icon>
+          Importer une compétition
         </button>
       }
     </div>

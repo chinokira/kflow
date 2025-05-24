@@ -28,30 +28,47 @@
             <mat-card class="category-card">
               <mat-card-header>
                 <mat-card-title>{{ category.name }}</mat-card-title>
-                <mat-card-subtitle>participants: {{ (category.participants || []).length }}</mat-card-subtitle>
+                <!-- <mat-card-subtitle>participants: {{ (category.participants || []).length }}</mat-card-subtitle> -->
               </mat-card-header>
               <mat-card-content>
                 <mat-accordion>
-                  <mat-expansion-panel>
+                  <mat-expansion-panel (opened)="loadParticipantsForCategorie(category)">
                     <mat-expansion-panel-header>
                       <mat-panel-title>
                         Liste des participants
                       </mat-panel-title>
                     </mat-expansion-panel-header>
-                    @for (participant of category.participants || []; track participant) {
-                      <div class="participant-item">
-                        <strong>{{ participant.name }}</strong>
-                        <span class="bib-number">Dossard #{{ participant.bibNb }}</span>
-                        <div class="runs-list">
-                          @for (run of participant.runs || []; track run) {
-                            <div class="run-item">
-                              <span class="stage-name">{{ run.stage.rules }}</span>
-                              <span class="run-details">Durée: {{ run.duration }}s - Score: {{ run.score }}</span>
-                            </div>
-                          }
+                    <ng-container *ngIf="!loadingParticipants[category.id]; else loadingPart">
+                      @for (participant of category.participants || []; track participant.id) {
+                        <div class="participant-item">
+                          <strong>{{ participant.name }}</strong>
+                          <span class="bib-number">Dossard #{{ participant.bibNb }}</span>
+                          <div class="runs-list">
+                            @for (stageGroup of groupRunsByStage(participant.runs || []); track stageGroup.stageName) {
+                              <div class="run-item">
+                                <span class="stage-name">
+                                  {{ stageGroup.stageName }}
+                                  @if (stageGroup.stageName === getUniqueStages(participant)[getUniqueStages(participant).length - 1]) {
+                                    <span class="classement-score">(Score classement : {{ getClassementScore(participant, getUniqueStages(participant)) }})</span>
+                                  }
+                                </span>
+                                <div class="runs-scores">
+                                  @for (run of stageGroup.runs; track run.id) {
+                                    <span class="run-score">Run {{ $index + 1 }}: {{ run.score }}</span>
+                                  }
+                                </div>
+                              </div>
+                            }
+                          </div>
                         </div>
+                      }
+                      <div *ngIf="(category.participants || []).length === 0">
+                        Aucun participant.
                       </div>
-                    }
+                    </ng-container>
+                    <ng-template #loadingPart>
+                      <div class="loading"><mat-spinner diameter="24"></mat-spinner></div>
+                    </ng-template>
                   </mat-expansion-panel>
                 </mat-accordion>
               </mat-card-content>
@@ -66,7 +83,7 @@
 <style>
     .competition-detail {
         padding: 20px;
-        max-width: 1400px;
+        width: 100%;
         margin: 0 auto;
     }
 
@@ -146,5 +163,35 @@
         display: flex;
         justify-content: center;
         margin-top: 20px;
+    }
+
+    .categories-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 20px;
+        width: 100%;
+    }
+
+    .category-card {
+        width: 100%;
+    }
+
+    .runs-scores {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        margin-top: 4px;
+    }
+
+    .run-score {
+        color: #4caf50;
+        font-size: 0.9em;
+    }
+
+    .classement-score {
+        color: #ff9800;
+        font-size: 0.95em;
+        margin-left: 8px;
+        font-style: italic;
     }
 </style>

@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
-import { Categorie } from '../models/competition-detail.model';
+import { Participant } from '../models/competition-detail.model';
 
 @Injectable({
     providedIn: 'root'
@@ -12,7 +12,7 @@ export class CategorieService {
 
     constructor(private readonly httpClient: HttpClient) {}
 
-    getParticipants(id: number): Observable<Categorie> {
-        return this.httpClient.get<Categorie>(`${this.apiUrl}/${id}/participants`);
+    getParticipants(id: number): Observable<Participant[]> {
+        return this.httpClient.get<Participant[]>(`${this.apiUrl}/${id}/participants`);
     }
 }

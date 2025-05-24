@@ -21,6 +21,14 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
+/**
+ * Represents a kayak freestyle competition in the system.
+ * This entity stores information about competition dates, location, level,
+ * and associated categories.
+ *
+ * @author K-FLOW Team
+ * @version 1.0
+ */
 @Entity
 @Getter
 @Setter
@@ -30,27 +38,56 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode
 public class Competition {
 
+    /**
+     * Unique identifier for the competition.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /**
+     * The start date of the competition.
+     * Cannot be null.
+     */
     @Column(nullable = false)
     private LocalDate startDate;
 
+    /**
+     * The end date of the competition.
+     * Cannot be null.
+     */
     @Column(nullable = false)
     private LocalDate endDate;
 
+    /**
+     * The location where the competition takes place.
+     * Cannot be null.
+     */
     @Column(nullable = false)
     private String place;
 
+    /**
+     * The level of the competition (e.g., national, international).
+     * Cannot be null.
+     */
     @Column(nullable = false)
     private String level;
 
+    /**
+     * List of categories associated with this competition.
+     * Each category represents a different division or class of competition.
+     */
     @OneToMany(mappedBy = "competition", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("competition-categories")
     @Builder.Default
+    @Column(nullable = true)
     private List<Categorie> categories = new ArrayList<>();
 
+    /**
+     * Adds a category to this competition and establishes the bidirectional relationship.
+     *
+     * @param categorie The category to be added to the competition
+     */
     public void addCategorie(Categorie categorie) {
         if (categories == null) {
             categories = new ArrayList<>();
@@ -59,6 +96,11 @@ public class Competition {
         categorie.setCompetition(this);
     }
 
+    /**
+     * Removes a category from this competition and breaks the bidirectional relationship.
+     *
+     * @param categorie The category to be removed from the competition
+     */
     public void removeCategorie(Categorie categorie) {
         if (categories != null) {
             categories.remove(categorie);

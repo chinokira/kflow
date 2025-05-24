@@ -15,37 +15,42 @@
                         {
                             "duration": 45,
                             "score": 600.0,
-                            "stageName": "Qualification"
+                            "stage": { "name": "Qualification" }
                         },
                         {
                             "duration": 45,
                             "score": 260.0,
-                            "stageName": "Qualification"
+                            "stage": { "name": "Qualification" }
                         },
                         {
                             "duration": 45,
                             "score": 675.0,
-                            "stageName": "Quart"
+                            "stage": { "name": "Quart" }
                         },
                         {
                             "duration": 45,
                             "score": 645.0,
-                            "stageName": "Quart"
+                            "stage": { "name": "Quart" }
                         },
                         {
                             "duration": 45,
                             "score": 580.0,
-                            "stageName": "Demi"
+                            "stage": { "name": "Demi" }
                         },
                         {
                             "duration": 45,
                             "score": 385.0,
-                            "stageName": "Finale"
+                            "stage": { "name": "Finale" }
                         },
                         {
                             "duration": 45,
                             "score": 420.0,
-                            "stageName": "Finale"
+                            "stage": { "name": "Finale" }
+                        },
+                        {
+                            "duration": 45,
+                            "score": 420.0,
+                            "stage": { "name": "Finale" }
                         }
                     ]
                 },
@@ -57,37 +62,37 @@
                         {
                             "duration": 45,
                             "score": 540.0,
-                            "stageName": "Qualification"
+                            "stage": { "name": "Qualification" }
                         },
                         {
                             "duration": 45,
                             "score": 450.0,
-                            "stageName": "Qualification"
+                            "stage": { "name": "Qualification" }
                         },
                         {
                             "duration": 45,
                             "score": 535.0,
-                            "stageName": "Quart"
+                            "stage": { "name": "Quart" }
                         },
                         {
                             "duration": 45,
                             "score": 580.0,
-                            "stageName": "Quart"
+                            "stage": { "name": "Quart" }
                         },
                         {
                             "duration": 45,
                             "score": 380.0,
-                            "stageName": "Demi"
+                            "stage": { "name": "Demi" }
                         },
                         {
                             "duration": 45,
                             "score": 420.0,
-                            "stageName": "Finale"
+                            "stage": { "name": "Finale" }
                         },
                         {
                             "duration": 45,
                             "score": 495.0,
-                            "stageName": "Finale"
+                            "stage": { "name": "Finale" }
                         }
                     ]
                 },
@@ -99,37 +104,37 @@
                         {
                             "duration": 45,
                             "score": 135.0,
-                            "stageName": "Qualification"
+                            "stage": { "name": "Qualification" }
                         },
                         {
                             "duration": 45,
                             "score": 425.0,
-                            "stageName": "Qualification"
+                            "stage": { "name": "Qualification" }
                         },
                         {
                             "duration": 45,
                             "score": 535.0,
-                            "stageName": "Quart"
+                            "stage": { "name": "Quart" }
                         },
                         {
                             "duration": 45,
                             "score": 515.0,
-                            "stageName": "Quart"
+                            "stage": { "name": "Quart" }
                         },
                         {
                             "duration": 45,
                             "score": 515.0,
-                            "stageName": "Demi"
+                            "stage": { "name": "Demi" }
                         },
                         {
                             "duration": 45,
                             "score": 515.0,
-                            "stageName": "Finale"
+                            "stage": { "name": "Finale" }
                         },
                         {
                             "duration": 45,
                             "score": 515.0,
-                            "stageName": "Finale"
+                            "stage": { "name": "Finale" }
                         }
                     ]
                 },
@@ -141,37 +146,37 @@
                         {
                             "duration": 45,
                             "score": 255.0,
-                            "stageName": "Qualification"
+                            "stage": { "name": "Qualification" }
                         },
                         {
                             "duration": 45,
                             "score": 320.0,
-                            "stageName": "Qualification"
+                            "stage": { "name": "Qualification" }
                         },
                         {
                             "duration": 45,
                             "score": 290.0,
-                            "stageName": "Quart"
+                            "stage": { "name": "Quart" }
                         },
                         {
                             "duration": 45,
                             "score": 325.0,
-                            "stageName": "Quart"
+                            "stage": { "name": "Quart" }
                         },
                         {
                             "duration": 45,
                             "score": 290.0,
-                            "stageName": "Demi"
+                            "stage": { "name": "Demi" }
                         },
                         {
                             "duration": 45,
                             "score": 530.0,
-                            "stageName": "Finale"
+                            "stage": { "name": "Finale" }
                         },
                         {
                             "duration": 45,
                             "score": 0.0,
-                            "stageName": "Finale"
+                            "stage": { "name": "Finale" }
                         }
                     ]
                 },
@@ -183,22 +188,22 @@
                         {
                             "duration": 45,
                             "score": 270.0,
-                            "stageName": "Qualification"
+                            "stage": { "name": "Qualification" }
                         },
                         {
                             "duration": 45,
                             "score": 120.0,
-                            "stageName": "Qualification"
+                            "stage": { "name": "Qualification" }
                         },
                         {
                             "duration": 45,
                             "score": 325.0,
-                            "stageName": "Quart"
+                            "stage": { "name": "Quart" }
                         },
                         {
                             "duration": 45,
                             "score": 275.0,
-                            "stageName": "Quart"
+                            "stage": { "name": "Quart" }
                         }
                     ]
                 },
@@ -210,22 +215,22 @@
                         {
                             "duration": 45,
                             "score": 200.0,
-                            "stageName": "Qualification"
+                            "stage": { "name": "Qualification" }
                         },
                         {
                             "duration": 45,
                             "score": 90.0,
-                            "stageName": "Qualification"
+                            "stage": { "name": "Qualification" }
                         },
                         {
                             "duration": 45,
                             "score": 225.0,
-                            "stageName": "Quart"
+                            "stage": { "name": "Quart" }
                         },
                         {
                             "duration": 45,
                             "score": 180.0,
-                            "stageName": "Quart"
+                            "stage": { "name": "Quart" }
                         }
                     ]
                 },
@@ -237,22 +242,22 @@
                         {
                             "duration": 45,
                             "score": 100.0,
-                            "stageName": "Qualification"
+                            "stage": { "name": "Qualification" }
                         },
                         {
                             "duration": 45,
                             "score": 180.0,
-                            "stageName": "Qualification"
+                            "stage": { "name": "Qualification" }
                         },
                         {
                             "duration": 45,
                             "score": 160.0,
-                            "stageName": "Quart"
+                            "stage": { "name": "Quart" }
                         },
                         {
                             "duration": 45,
                             "score": 225.0,
-                            "stageName": "Quart"
+                            "stage": { "name": "Quart" }
                         }
                     ]
                 },
@@ -264,22 +269,22 @@
                         {
                             "duration": 45,
                             "score": 110.0,
-                            "stageName": "Qualification"
+                            "stage": { "name": "Qualification" }
                         },
                         {
                             "duration": 45,
                             "score": 60.0,
-                            "stageName": "Qualification"
+                            "stage": { "name": "Qualification" }
                         },
                         {
                             "duration": 45,
                             "score": 170.0,
-                            "stageName": "Quart"
+                            "stage": { "name": "Quart" }
                         },
                         {
                             "duration": 45,
                             "score": 180.0,
-                            "stageName": "Quart"
+                            "stage": { "name": "Quart" }
                         }
                     ]
                 },
@@ -291,22 +296,22 @@
                         {
                             "duration": 45,
                             "score": 95.0,
-                            "stageName": "Qualification"
+                            "stage": { "name": "Qualification" }
                         },
                         {
                             "duration": 45,
                             "score": 110.0,
-                            "stageName": "Qualification"
+                            "stage": { "name": "Qualification" }
                         },
                         {
                             "duration": 45,
                             "score": 135.0,
-                            "stageName": "Quart"
+                            "stage": { "name": "Quart" }
                         },
                         {
                             "duration": 45,
                             "score": 40.0,
-                            "stageName": "Quart"
+                            "stage": { "name": "Quart" }
                         }
                     ]
                 },
@@ -318,22 +323,22 @@
                         {
                             "duration": 45,
                             "score": 165.0,
-                            "stageName": "Qualification"
+                            "stage": { "name": "Qualification" }
                         },
                         {
                             "duration": 45,
                             "score": 60.0,
-                            "stageName": "Qualification"
+                            "stage": { "name": "Qualification" }
                         },
                         {
                             "duration": 45,
                             "score": 225.0,
-                            "stageName": "Quart"
+                            "stage": { "name": "Quart" }
                         },
                         {
                             "duration": 45,
                             "score": 50.0,
-                            "stageName": "Quart"
+                            "stage": { "name": "Quart" }
                         }
                     ]
                 },
@@ -345,12 +350,12 @@
                         {
                             "duration": 45,
                             "score": 50.0,
-                            "stageName": "Qualification"
+                            "stage": { "name": "Qualification" }
                         },
                         {
                             "duration": 45,
                             "score": 90.0,
-                            "stageName": "Qualification"
+                            "stage": { "name": "Qualification" }
                         }
                     ]
                 },
@@ -362,12 +367,12 @@
                         {
                             "duration": 45,
                             "score": 20.0,
-                            "stageName": "Qualification"
+                            "stage": { "name": "Qualification" }
                         },
                         {
                             "duration": 45,
                             "score": 20.0,
-                            "stageName": "Qualification"
+                            "stage": { "name": "Qualification" }
                         }
                     ]
                 },
@@ -379,12 +384,12 @@
                         {
                             "duration": 45,
                             "score": 20.0,
-                            "stageName": "Qualification"
+                            "stage": { "name": "Qualification" }
                         },
                         {
                             "duration": 45,
                             "score": 20.0,
-                            "stageName": "Qualification"
+                            "stage": { "name": "Qualification" }
                         }
                     ]
                 },
@@ -396,12 +401,12 @@
                         {
                             "duration": 45,
                             "score": 0.0,
-                            "stageName": "Qualification"
+                            "stage": { "name": "Qualification" }
                         },
                         {
                             "duration": 45,
                             "score": 30.0,
-                            "stageName": "Qualification"
+                            "stage": { "name": "Qualification" }
                         }
                     ]
                 },
@@ -413,12 +418,12 @@
                         {
                             "duration": 45,
                             "score": 20.0,
-                            "stageName": "Qualification"
+                            "stage": { "name": "Qualification" }
                         },
                         {
                             "duration": 45,
                             "score": 0.0,
-                            "stageName": "Qualification"
+                            "stage": { "name": "Qualification" }
                         }
                     ]
                 }

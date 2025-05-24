@@ -3,37 +3,17 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { Competition } from '../models/competition.model';
+import { Categorie } from '../models/categorie.model';
+import { Participant } from '../models/participant.model';
+import { Stage } from '../models/stage.model';
+import { Run } from '../models/run.model';
 
 export interface ImportCompetitionDto {
   startDate: string;
   endDate: string;
   level: string;
   place: string;
-  categories: ImportCategoryDto[];
-}
-
-export interface ImportCategoryDto {
-  name: string;
-  participants: ImportParticipantDto[];
-  stages: ImportStageDto[];
-}
-
-export interface ImportParticipantDto {
-  bibNb: number;
-  name: string;
-  club: string;
-  runs: ImportRunDto[];
-}
-
-export interface ImportStageDto {
-  nbRun: number;
-  rules: string;
-  nbCompetitor: number;
-}
-
-export interface ImportRunDto {
-  duration: number;
-  score: number;
+  categories: Categorie[];
 }
 
 @Injectable({

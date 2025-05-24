@@ -1,45 +1,46 @@
 package kayak.freestyle.competition.kflow.dto;
 
 import java.util.List;
-import java.util.Set;
 
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.validation.constraints.NotBlank;
-import kayak.freestyle.competition.kflow.models.Competition;
-import kayak.freestyle.competition.kflow.models.Stage;
-import kayak.freestyle.competition.kflow.models.Participant;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
+@Data
+@Builder
 @NoArgsConstructor
-@SuperBuilder
-@Setter
-@Getter
+@AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
 public class CategorieDto implements HasId {
-
     @EqualsAndHashCode.Include
-    private long id;
+    private Long id;
 
     @NotBlank
     private String name;
 
-    private Set<Participant> participants;
+    @JsonIgnore
+    private List<ParticipantDto> participants;
 
-    private Competition competition;
+    @JsonIgnore
+    private List<StageDto> stages;
 
-    private List<Stage> stages;
+    @Override
+    public Long getId() {
+        return id;
+    }
 
-    @PostMapping
-    public ResponseEntity<CategorieDto> save(@RequestBody CategorieDto categorieDto) {
-        return ResponseEntity.ok(categorieDto);
+    @Override
+    public void setId(Long id) {
+        this.id = id;
     }
 }
