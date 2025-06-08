@@ -104,7 +104,7 @@ public class AuthenticationController {
         JwtClaimsSet jwtClaimsSet = JwtClaimsSet.builder()
                 .issuedAt(Instant.now())
                 .issuer("annuaire-backend")
-                .expiresAt(Instant.now().plus(1, ChronoUnit.DAYS))
+                .expiresAt(Instant.now().plus(1, ChronoUnit.MINUTES))
                 .subject(String.valueOf(user.getId()))
                 .build();
         return jwtEncoder.encode(JwtEncoderParameters.from(jwtClaimsSet)).getTokenValue();
