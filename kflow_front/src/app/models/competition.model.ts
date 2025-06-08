@@ -1,5 +1,5 @@
 import { FormControl, FormGroup } from "@angular/forms";
-import { Categorie } from "./competition-detail.model";
+import { Categorie } from "./categorie.model";
 
 export interface Competition {
     id: number;

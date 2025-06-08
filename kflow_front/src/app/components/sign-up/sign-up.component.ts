@@ -45,4 +45,13 @@ export class SignUpComponent {
   onCancel() {
     this.router.navigateByUrl("");
   }
+
+  redirectToLogin() {
+    this.router.navigateByUrl("/login");
+  }
+
+  redirectToHome() {
+    this.router.navigateByUrl("/");
+  }
+  
 }

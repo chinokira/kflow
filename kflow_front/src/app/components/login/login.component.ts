@@ -22,8 +22,8 @@ export class LoginComponent {
   error = '';
 
   constructor(
-    private authenticationService: AuthenticationService,
-    private router: Router) {}
+    private readonly authenticationService: AuthenticationService,
+    private readonly router: Router) {}
 
   onSubmit() {
     this.authenticationService.login(
@@ -35,6 +35,10 @@ export class LoginComponent {
           console.log(err);
         }
       });
+  }
+
+  redirectToRegister() {
+    this.router.navigateByUrl("/register");
   }
 
 }

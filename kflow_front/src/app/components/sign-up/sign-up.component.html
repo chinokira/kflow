@@ -23,8 +23,12 @@
 
   </form>
   <div class="actions">
-    <button mat-button mat-raised-button mat-dialog-close routerLink="/login" type="button">Annuler</button>
+    <button mat-button mat-raised-button mat-dialog-close type="button" (click)="redirectToHome()">Annuler</button>
     <button mat-button mat-raised-button color="primary" (click)="onSubmit()">Valider</button>
+  </div>
+
+  <div class="actions" style="margin-top: 20px;">
+    <button mat-button mat-raised-button mat-dialog-close type="button" (click)="redirectToLogin()">Déjà un compte</button>
   </div>
 
 </div>
