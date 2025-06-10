@@ -13,7 +13,7 @@ import kayak.freestyle.competition.kflow.models.Competition;
 /**
  * Repository interface for managing Competition entities.
  * Provides methods for finding competitions by various criteria and
- * includes custom queries for fetching competitions with their related
+ * includes custom queries for fetching compet&itions with their related
  * entities.
  *
  * @author K-FLOW Team

@@ -1,4 +1,5 @@
-package kayak.freestyle.competition.kflow.controllers;
+package test.java.kayak.freestyle.competition.kflow.controllers;
+
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -18,6 +19,7 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.web.server.ResponseStatusException;
 
+import kayak.freestyle.competition.kflow.controllers.AuthenticationController;
 import kayak.freestyle.competition.kflow.models.Role;
 import kayak.freestyle.competition.kflow.models.User;
 import kayak.freestyle.competition.kflow.repositories.UserRepository;
