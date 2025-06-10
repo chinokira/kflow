@@ -1,4 +1,3 @@
-import { Categorie } from "./categorie.model";
 export interface Competition {
   id: number;
   place: string;

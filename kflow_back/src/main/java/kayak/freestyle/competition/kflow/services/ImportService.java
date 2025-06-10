@@ -9,14 +9,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kayak.freestyle.competition.kflow.dto.CategorieDto;
+import kayak.freestyle.competition.kflow.dto.ImportCompetitionDto;
 import kayak.freestyle.competition.kflow.dto.ParticipantDto;
 import kayak.freestyle.competition.kflow.dto.RunDto;
 import kayak.freestyle.competition.kflow.dto.StageDto;
-import kayak.freestyle.competition.kflow.dto.importDto.ImportCompetitionDto;
 import kayak.freestyle.competition.kflow.mappers.CategorieMapper;
 import kayak.freestyle.competition.kflow.mappers.ParticipantMapper;
 import kayak.freestyle.competition.kflow.mappers.RunMapper;
@@ -31,6 +33,8 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class ImportService {
+
+    private static final Logger logger = LoggerFactory.getLogger(ImportService.class);
 
     private final CompetitionService competitionService;
     private final CategorieService categorieService;
@@ -93,7 +97,9 @@ public class ImportService {
         CategorieDto tempCategorieDtoForStageMapping = CategorieDto.builder().id(categoryEntity.getId()).name(categoryEntity.getName()).build();
 
         for (String stageName : stageNames) {
-            if (stageName == null || stageName.trim().isEmpty()) continue;
+            if (stageName == null || stageName.trim().isEmpty()) {
+                continue;
+            }
 
             StageDto stageDto = StageDto.builder()
                     .name(stageName)
@@ -137,10 +143,10 @@ public class ImportService {
 
     private Participant createAndSaveParticipant(ParticipantDto participantDtoIncoming, Categorie categoryEntity) {
         ParticipantDto participantDtoForSave = ParticipantDto.builder()
-            .name(participantDtoIncoming.getName())
-            .bibNb(participantDtoIncoming.getBibNb())
-            .club(participantDtoIncoming.getClub())
-            .build();
+                .name(participantDtoIncoming.getName())
+                .bibNb(participantDtoIncoming.getBibNb())
+                .club(participantDtoIncoming.getClub())
+                .build();
 
         Participant participant = participantMapper.dtoToModel(participantDtoForSave);
 
@@ -152,24 +158,35 @@ public class ImportService {
     }
 
     private void createAndSaveRuns(ParticipantDto ParticipantDto, Participant participantEntity, Map<String, Stage> stageMap) {
-        for (RunDto RunDto : ParticipantDto.getRuns()) {
-            String stageName = RunDto.getStageName();
+        logger.info("Creating runs for participant: {}", participantEntity.getName());
+        logger.info("Number of runs in DTO: {}", ParticipantDto.getRuns().size());
+
+        for (RunDto runDtoIncoming : ParticipantDto.getRuns()) {
+            String stageName = runDtoIncoming.getStageName();
+            logger.info("Processing run for stage: {}", stageName);
+
             if (stageName != null && !stageName.trim().isEmpty() && stageMap.containsKey(stageName)) {
                 Stage stageEntity = stageMap.get(stageName);
-                
+                logger.info("Found stage entity: {}", stageEntity.getName());
+
                 StageDto tempStageDto = StageDto.builder().name(stageEntity.getName()).id(stageEntity.getId()).build();
                 RunDto runDto = RunDto.builder()
-                    .duration(RunDto.getDuration())
-                    .score(RunDto.getScore())
-                    .stage(tempStageDto)
-                    .build(); 
+                        .duration(runDtoIncoming.getDuration())
+                        .score(runDtoIncoming.getScore())
+                        .stage(tempStageDto)
+                        .build();
 
                 Run run = runMapper.dtoToModel(runDto);
                 run.setParticipant(participantEntity);
                 run = runService.saveModel(run);
                 participantEntity.addRun(run);
+                logger.info("Saved run with ID: {} for participant: {}", run.getId(), participantEntity.getName());
+            } else {
+                logger.warn("Stage not found or invalid for run: {}", stageName);
             }
         }
+
+        logger.info("Final number of runs for participant {}: {}", participantEntity.getName(), participantEntity.getRuns().size());
     }
 
     public List<String> validateImport(ImportCompetitionDto importDto) {

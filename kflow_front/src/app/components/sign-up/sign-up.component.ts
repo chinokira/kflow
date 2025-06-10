@@ -27,13 +27,7 @@ export class SignUpComponent {
 
   onSubmit() {
     if (this.userFormGroup.valid) {
-      const { name, email, password } = this.userFormGroup.value;
-      this.userService.save({ 
-        name, 
-        email, 
-        password,
-        role: Role.USER 
-      } as User).subscribe({
+      this.userService.save(this.userFormGroup.value as User).subscribe({
         next: () => this.router.navigateByUrl("/login"),
         error: (error) => console.error('Erreur lors de l\'inscription:', error)
       });

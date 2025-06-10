@@ -1,6 +1,5 @@
 package kayak.freestyle.competition.kflow.mappers;
 
-
 import org.springframework.stereotype.Component;
 
 import kayak.freestyle.competition.kflow.dto.UserDto;
@@ -11,24 +10,25 @@ public class UserMapper implements GenericMapper<User, UserDto> {
 
     @Override
     public UserDto modelToDto(User m) {
-        return UserDto.builder()
-                .id(m.getId())
-                .name(m.getName())
-                .email(m.getEmail())
-                .password(m.getPassword())
-                .role(m.getRole())
-                .build();
+        UserDto userDto = new UserDto();
+        userDto.setId(m.getId());
+        userDto.setName(m.getName());
+        userDto.setEmail(m.getEmail());
+        userDto.setPassword(m.getPassword());
+        userDto.setRole(m.getRole());
+        return userDto;
     }
 
     @Override
     public User dtoToModel(UserDto d) {
-        return User.builder()
-                .id(d.getId())
-                .name(d.getName())
-                .email(d.getEmail())
-                .password(d.getPassword())
-                .role(d.getRole())
-                .build();
+        User user = new User();
+        user.setId(d.getId());
+        user.setName(d.getName());
+        user.setEmail(d.getEmail());
+        user.setPassword(d.getPassword());
+        user.setRole(d.getRole());
+        return user;
+
     }
 
 }

@@ -1,7 +1,9 @@
 package kayak.freestyle.competition.kflow.controllers;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,9 +18,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import kayak.freestyle.competition.kflow.dto.CategorieDto;
+import kayak.freestyle.competition.kflow.dto.ImportCompetitionDto;
 import kayak.freestyle.competition.kflow.dto.ParticipantDto;
 import kayak.freestyle.competition.kflow.dto.RunDto;
-import kayak.freestyle.competition.kflow.dto.importDto.ImportCompetitionDto;
 import kayak.freestyle.competition.kflow.models.Competition;
 import kayak.freestyle.competition.kflow.services.ImportService;
 import lombok.RequiredArgsConstructor;
@@ -55,27 +57,28 @@ public class ImportController {
     }
 
     @PostMapping("/competition")
-    public ResponseEntity<?> importCompetition(@RequestBody String jsonBody) {
-        try {
-            ImportCompetitionDto importDto = objectMapper.readValue(jsonBody, ImportCompetitionDto.class);
-            JsonNode rootNode = objectMapper.readTree(jsonBody);
-            populateNestedLists(importDto, rootNode);
+    public ResponseEntity<Competition> importCompetition(@RequestBody ImportCompetitionDto importDto) {
+        logger.info("Received import request with {} categories", importDto.getCategories().size());
 
-            List<String> errors = importService.validateImport(importDto);
-            if (!errors.isEmpty()) {
-                logger.warn("Erreurs de validation métier détectées (importCompetition - pré-validation): {}", errors);
-                return ResponseEntity.badRequest().body(errors);
+        for (CategorieDto category : importDto.getCategories()) {
+            int nbParticipants = (category.getParticipants() != null) ? category.getParticipants().size() : 0;
+            logger.info("Category: {} has {} participants", category.getName(), nbParticipants);
+            if (category.getParticipants() != null) {
+                for (ParticipantDto participant : category.getParticipants()) {
+                    logger.info("Participant: {} has {} runs", participant.getName(), participant.getRuns().size());
+
+                    for (RunDto run : participant.getRuns()) {
+                        logger.info("Run for stage: {}, duration: {}, score: {}",
+                                run.getStageName(), run.getDuration(), run.getScore());
+                    }
+                }
+            } else {
+                logger.warn("Category {} has no participants list (null)", category.getName());
             }
-
-            Competition competition = importService.importCompetition(importDto);
-            return ResponseEntity.ok(competition);
-        } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
-            logger.error("Erreur de formatage ou de mapping JSON lors de la préparation de l'import: {}", e.getMessage(), e);
-            return ResponseEntity.status(500).body("Erreur de formatage ou de mapping JSON lors de la préparation de l'import: " + e.getMessage());
-        } catch (Exception e) {
-            logger.error("Erreur interne du serveur lors de l'import: {}: {}", e.getClass().getSimpleName(), e.getMessage(), e);
-            return ResponseEntity.status(500).body("Erreur interne du serveur lors de l'import: " + e.getClass().getSimpleName() + " - " + e.getMessage());
         }
+
+        Competition competition = importService.importCompetition(importDto);
+        return ResponseEntity.ok(competition);
     }
 
     private void populateNestedLists(ImportCompetitionDto importDto, JsonNode rootNode) throws com.fasterxml.jackson.core.JsonProcessingException {
@@ -95,7 +98,7 @@ public class ImportController {
 
                             JsonNode runsNode = participantJson.path("runs");
                             if (runsNode.isArray()) {
-                                List<RunDto> runDtoList = new ArrayList<>();
+                                Set<RunDto> runDtoList = new HashSet<>();
                                 for (JsonNode runJson : runsNode) {
                                     RunDto runDto = objectMapper.convertValue(runJson, RunDto.class);
                                     runDtoList.add(runDto);

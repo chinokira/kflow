@@ -1,9 +1,13 @@
 package kayak.freestyle.competition.kflow.mappers;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import kayak.freestyle.competition.kflow.dto.CompetitionDto;
+import kayak.freestyle.competition.kflow.models.Categorie;
 import kayak.freestyle.competition.kflow.models.Competition;
 
 @Component
@@ -52,9 +56,11 @@ public class CompetitionMapper implements GenericMapper<Competition, Competition
                 .build();
 
         if (dto.getCategories() != null) {
-            model.setCategories(dto.getCategories().stream()
-                    .map(categorieMapper::dtoToModel)
-                    .toList());
+            Set<Categorie> categories = new HashSet<>();
+            dto.getCategories().forEach(categorieDto
+                    -> categories.add(categorieMapper.dtoToModel(categorieDto))
+            );
+            model.setCategories(categories);
         }
 
         return model;

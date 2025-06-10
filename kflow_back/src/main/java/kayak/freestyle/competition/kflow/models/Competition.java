@@ -1,8 +1,8 @@
 package kayak.freestyle.competition.kflow.models;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -13,7 +13,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,9 +21,9 @@ import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 /**
- * Represents a kayak freestyle competition in the system.
- * This entity stores information about competition dates, location, level,
- * and associated categories.
+ * Represents a kayak freestyle competition in the system. This entity stores
+ * information about competition dates, location, level, and associated
+ * categories.
  *
  * @author K-FLOW Team
  * @version 1.0
@@ -35,7 +34,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @SuperBuilder
 @ToString
-@EqualsAndHashCode
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Competition {
 
     /**
@@ -43,61 +42,60 @@ public class Competition {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
     private Long id;
 
     /**
-     * The start date of the competition.
-     * Cannot be null.
+     * The start date of the competition. Cannot be null.
      */
     @Column(nullable = false)
     private LocalDate startDate;
 
     /**
-     * The end date of the competition.
-     * Cannot be null.
+     * The end date of the competition. Cannot be null.
      */
     @Column(nullable = false)
     private LocalDate endDate;
 
     /**
-     * The location where the competition takes place.
-     * Cannot be null.
+     * The location where the competition takes place. Cannot be null.
      */
     @Column(nullable = false)
     private String place;
 
     /**
-     * The level of the competition (e.g., national, international).
-     * Cannot be null.
+     * The level of the competition (e.g., national, international). Cannot be
+     * null.
      */
     @Column(nullable = false)
     private String level;
 
     /**
-     * List of categories associated with this competition.
-     * Each category represents a different division or class of competition.
+     * List of categories associated with this competition. Each category
+     * represents a different division or class of competition.
      */
     @OneToMany(mappedBy = "competition", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("competition-categories")
-    @Builder.Default
     @Column(nullable = true)
-    private List<Categorie> categories = new ArrayList<>();
+    private Set<Categorie> categories = new HashSet<>();
 
     /**
-     * Adds a category to this competition and establishes the bidirectional relationship.
+     * Adds a category to this competition and establishes the bidirectional
+     * relationship.
      *
      * @param categorie The category to be added to the competition
      */
     public void addCategorie(Categorie categorie) {
         if (categories == null) {
-            categories = new ArrayList<>();
+            categories = new HashSet<>();
         }
         categories.add(categorie);
         categorie.setCompetition(this);
     }
 
     /**
-     * Removes a category from this competition and breaks the bidirectional relationship.
+     * Removes a category from this competition and breaks the bidirectional
+     * relationship.
      *
      * @param categorie The category to be removed from the competition
      */

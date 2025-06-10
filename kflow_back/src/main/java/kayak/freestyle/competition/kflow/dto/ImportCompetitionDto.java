@@ -1,8 +1,7 @@
-package kayak.freestyle.competition.kflow.dto.importDto;
+package kayak.freestyle.competition.kflow.dto;
 
 import java.util.List;
 
-import kayak.freestyle.competition.kflow.dto.CategorieDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

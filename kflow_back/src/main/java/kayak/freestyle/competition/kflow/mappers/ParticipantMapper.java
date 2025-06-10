@@ -1,17 +1,18 @@
 package kayak.freestyle.competition.kflow.mappers;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import kayak.freestyle.competition.kflow.dto.ParticipantDto;
 import kayak.freestyle.competition.kflow.dto.RunDto;
+import kayak.freestyle.competition.kflow.models.Categorie;
 import kayak.freestyle.competition.kflow.models.Participant;
 import kayak.freestyle.competition.kflow.models.Run;
 import kayak.freestyle.competition.kflow.services.CategorieService;
 import kayak.freestyle.competition.kflow.services.RunService;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class ParticipantMapper implements GenericMapper<Participant, ParticipantDto> {
@@ -42,9 +43,9 @@ public class ParticipantMapper implements GenericMapper<Participant, Participant
                 .build();
 
         if (model.getRuns() != null) {
-            List<RunDto> runDtos = new ArrayList<>();
-            model.getRuns().forEach(run -> 
-                runDtos.add(runMapper.modelToDto(run))
+            Set<RunDto> runDtos = new HashSet<>();
+            model.getRuns().forEach(run
+                    -> runDtos.add(runMapper.modelToDto(run))
             );
             dto.setRuns(runDtos);
         }
@@ -65,10 +66,17 @@ public class ParticipantMapper implements GenericMapper<Participant, Participant
                 .club(dto.getClub())
                 .build();
 
+        if (dto.getCategories() != null) {
+            Set<Categorie> categories = new HashSet<>();
+            dto.getCategories().forEach(categorieDto
+                    -> categories.add(categorieMapper.dtoToModel(categorieDto))
+            );
+            model.setCategories(categories);
+        }
         if (dto.getRuns() != null) {
-            List<Run> runs = new ArrayList<>();
-            dto.getRuns().forEach(runDto -> 
-                runs.add(runMapper.dtoToModel(runDto))
+            Set<Run> runs = new HashSet<>();
+            dto.getRuns().forEach(runDto
+                    -> runs.add(runMapper.dtoToModel(runDto))
             );
             model.setRuns(runs);
         }
@@ -76,4 +84,3 @@ public class ParticipantMapper implements GenericMapper<Participant, Participant
         return model;
     }
 }
-

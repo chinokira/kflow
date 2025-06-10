@@ -1,4 +1,5 @@
-import java.util.Arrays;
+package kayak.freestyle.competition.kflow.services;
+
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -15,22 +16,16 @@ import static org.mockito.Mockito.when;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import kayak.freestyle.competition.kflow.dto.CategorieDto;
+import kayak.freestyle.competition.kflow.dto.ImportCompetitionDto;
 import kayak.freestyle.competition.kflow.dto.ParticipantDto;
 import kayak.freestyle.competition.kflow.dto.RunDto;
 import kayak.freestyle.competition.kflow.dto.StageDto;
-import kayak.freestyle.competition.kflow.dto.importDto.ImportCompetitionDto;
 import kayak.freestyle.competition.kflow.mappers.CategorieMapper;
 import kayak.freestyle.competition.kflow.mappers.ParticipantMapper;
 import kayak.freestyle.competition.kflow.mappers.RunMapper;
 import kayak.freestyle.competition.kflow.mappers.StageMapper;
 import kayak.freestyle.competition.kflow.models.Competition;
 import kayak.freestyle.competition.kflow.repositories.CompetitionRepository;
-import kayak.freestyle.competition.kflow.services.CategorieService;
-import kayak.freestyle.competition.kflow.services.CompetitionService;
-import kayak.freestyle.competition.kflow.services.ImportService;
-import kayak.freestyle.competition.kflow.services.ParticipantService;
-import kayak.freestyle.competition.kflow.services.RunService;
-import kayak.freestyle.competition.kflow.services.StageService;
 
 @ExtendWith(MockitoExtension.class)
 class ImportServiceTest {
@@ -80,22 +75,22 @@ class ImportServiceTest {
 
         CategorieDto categorie = new CategorieDto();
         categorie.setName("Senior");
-        
+
         ParticipantDto participant = new ParticipantDto();
         participant.setName("John Doe");
         participant.setBibNb(123);
         participant.setClub("Club A");
-        
+
         RunDto run = new RunDto();
         run.setScore(100.0f);
         run.setDuration(120);
         StageDto stage = new StageDto();
         stage.setName("Final");
         run.setStage(stage);
-        
-        participant.setRuns(Arrays.asList(run));
-        categorie.setParticipants(Arrays.asList(participant));
-        validImportDto.setCategories(Arrays.asList(categorie));
+
+        // participant.setRuns(new HashSet<>(Set.of(run)));
+        // categorie.setParticipants(new HashSet<>(Set.of(participant)));
+        // validImportDto.setCategories(new HashSet<>(Set.of(categorie)));
     }
 
     @Test
@@ -146,8 +141,8 @@ class ImportServiceTest {
         when(runService.saveModel(any())).thenReturn(mockRun);
 
         Competition result = importService.importCompetition(validImportDto);
-        
+
         assertNotNull(result);
         verify(competitionService).saveModel(any(Competition.class));
     }
-} 
+}

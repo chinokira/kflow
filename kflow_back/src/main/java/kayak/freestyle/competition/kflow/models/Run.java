@@ -20,9 +20,9 @@ import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 /**
- * Represents a single run performed by a participant during a competition stage.
- * A run is a timed attempt where the participant performs freestyle kayak tricks
- * and receives a score based on their performance.
+ * Represents a single run performed by a participant during a competition
+ * stage. A run is a timed attempt where the participant performs freestyle
+ * kayak tricks and receives a score based on their performance.
  *
  * @author K-FLOW Team
  * @version 1.0
@@ -33,7 +33,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @SuperBuilder
 @ToString
-@EqualsAndHashCode
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Run {
 
     /**
@@ -41,25 +41,23 @@ public class Run {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
     private Long id;
 
     /**
-     * The duration of the run in seconds.
-     * Cannot be null.
+     * The duration of the run in seconds. Cannot be null.
      */
     @Column(nullable = false)
     private Integer duration;
 
     /**
-     * The score awarded for this run.
-     * Cannot be null.
+     * The score awarded for this run. Cannot be null.
      */
     @Column(nullable = false)
     private Float score;
 
     /**
-     * The stage in which this run was performed.
-     * Cannot be null.
+     * The stage in which this run was performed. Cannot be null.
      */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "stage_id", nullable = false)
@@ -67,8 +65,7 @@ public class Run {
     private Stage stage;
 
     /**
-     * The participant who performed this run.
-     * Cannot be null.
+     * The participant who performed this run. Cannot be null.
      */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "participant_id", nullable = false)
@@ -76,8 +73,8 @@ public class Run {
     private Participant participant;
 
     /**
-     * Gets the name of the stage associated with this run.
-     * This method is used for JSON serialization.
+     * Gets the name of the stage associated with this run. This method is used
+     * for JSON serialization.
      *
      * @return The name of the stage, or null if no stage is associated
      */

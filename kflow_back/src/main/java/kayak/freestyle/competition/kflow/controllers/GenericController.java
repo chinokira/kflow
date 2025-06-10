@@ -17,8 +17,8 @@ import kayak.freestyle.competition.kflow.services.GenericService;
 import lombok.RequiredArgsConstructor;
 
 /**
- * Generic REST controller that provides basic CRUD operations.
- * This controller can be extended to create specific controllers for different entities.
+ * Generic REST controller that provides basic CRUD operations. This controller
+ * can be extended to create specific controllers for different entities.
  *
  * @param <DTO> The DTO type that extends HasId
  * @param <SERVICE> The service type that extends GenericService
@@ -55,8 +55,8 @@ public class GenericController<DTO extends HasId, SERVICE extends GenericService
     }
 
     /**
-     * Creates a new entity from the provided DTO.
-     * The ID in the DTO must be null or zero.
+     * Creates a new entity from the provided DTO. The ID in the DTO must be
+     * null or zero.
      *
      * @param user The DTO containing the entity data
      * @return The created entity as a DTO
@@ -71,8 +71,8 @@ public class GenericController<DTO extends HasId, SERVICE extends GenericService
     }
 
     /**
-     * Updates an existing entity with the provided DTO.
-     * The ID in the URL must match the ID in the DTO.
+     * Updates an existing entity with the provided DTO. The ID in the URL must
+     * match the ID in the DTO.
      *
      * @param id The ID of the entity to update
      * @param user The DTO containing the updated entity data
