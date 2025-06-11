@@ -1,6 +1,8 @@
 package kayak.freestyle.competition.kflow.mappers;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.context.annotation.Lazy;
@@ -43,7 +45,7 @@ public class ParticipantMapper implements GenericMapper<Participant, Participant
                 .build();
 
         if (model.getRuns() != null) {
-            Set<RunDto> runDtos = new HashSet<>();
+            List<RunDto> runDtos = new ArrayList<>();
             model.getRuns().forEach(run
                     -> runDtos.add(runMapper.modelToDto(run))
             );

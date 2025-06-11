@@ -34,6 +34,7 @@ export class CompetitionDetailComponent implements OnInit, OnDestroy {
     private subscription: Subscription | null = null;
     loadingParticipants: { [categorieId: number]: boolean } = {};
     loadingRuns: { [participantId: number]: boolean } = {};
+    private static readonly STAGE_ORDER = ['Qualification', 'Quart', 'Demi', 'Finale'];
 
     constructor(
         private readonly route: ActivatedRoute,
@@ -160,8 +161,12 @@ export class CompetitionDetailComponent implements OnInit, OnDestroy {
         return 0;
     }
 
+    private getStageOrder(stageName: string): number {
+        const idx = CompetitionDetailComponent.STAGE_ORDER.indexOf(stageName);
+        return idx === -1 ? 999 : idx;
+    }
+
     public getUniqueStages(participant: Participant): string[] {
-        // Retourne la liste des noms de stages uniques, dans l'ordre d'apparition des runs
         const seen = new Set<string>();
         const stages: string[] = [];
         (participant.runs || []).forEach(run => {
@@ -171,7 +176,8 @@ export class CompetitionDetailComponent implements OnInit, OnDestroy {
                 stages.push(name);
             }
         });
-        return stages;
+        // Trie selon l'ordre officiel
+        return stages.sort((a, b) => this.getStageOrder(a) - this.getStageOrder(b));
     }
 
     private getLastStageScore(participant: Participant, stages: string[]): number {
@@ -214,7 +220,6 @@ export class CompetitionDetailComponent implements OnInit, OnDestroy {
 
     groupRunsByStage(runs: Run[]): { stageName: string; runs: Run[] }[] {
         const groupedRuns = new Map<string, Run[]>();
-        
         runs.forEach(run => {
             const stageName = run.stage?.name || 'Stage inconnu';
             if (!groupedRuns.has(stageName)) {
@@ -223,21 +228,31 @@ export class CompetitionDetailComponent implements OnInit, OnDestroy {
             groupedRuns.get(stageName)?.push(run);
         });
 
-        return Array.from(groupedRuns.entries()).map(([stageName, runs]) => ({
-            stageName,
-            runs
-        }));
+        // Trie les groupes selon l'ordre officiel
+        return Array.from(groupedRuns.entries())
+            .sort((a, b) => this.getStageOrder(a[0]) - this.getStageOrder(b[0]))
+            .map(([stageName, runs]) => ({
+                stageName,
+                runs
+            }));
     }
 
     getClassementScore(participant: Participant, stages: string[]): number {
         if (!stages.length) return 0;
         const lastStage = stages[stages.length - 1];
         const runs = (participant.runs || []).filter(run => (run.stage?.name || 'Stage inconnu') === lastStage).map(run => run.score || 0).sort((a, b) => b - a);
-        if (stages.length === 1) {
+
+        if (lastStage === 'Qualification') {
+            // Somme de tous les runs
             return runs.reduce((sum, v) => sum + v, 0);
-        } else if (stages.length === 3) {
+        } else if (lastStage === 'Quart') {
+            // Somme des deux meilleurs runs
             return (runs[0] || 0) + (runs[1] || 0);
+        } else if (lastStage === 'Demi' || lastStage === 'Finale') {
+            // Meilleur run
+            return runs[0] || 0;
         } else {
+            // Par défaut, meilleur run
             return runs[0] || 0;
         }
     }

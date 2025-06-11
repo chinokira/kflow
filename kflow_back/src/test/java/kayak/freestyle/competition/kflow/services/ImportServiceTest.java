@@ -1,5 +1,6 @@
 package kayak.freestyle.competition.kflow.services;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -16,6 +17,7 @@ import static org.mockito.Mockito.when;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import kayak.freestyle.competition.kflow.dto.CategorieDto;
+import kayak.freestyle.competition.kflow.dto.CompetitionDto;
 import kayak.freestyle.competition.kflow.dto.ImportCompetitionDto;
 import kayak.freestyle.competition.kflow.dto.ParticipantDto;
 import kayak.freestyle.competition.kflow.dto.RunDto;
@@ -63,13 +65,13 @@ class ImportServiceTest {
     @InjectMocks
     private ImportService importService;
 
-    private ImportCompetitionDto validImportDto;
+    private CompetitionDto validImportDto;
 
     @BeforeEach
     void setUp() {
-        validImportDto = new ImportCompetitionDto();
-        validImportDto.setStartDate("2024-01-01");
-        validImportDto.setEndDate("2024-01-02");
+        validImportDto = new CompetitionDto();
+        validImportDto.setStartDate(LocalDate.parse("2024-01-01"));
+        validImportDto.setEndDate(LocalDate.parse("2024-01-02"));
         validImportDto.setLevel("PRO");
         validImportDto.setPlace("Paris");
 
@@ -101,8 +103,8 @@ class ImportServiceTest {
 
     @Test
     void validateImport_WithInvalidDates_ShouldReturnErrors() {
-        validImportDto.setStartDate("2024-01-02");
-        validImportDto.setEndDate("2024-01-01");
+        validImportDto.setStartDate(LocalDate.parse("2024-01-02"));
+        validImportDto.setEndDate(LocalDate.parse("2024-01-01"));
 
         List<String> errors = importService.validateImport(validImportDto);
         assertFalse(errors.isEmpty(), "Should have validation errors for invalid dates");

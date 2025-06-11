@@ -1,5 +1,6 @@
 package kayak.freestyle.competition.kflow.dto;
 
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.http.ResponseEntity;
@@ -37,8 +38,7 @@ public class ParticipantDto implements HasId {
     @JsonIgnore
     private Set<CategorieDto> categories;
 
-    @JsonIgnore
-    private Set<RunDto> runs;
+    private List<RunDto> runs;
 
     @PostMapping
     public ResponseEntity<ParticipantDto> save(@RequestBody ParticipantDto participantDto) {

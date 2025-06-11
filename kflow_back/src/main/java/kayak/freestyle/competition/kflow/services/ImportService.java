@@ -1,7 +1,5 @@
 package kayak.freestyle.competition.kflow.services;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -15,7 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kayak.freestyle.competition.kflow.dto.CategorieDto;
-import kayak.freestyle.competition.kflow.dto.ImportCompetitionDto;
+import kayak.freestyle.competition.kflow.dto.CompetitionDto;
 import kayak.freestyle.competition.kflow.dto.ParticipantDto;
 import kayak.freestyle.competition.kflow.dto.RunDto;
 import kayak.freestyle.competition.kflow.dto.StageDto;
@@ -47,16 +45,14 @@ public class ImportService {
     private final RunMapper runMapper;
 
     @Transactional
-    public Competition importCompetition(ImportCompetitionDto importDto) {
+    public Competition importCompetition(CompetitionDto importDto) {
         List<String> errors = validateImport(importDto);
         if (!errors.isEmpty()) {
             throw new IllegalArgumentException("Erreurs de validation : " + String.join(", ", errors));
         }
-
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE;
         Competition competition = Competition.builder()
-                .startDate(LocalDate.parse(importDto.getStartDate(), formatter))
-                .endDate(LocalDate.parse(importDto.getEndDate(), formatter))
+                .startDate(importDto.getStartDate())
+                .endDate(importDto.getEndDate())
                 .level(importDto.getLevel())
                 .place(importDto.getPlace())
                 .build();
@@ -189,7 +185,7 @@ public class ImportService {
         logger.info("Final number of runs for participant {}: {}", participantEntity.getName(), participantEntity.getRuns().size());
     }
 
-    public List<String> validateImport(ImportCompetitionDto importDto) {
+    public List<String> validateImport(CompetitionDto importDto) {
         List<String> errors = new ArrayList<>();
         validateDates(importDto, errors);
         validateBasicFields(importDto, errors);
@@ -197,17 +193,16 @@ public class ImportService {
         return errors;
     }
 
-    private void validateDates(ImportCompetitionDto importDto, List<String> errors) {
-        if (importDto.getStartDate() == null || importDto.getStartDate().isEmpty()) {
+    private void validateDates(CompetitionDto importDto, List<String> errors) {
+        if (importDto.getStartDate() == null) {
             errors.add("La date de début est requise");
         }
-        if (importDto.getEndDate() == null || importDto.getEndDate().isEmpty()) {
+        if (importDto.getEndDate() == null) {
             errors.add("La date de fin est requise");
         }
-        if (importDto.getStartDate() != null && importDto.getEndDate() != null
-                && !importDto.getStartDate().isEmpty() && !importDto.getEndDate().isEmpty()) {
+        if (importDto.getStartDate() != null && importDto.getEndDate() != null) {
             try {
-                if (LocalDate.parse(importDto.getStartDate()).isAfter(LocalDate.parse(importDto.getEndDate()))) {
+                if (importDto.getStartDate().isAfter(importDto.getEndDate())) {
                     errors.add("La date de début ne peut pas être postérieure à la date de fin");
                 }
             } catch (Exception e) {
@@ -216,7 +211,7 @@ public class ImportService {
         }
     }
 
-    private void validateBasicFields(ImportCompetitionDto importDto, List<String> errors) {
+    private void validateBasicFields(CompetitionDto importDto, List<String> errors) {
         if (importDto.getLevel() == null || importDto.getLevel().isEmpty()) {
             errors.add("Le niveau est requis");
         }
@@ -228,7 +223,7 @@ public class ImportService {
         }
     }
 
-    private void validateCategories(ImportCompetitionDto importDto, List<String> errors) {
+    private void validateCategories(CompetitionDto importDto, List<String> errors) {
         if (importDto.getCategories() != null) {
             Set<String> categoryNames = new HashSet<>();
             for (CategorieDto category : importDto.getCategories()) {

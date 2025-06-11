@@ -1,9 +1,7 @@
 package kayak.freestyle.competition.kflow.controllers;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import kayak.freestyle.competition.kflow.dto.CategorieDto;
-import kayak.freestyle.competition.kflow.dto.ImportCompetitionDto;
+import kayak.freestyle.competition.kflow.dto.CompetitionDto;
 import kayak.freestyle.competition.kflow.dto.ParticipantDto;
 import kayak.freestyle.competition.kflow.dto.RunDto;
 import kayak.freestyle.competition.kflow.models.Competition;
@@ -37,7 +35,7 @@ public class ImportController {
     @PostMapping("/validate")
     public ResponseEntity<List<String>> validateImport(@RequestBody String jsonBody) {
         try {
-            ImportCompetitionDto importDto = objectMapper.readValue(jsonBody, ImportCompetitionDto.class);
+            CompetitionDto importDto = objectMapper.readValue(jsonBody, CompetitionDto.class);
             JsonNode rootNode = objectMapper.readTree(jsonBody);
             populateNestedLists(importDto, rootNode);
 
@@ -57,7 +55,7 @@ public class ImportController {
     }
 
     @PostMapping("/competition")
-    public ResponseEntity<Competition> importCompetition(@RequestBody ImportCompetitionDto importDto) {
+    public ResponseEntity<Competition> importCompetition(@RequestBody CompetitionDto importDto) {
         logger.info("Received import request with {} categories", importDto.getCategories().size());
 
         for (CategorieDto category : importDto.getCategories()) {
@@ -81,7 +79,7 @@ public class ImportController {
         return ResponseEntity.ok(competition);
     }
 
-    private void populateNestedLists(ImportCompetitionDto importDto, JsonNode rootNode) throws com.fasterxml.jackson.core.JsonProcessingException {
+    private void populateNestedLists(CompetitionDto importDto, JsonNode rootNode) throws com.fasterxml.jackson.core.JsonProcessingException {
         JsonNode categoriesNode = rootNode.path("categories");
 
         if (categoriesNode.isArray() && importDto.getCategories() != null) {
@@ -98,7 +96,7 @@ public class ImportController {
 
                             JsonNode runsNode = participantJson.path("runs");
                             if (runsNode.isArray()) {
-                                Set<RunDto> runDtoList = new HashSet<>();
+                                List<RunDto> runDtoList = new ArrayList<>();
                                 for (JsonNode runJson : runsNode) {
                                     RunDto runDto = objectMapper.convertValue(runJson, RunDto.class);
                                     runDtoList.add(runDto);

@@ -19,13 +19,13 @@ import lombok.ToString;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
 public class CategorieDto implements HasId {
+
     @EqualsAndHashCode.Include
     private Long id;
 
     @NotBlank
     private String name;
 
-    @JsonIgnore
     private List<ParticipantDto> participants;
 
     @JsonIgnore
