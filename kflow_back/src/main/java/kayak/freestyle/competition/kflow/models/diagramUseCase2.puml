@@ -1,0 +1,18 @@
+@startuml
+actor "Utilisateur" as Utilisateur
+boundary "Frontend" as Frontend
+control "Backend" as Backend
+database "Base de données" as BD
+control "Module de sécurité" as Sec
+
+Utilisateur -> Frontend : Saisit ses identifiants (login & mot de passe)
+Frontend -> Backend : Requête de connexion (identifiants)
+Backend -> BD : Recherche de l'utilisateur
+BD --> Backend : Données de l'utilisateur (dont mot de passe haché)
+Backend -> Sec : Vérification des identifiants
+Sec --> Backend : Identifiants valides
+Backend -> Sec : Génération d'un token JWT
+Sec --> Backend : Token JWT
+Backend --> Frontend : Réponse de connexion (token JWT)
+note over Frontend, Backend : Le Frontend stocke le token JWT\npour l'authentification des prochaines requêtes
+@enduml

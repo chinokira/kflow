@@ -1,0 +1,27 @@
+@startuml
+autonumber
+
+actor "Utilisateur" as User
+participant "Front Angular" as Front
+participant "Back-end Spring Boot" as Backend
+participant "Système de sécurité (Spring Security)" as Security
+database "Base de données" as DB
+
+User -> Front: Soumet le formulaire de connexion\n(identifiants)
+Front -> Backend: Requête POST /login\n(avec identifiants)
+Backend -> Security: Vérification des identifiants
+Security -> DB: Vérifier utilisateur et mot de passe
+DB --> Security: Identifiants valides
+Security -> Security: Génère un token JWT
+Security --> Backend: Token JWT
+Backend --> Front: Réponse (JWT)
+Front -> Front: Stocke le JWT (ex: localStorage)
+
+== Requêtes suivantes avec JWT ==
+User -> Front: Demande d'accès à une ressource protégée
+Front -> Backend: Requête API protégée\n(Authorization: Bearer <JWT>)
+Backend -> Security: Valider le JWT
+Security --> Backend: JWT valide
+Backend --> Front: Réponse (données demandées)
+
+@enduml

@@ -1,0 +1,10 @@
+@startuml
+left to right direction
+actor "Utilisateur" as Utilisateur
+actor "Administrateur" as Administrateur
+rectangle "Système K-FLOW" {
+  usecase "Connexion au système" as UC_Connexion
+}
+Utilisateur -- UC_Connexion
+Administrateur -- UC_Connexion
+@enduml

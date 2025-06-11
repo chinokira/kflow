@@ -1,0 +1,62 @@
+@startuml
+
+class Competition {
+  id: Long
+  place: String
+  level: String
+  startDate: LocalDate
+  endDate: LocalDate
+  categories: List<Categorie>
+}
+
+class Categorie {
+  id: Long
+  name: String
+  participants: List<Participant>
+}
+
+class Participant {
+  id: Long
+  name: String
+  bibNb: int
+  club: String
+  runs: List<Run>
+  stage: Stage
+  categorie: Categorie
+}
+
+class Run {
+  id: Long
+  duration: int
+  score: float
+  stage: Stage
+  participant: Participant
+}
+
+class Stage {
+  id: Long
+  name: String
+}
+
+class User {
+  id: Long
+  username: String
+  email: String
+  password: String
+  roles: Set<Role>
+}
+
+class Role {
+  id: Long
+  name: String
+}
+
+Competition "1" -- "*" Categorie
+Categorie "*" -- "*" Participant
+Participant "1" -- "*" Run
+Participant "1" -- "1" Stage
+Run "*" -- "1" Stage
+User "*" -- "*" Role
+Categorie "1" -- "*" Stage
+
+@enduml
