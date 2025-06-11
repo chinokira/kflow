@@ -34,9 +34,9 @@ import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 
 /**
- * Configuration class for Spring Security.
- * This class configures authentication, authorization, CORS, and JWT handling
- * for the K-FLOW application.
+ * Configuration class for Spring Security. This class configures
+ * authentication, authorization, CORS, and JWT handling for the K-FLOW
+ * application.
  *
  * @author K-FLOW Team
  * @version 1.0
@@ -49,22 +49,22 @@ public class SecurityConfig {
     private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
 
     /**
-     * RSA public key used for JWT verification.
-     * Injected from application properties.
+     * RSA public key used for JWT verification. Injected from application
+     * properties.
      */
     @Value("${rsa.public-key}")
     RSAPublicKey publicKey;
 
     /**
-     * RSA private key used for JWT signing.
-     * Injected from application properties.
+     * RSA private key used for JWT signing. Injected from application
+     * properties.
      */
     @Value("${rsa.private-key}")
     RSAPrivateKey privateKey;
 
     /**
-     * Configures the security filter chain for the application.
-     * Sets up authorization rules, CORS, CSRF, session management, and JWT handling.
+     * Configures the security filter chain for the application. Sets up
+     * authorization rules, CORS, CSRF, session management, and JWT handling.
      *
      * @param http The HttpSecurity object to configure
      * @return The configured SecurityFilterChain
@@ -84,36 +84,39 @@ public class SecurityConfig {
                 .csrf(c -> c.disable())
                 .sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .oauth2ResourceServer(c -> c.jwt(jwt -> {
-                    jwt.jwtAuthenticationConverter(jwtAuthenticationConverter());
-                    jwt.decoder(jwtDecoder());
-                }));
+            jwt.jwtAuthenticationConverter(jwtAuthenticationConverter());
+            jwt.decoder(jwtDecoder());
+        }));
         return http.build();
     }
 
     /**
-     * Configures CORS (Cross-Origin Resource Sharing) settings.
-     * Allows requests from the frontend application running on localhost:4200.
+     * Configures CORS (Cross-Origin Resource Sharing) settings. Allows requests
+     * from the frontend application running on localhost:4200.
      *
      * @return The configured CorsConfigurationSource
      */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
+        configuration.addAllowedOrigin("http://localhost");
+        configuration.addAllowedOrigin("http://localhost:80");
+        configuration.addAllowedOrigin("http://localhost:8080");
         configuration.addAllowedOrigin("http://localhost:4200");
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
         configuration.setAllowCredentials(true);
         configuration.addExposedHeader("Authorization");
         configuration.setMaxAge(3600L);
-        
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
 
     /**
-     * Configures the JWT authentication converter.
-     * Sets up how JWT claims are converted to Spring Security authorities.
+     * Configures the JWT authentication converter. Sets up how JWT claims are
+     * converted to Spring Security authorities.
      *
      * @return The configured JwtAuthenticationConverter
      */
@@ -125,13 +128,13 @@ public class SecurityConfig {
 
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(grantedAuthoritiesConverter);
-        
+
         return jwtAuthenticationConverter;
     }
 
     /**
-     * Creates a password encoder bean.
-     * Uses Spring Security's delegating password encoder.
+     * Creates a password encoder bean. Uses Spring Security's delegating
+     * password encoder.
      *
      * @return The configured PasswordEncoder
      */
@@ -141,8 +144,8 @@ public class SecurityConfig {
     }
 
     /**
-     * Creates a JWT decoder bean.
-     * Uses the RSA public key for token verification.
+     * Creates a JWT decoder bean. Uses the RSA public key for token
+     * verification.
      *
      * @return The configured JwtDecoder
      */
@@ -152,8 +155,7 @@ public class SecurityConfig {
     }
 
     /**
-     * Creates a JWT encoder bean.
-     * Uses the RSA key pair for token signing.
+     * Creates a JWT encoder bean. Uses the RSA key pair for token signing.
      *
      * @return The configured JwtEncoder
      */

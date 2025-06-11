@@ -1,12 +1,10 @@
 services:
   mysql:
-    image: mysql:8.2.0
+    image: mysql:8.0
     container_name: kflow-mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: kflow
-      MYSQL_USER: root
-      MYSQL_PASSWORD: ""
     ports:
       - "3306:3306"
     volumes:
@@ -14,10 +12,25 @@ services:
     networks:
       - kflow-network
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 10s
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot"]
+      interval: 5s
       timeout: 5s
-      retries: 5
+      retries: 20
+      start_period: 10s
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: kflow-phpmyadmin
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "8081:80"
+    depends_on:
+      - mysql
+    networks:
+      - kflow-network
 
   backend:
     build: 
@@ -28,17 +41,16 @@ services:
       - "8080:8080"
     environment:
       - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/kflow?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=false
-      - SPRING_DATASOURCE_USERNAME=kflow
-      - SPRING_DATASOURCE_PASSWORD=
-      - MYSQL_HOST=mysql
-      - MYSQL_PORT=3306
-      - MYSQL_DATABASE=kflow
-      - MYSQL_USER=root
-      - MYSQL_PASSWORD=
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_JPA_SHOW_SQL=true
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
     networks:
       - kflow-network
+    restart: unless-stopped
 
   frontend:
     build: 
@@ -51,6 +63,7 @@ services:
       - backend
     networks:
       - kflow-network
+    restart: unless-stopped
 
 networks:
   kflow-network:

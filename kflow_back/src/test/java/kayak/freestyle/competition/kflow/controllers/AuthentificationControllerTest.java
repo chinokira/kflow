@@ -1,4 +1,4 @@
-package test.java.kayak.freestyle.competition.kflow.controllers;
+package kayak.freestyle.competition.kflow.controllers;
 
 import java.util.Optional;
 
@@ -19,7 +19,6 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.web.server.ResponseStatusException;
 
-import kayak.freestyle.competition.kflow.controllers.AuthenticationController;
 import kayak.freestyle.competition.kflow.models.Role;
 import kayak.freestyle.competition.kflow.models.User;
 import kayak.freestyle.competition.kflow.repositories.UserRepository;
@@ -81,7 +80,7 @@ class AuthenticationControllerTest {
         when(passwordEncoder.matches(validRequest.getPassword(), validUser.getPassword())).thenReturn(false);
 
         assertThrows(org.springframework.security.authentication.BadCredentialsException.class,
-            () -> authenticationController.authenticate(validRequest));
+                () -> authenticationController.authenticate(validRequest));
     }
 
     @Test
@@ -89,7 +88,7 @@ class AuthenticationControllerTest {
         validRequest.setGrantType(null);
 
         assertThrows(ResponseStatusException.class,
-            () -> authenticationController.authenticate(validRequest));
+                () -> authenticationController.authenticate(validRequest));
     }
 
     @Test
@@ -110,4 +109,4 @@ class AuthenticationControllerTest {
         assertNotNull(response.getAccessToken());
         assertNotNull(response.getRefreshToken());
     }
-} 
+}

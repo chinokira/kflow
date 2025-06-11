@@ -19,7 +19,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:4200")
+                .allowedOrigins("http://localhost", "http://localhost:80", "http://localhost:8080", "http://localhost:4200")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
                 .allowedHeaders("Content-Type", "Accept", "Authorization", "X-Requested-With")
                 .exposedHeaders("Authorization")
@@ -32,19 +32,19 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(new HandlerInterceptor() {
             @Override
             public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-                logger.info("Incoming request: {} {} with content type: {}", 
-                    request.getMethod(), 
-                    request.getRequestURI(),
-                    request.getContentType());
+                logger.info("Incoming request: {} {} with content type: {}",
+                        request.getMethod(),
+                        request.getRequestURI(),
+                        request.getContentType());
                 return true;
             }
 
             @Override
             public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
-                logger.info("Request completed: {} {} with status: {}", 
-                    request.getMethod(), 
-                    request.getRequestURI(),
-                    response.getStatus());
+                logger.info("Request completed: {} {} with status: {}",
+                        request.getMethod(),
+                        request.getRequestURI(),
+                        response.getStatus());
             }
         });
     }
