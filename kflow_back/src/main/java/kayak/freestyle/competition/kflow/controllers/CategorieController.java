@@ -1,19 +1,18 @@
 package kayak.freestyle.competition.kflow.controllers;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import kayak.freestyle.competition.kflow.models.Categorie;
-import kayak.freestyle.competition.kflow.models.Participant;
 import kayak.freestyle.competition.kflow.dto.ParticipantDto;
-import kayak.freestyle.competition.kflow.services.CategorieService;
 import kayak.freestyle.competition.kflow.mappers.ParticipantMapper;
+import kayak.freestyle.competition.kflow.models.Categorie;
+import kayak.freestyle.competition.kflow.services.CategorieService;
 import lombok.RequiredArgsConstructor;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/categories")

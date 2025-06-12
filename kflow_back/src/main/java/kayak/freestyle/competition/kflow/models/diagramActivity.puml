@@ -1,37 +1,34 @@
 @startuml
-'https://plantuml.com/activity-diagram-beta
-
-start
-:ClickServlet.handleRequest();
-:new page;
-if (Page.onSecurityCheck) then (true)
-  :Page.onInit();
-  if (isForward?) then (no)
-    :Process controls;
-    if (continue processing?) then (no)
-      stop
-    endif
-
-    if (isPost?) then (yes)
-      :Page.onPost();
-    else (no)
-      :Page.onGet();
-    endif
-    :Page.onRender();
+partition "Front-End (Angular)" {
+  start
+  :L'utilisateur entre ses identifiants\n(email/mot de passe) sur le formulaire de connexion;
+  :Envoi d'une requête HTTP POST **/login** avec les identifiants;
+}
+partition "Back-End (Spring Boot)" {
+  :Réception de la requête de login\n(par le contrôleur d'authentification);
+  :Appel au service d'authentification (Spring Security)\npour vérifier les identifiants;
+}
+partition "Base de Données" {
+  :Recherche de l'utilisateur correspondant\n(dans la base de données);
+  :Retour des informations utilisateur\n(incluant le hash du mot de passe);
+}
+partition "Back-End (Spring Boot)" {
+  :Comparaison du mot de passe fourni\navec le mot de passe stocké (haché);
+  if ("Identifiants valides ?") then (valide)
+    partition "JWT Security (Spring Boot)" {
+      :Génération d'un token **JWT** signé\n(clé secrète, infos utilisateur, expiration);
+    }
+    partition "Back-End (Spring Boot)" {
+      :Envoi de la réponse **HTTP 200 OK** contenant le token JWT;
+    }
+  else (invalide)
+    :Échec de l'authentification – réponse **401 Unauthorized**;
+    stop
   endif
-else (false)
-endif
-
-if (do redirect?) then (yes)
-  :redirect process;
-else
-  if (do forward?) then (yes)
-    :Forward request;
-  else (no)
-    :Render page template;
-  endif
-endif
-
-stop
-
+}
+partition "Front-End (Angular)" {
+  :Réception de la réponse du serveur\navec le token **JWT**;
+  :Stockage du token (p.ex. localStorage)\npour les requêtes suivantes;
+  stop
+}
 @enduml

@@ -75,10 +75,34 @@ public class SecurityConfig {
         http
                 .cors(c -> c.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(customizer -> customizer
-                .requestMatchers(HttpMethod.POST, "/competitions").hasAuthority("ADMIN")
+                // Routes publiques
+                .requestMatchers("/authenticate").permitAll()
+                .requestMatchers("/").permitAll()
+                // Routes protégées pour les utilisateurs authentifiés
+                .requestMatchers(HttpMethod.GET, "/competitions/**").hasAnyAuthority("USER", "ADMIN")
+                .requestMatchers(HttpMethod.GET, "/categories/**").hasAnyAuthority("USER", "ADMIN")
+                .requestMatchers(HttpMethod.GET, "/participants/**").hasAnyAuthority("USER", "ADMIN")
+                .requestMatchers(HttpMethod.GET, "/runs/**").hasAnyAuthority("USER", "ADMIN")
+                .requestMatchers(HttpMethod.GET, "/stages/**").hasAnyAuthority("USER", "ADMIN")
+                // Routes protégées pour les administrateurs uniquement
+                .requestMatchers(HttpMethod.POST, "/competitions/**").hasAuthority("ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/competitions/**").hasAuthority("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/competitions/**").hasAuthority("ADMIN")
-                .requestMatchers("/**").permitAll())
+                .requestMatchers(HttpMethod.POST, "/categories/**").hasAuthority("ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/categories/**").hasAuthority("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/categories/**").hasAuthority("ADMIN")
+                .requestMatchers(HttpMethod.POST, "/participants/**").hasAuthority("ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/participants/**").hasAuthority("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/participants/**").hasAuthority("ADMIN")
+                .requestMatchers(HttpMethod.POST, "/runs/**").hasAuthority("ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/runs/**").hasAuthority("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/runs/**").hasAuthority("ADMIN")
+                .requestMatchers(HttpMethod.POST, "/stages/**").hasAuthority("ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/stages/**").hasAuthority("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/stages/**").hasAuthority("ADMIN")
+                .requestMatchers("/api/import/**").hasAuthority("ADMIN")
+                // Toutes les autres routes nécessitent une authentification
+                .anyRequest().authenticated())
                 .formLogin(c -> c.disable())
                 .logout(c -> c.disable())
                 .csrf(c -> c.disable())

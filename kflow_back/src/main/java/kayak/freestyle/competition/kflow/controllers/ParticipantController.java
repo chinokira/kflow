@@ -1,13 +1,14 @@
 package kayak.freestyle.competition.kflow.controllers;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import java.util.List;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import java.util.List;
-import kayak.freestyle.competition.kflow.dto.RunDto;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import kayak.freestyle.competition.kflow.dto.ParticipantDto;
+import kayak.freestyle.competition.kflow.dto.RunDto;
 import kayak.freestyle.competition.kflow.services.ParticipantService;
 
 @RestController
