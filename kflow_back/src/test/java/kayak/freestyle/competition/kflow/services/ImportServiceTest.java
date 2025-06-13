@@ -18,7 +18,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import kayak.freestyle.competition.kflow.dto.CategorieDto;
 import kayak.freestyle.competition.kflow.dto.CompetitionDto;
-import kayak.freestyle.competition.kflow.dto.ImportCompetitionDto;
 import kayak.freestyle.competition.kflow.dto.ParticipantDto;
 import kayak.freestyle.competition.kflow.dto.RunDto;
 import kayak.freestyle.competition.kflow.dto.StageDto;
@@ -90,9 +89,9 @@ class ImportServiceTest {
         stage.setName("Final");
         run.setStage(stage);
 
-        // participant.setRuns(new HashSet<>(Set.of(run)));
-        // categorie.setParticipants(new HashSet<>(Set.of(participant)));
-        // validImportDto.setCategories(new HashSet<>(Set.of(categorie)));
+        participant.setRuns(List.of(run));
+        categorie.setParticipants(List.of(participant));
+        validImportDto.setCategories(List.of(categorie));
     }
 
     @Test

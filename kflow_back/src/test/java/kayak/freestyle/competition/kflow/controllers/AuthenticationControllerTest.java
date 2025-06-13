@@ -11,6 +11,8 @@ import static org.mockito.ArgumentMatchers.any;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -108,5 +110,55 @@ class AuthenticationControllerTest {
         assertNotNull(response);
         assertNotNull(response.getAccessToken());
         assertNotNull(response.getRefreshToken());
+    }
+
+    @Test
+    void authenticate_WithNonExistentUser_ShouldThrowException() {
+        when(userRepository.findByEmail(validRequest.getUsername())).thenReturn(Optional.empty());
+
+        assertThrows(org.springframework.security.authentication.BadCredentialsException.class,
+                () -> authenticationController.authenticate(validRequest));
+    }
+
+    @Test
+    void authenticate_WithInvalidRefreshToken_ShouldThrowException() {
+        validRequest.setGrantType(AuthenticationController.GrantType.refreshToken);
+        validRequest.setRefreshToken("invalidRefreshToken");
+
+        when(jwtDecoder.decode("invalidRefreshToken")).thenThrow(new RuntimeException("Invalid token"));
+
+        assertThrows(RuntimeException.class,
+                () -> authenticationController.authenticate(validRequest));
+    }
+
+    @Test
+    void authenticate_WithRefreshTokenAndNonExistentUser_ShouldThrowException() {
+        validRequest.setGrantType(AuthenticationController.GrantType.refreshToken);
+        validRequest.setRefreshToken("validRefreshToken");
+
+        org.springframework.security.oauth2.jwt.Jwt mockJwt = mock(org.springframework.security.oauth2.jwt.Jwt.class);
+        when(mockJwt.getSubject()).thenReturn("999");
+        when(jwtDecoder.decode("validRefreshToken")).thenReturn(mockJwt);
+        when(userRepository.findById(999L)).thenReturn(Optional.empty());
+
+        assertThrows(RuntimeException.class,
+                () -> authenticationController.authenticate(validRequest));
+    }
+
+    @Test
+    void authenticate_WithAdminUser_ShouldReturnTokens() {
+        validUser.setRole(Role.ADMIN);
+        when(userRepository.findByEmail(validRequest.getUsername())).thenReturn(Optional.of(validUser));
+        when(passwordEncoder.matches(validRequest.getPassword(), validUser.getPassword())).thenReturn(true);
+        org.springframework.security.oauth2.jwt.Jwt mockJwt = mock(org.springframework.security.oauth2.jwt.Jwt.class);
+        when(mockJwt.getTokenValue()).thenReturn("access-token");
+        when(jwtEncoder.encode(any(JwtEncoderParameters.class))).thenReturn(mockJwt);
+
+        AuthenticationController.JwtResponse response = authenticationController.authenticate(validRequest);
+
+        assertNotNull(response);
+        assertNotNull(response.getAccessToken());
+        assertNotNull(response.getRefreshToken());
+        verify(jwtEncoder, times(2)).encode(any(JwtEncoderParameters.class));
     }
 }
