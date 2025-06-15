@@ -59,7 +59,7 @@ Aucun objectif commercial ; le développement suit mon propre rythme d’apprent
 ### 1. Clone du dépôt
 
 ```bash
-git clone https://github.com/<votre-compte>/kflow.git
+git clone https://github.com/chinokira/kflow.git
 cd kflow
 2. Lancer le back-end
 bash
