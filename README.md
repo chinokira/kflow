@@ -11,7 +11,7 @@
 4. [Installation avec Docker](#installation-avec-docker)  
 5. [Arborescence du projet](#arborescence-du-projet)  
 6. [Endpoints principaux](#endpoints-principaux)  
-7. [Tests automatisés](#tests-automatisés)  
+7. [Tests](#tests-automatisés)  
 8. [Roadmap personnelle](#roadmap-personnelle)  
 9. [Licence](#licence)
 
@@ -68,9 +68,13 @@ démarrer le back-end Spring Boot (kflow-back),
 lancer le front-end Angular (kflow-front, dispo sur http://localhost:4200)
 
 3. Connexion par défaut
-Email : admin@kflow.local
+Email : admin@admin.admin
 
-Mot de passe : admin123
+Mot de passe : adminadmin
+ou
+Email : user@user.user
+
+Mot de passe : useruser
 
 (Identifiants injectés par data-test.sql)
 
@@ -105,7 +109,7 @@ PUT	/competitions/{id}	Modifier une compétition	ADMIN
 📌 Les appels protégés doivent contenir un header :
 Authorization: Bearer <access-token>
 
-🧪 Tests automatisés
+🧪 Tests 
 🖥 Back-end : JUnit
 bash
 Copier
