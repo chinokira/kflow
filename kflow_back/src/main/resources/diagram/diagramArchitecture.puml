@@ -1,0 +1,48 @@
+@startuml
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam defaultTextAlignment center
+
+' Couleurs
+skinparam package {
+  BackgroundColor<<frontend>> #C3E6CB
+  BackgroundColor<<backend>> #FFDDC1
+  BackgroundColor<<db>> #CDE1FF
+  BackgroundColor<<security>> #EAD1DC
+}
+
+package "Frontend Angular" <<frontend>> {
+  [Interface Utilisateur] --> [Composants Angular]
+  [Composants Angular] --> [Services Angular]
+  [Services Angular] --> [Guards d'Authentification]
+  [Guards d'Authentification] --> "Backend Spring Boot"
+}
+
+package "Backend Spring Boot" <<backend>> {
+  package "Controllers REST" {
+    [Controller]
+  }
+
+  package "Services Métier" {
+    [Service]
+  }
+
+  package "Repositories JPA" {
+    [Repository]
+  }
+
+
+  [Controller] --> [Service]
+
+  [Service] --> [Repository]
+}
+
+
+
+package "Base de Données" <<db>> {
+  [MySQL]
+}
+
+[Repository] --> [MySQL]
+
+@enduml
