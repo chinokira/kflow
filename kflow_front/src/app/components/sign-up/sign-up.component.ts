@@ -19,6 +19,8 @@ import { CommonModule } from '@angular/common';
 export class SignUpComponent {
 
   userFormGroup = User.formGroup();
+  errorMessage: string = '';
+  isLoading: boolean = false;
 
   constructor(
     private readonly userService: UserService,
@@ -27,9 +29,27 @@ export class SignUpComponent {
 
   onSubmit() {
     if (this.userFormGroup.valid) {
+      this.isLoading = true;
+      this.errorMessage = '';
+      
       this.userService.save(this.userFormGroup.value as User).subscribe({
-        next: () => this.router.navigateByUrl("/login"),
-        error: (error) => console.error('Erreur lors de l\'inscription:', error)
+        next: () => {
+          this.isLoading = false;
+          this.router.navigateByUrl("/login");
+        },
+        error: (error) => {
+          this.isLoading = false;
+          console.error('Erreur lors de l\'inscription:', error);
+          
+          // Gérer les différents types d'erreurs
+          if (error.status === 400 && error.error) {
+            this.errorMessage = error.error;
+          } else if (error.status === 409) {
+            this.errorMessage = 'Un utilisateur avec cet email existe déjà';
+          } else {
+            this.errorMessage = 'Une erreur est survenue lors de l\'inscription. Veuillez réessayer.';
+          }
+        }
       });
     } else {
       this.userFormGroup.markAllAsTouched();

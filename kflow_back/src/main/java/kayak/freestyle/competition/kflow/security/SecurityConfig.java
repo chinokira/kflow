@@ -78,6 +78,7 @@ public class SecurityConfig {
                 // Routes publiques
                 .requestMatchers("/authenticate").permitAll()
                 .requestMatchers("/").permitAll()
+                .requestMatchers(HttpMethod.POST, "/users").permitAll()
                 // Routes protégées pour les utilisateurs authentifiés
                 .requestMatchers(HttpMethod.GET, "/competitions/**").hasAnyAuthority("USER", "ADMIN")
                 .requestMatchers(HttpMethod.GET, "/categories/**").hasAnyAuthority("USER", "ADMIN")
