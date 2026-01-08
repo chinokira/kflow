@@ -23,6 +23,7 @@ import kayak.freestyle.competition.kflow.models.Participant;
 import kayak.freestyle.competition.kflow.repositories.CategorieRepository;
 
 @ExtendWith(MockitoExtension.class)
+@SuppressWarnings("null")
 class CategorieServiceTest {
 
     @Mock
@@ -64,6 +65,7 @@ class CategorieServiceTest {
         categorieDto.setName("Senior");
     }
 
+    @SuppressWarnings("null")
     @Test
     void getCategorieWithParticipants_WithExistingId_ShouldReturnCategorie() {
         when(repository.findCategorieWithParticipants(1L)).thenReturn(Optional.of(categorie));
@@ -76,6 +78,7 @@ class CategorieServiceTest {
         verify(repository).findCategorieWithParticipants(1L);
     }
 
+    @SuppressWarnings("null")
     @Test
     void getCategorieWithParticipants_WithNonExistingId_ShouldThrowException() {
         when(repository.findCategorieWithParticipants(999L)).thenReturn(Optional.empty());
@@ -84,6 +87,7 @@ class CategorieServiceTest {
         verify(repository).findCategorieWithParticipants(999L);
     }
 
+    @SuppressWarnings("null")
     @Test
     void save_ShouldSaveAndReturnDto() {
         when(mapper.dtoToModel(categorieDto)).thenReturn(categorie);
@@ -99,6 +103,7 @@ class CategorieServiceTest {
         verify(mapper).modelToDto(categorie);
     }
 
+    @SuppressWarnings("null")
     @Test
     void save_WithNullName_ShouldSaveAndReturnDto() {
         categorieDto.setName(null);
@@ -115,6 +120,7 @@ class CategorieServiceTest {
         verify(mapper).modelToDto(categorie);
     }
 
+    @SuppressWarnings("null")
     @Test
     void save_WithEmptyName_ShouldSaveAndReturnDto() {
         categorieDto.setName("");
@@ -131,6 +137,7 @@ class CategorieServiceTest {
         verify(mapper).modelToDto(categorie);
     }
 
+    @SuppressWarnings("null")
     @Test
     void save_WithNullCompetition_ShouldSaveAndReturnDto() {
         categorie.setCompetition(null);

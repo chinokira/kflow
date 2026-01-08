@@ -77,6 +77,7 @@ public class Competition {
     @OneToMany(mappedBy = "competition", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("competition-categories")
     @Column(nullable = true)
+    @lombok.Builder.Default
     private Set<Categorie> categories = new HashSet<>();
 
     /**

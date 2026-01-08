@@ -13,9 +13,12 @@ import kayak.freestyle.competition.kflow.services.StageService;
 @Component
 public class RunMapper implements GenericMapper<Run, RunDto> {
 
+    @SuppressWarnings("unused")
     private final StageService stageService;
+    @SuppressWarnings("unused")
     private final ParticipantService participantService;
     private final StageMapper stageMapper;
+    @SuppressWarnings("unused")
     private final ParticipantMapper participantMapper;
 
     public RunMapper(@Lazy StageService stageService, @Lazy ParticipantService participantService,

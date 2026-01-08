@@ -31,6 +31,7 @@ class CompetitionImportIntegrationTest {
     private ImportService importService;
 
     @Autowired
+    @SuppressWarnings("unused")
     private CompetitionService competitionService;
 
     @Test

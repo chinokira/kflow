@@ -23,6 +23,7 @@ import kayak.freestyle.competition.kflow.models.Competition;
 import kayak.freestyle.competition.kflow.repositories.CompetitionRepository;
 
 @ExtendWith(MockitoExtension.class)
+@SuppressWarnings("null")
 class CompetitionServiceTest {
 
     @Mock
@@ -62,6 +63,7 @@ class CompetitionServiceTest {
         updateDto.setPlace("Paris");
     }
 
+    @SuppressWarnings("null")
     @Test
     void getCompetitionWithDetails_WithExistingId_ShouldReturnDto() {
         when(repository.findCompetitionWithDetails(1L)).thenReturn(Optional.of(competition));
@@ -75,6 +77,7 @@ class CompetitionServiceTest {
         verify(mapper).modelToDto(competition);
     }
 
+    @SuppressWarnings("null")
     @Test
     void getCompetitionWithDetails_WithNonExistingId_ShouldThrowException() {
         when(repository.findCompetitionWithDetails(999L)).thenReturn(Optional.empty());
@@ -83,6 +86,7 @@ class CompetitionServiceTest {
         verify(repository).findCompetitionWithDetails(999L);
     }
 
+    @SuppressWarnings("null")
     @Test
     void updateCompetition_WithValidData_ShouldUpdateAndReturnDto() {
         when(repository.findCompetitionWithDetails(1L)).thenReturn(Optional.of(competition));
@@ -98,6 +102,7 @@ class CompetitionServiceTest {
         verify(mapper).modelToDto(any(Competition.class));
     }
 
+    @SuppressWarnings("null")
     @Test
     void updateCompetition_WithNonExistingId_ShouldThrowException() {
         when(repository.findCompetitionWithDetails(999L)).thenReturn(Optional.empty());
@@ -106,6 +111,7 @@ class CompetitionServiceTest {
         verify(repository).findCompetitionWithDetails(999L);
     }
 
+    @SuppressWarnings("null")
     @Test
     void updateCompetition_WithInvalidDates_ShouldUpdateAndReturnDto() {
         updateDto.setStartDate("2024-01-02");
@@ -123,6 +129,7 @@ class CompetitionServiceTest {
         verify(mapper).modelToDto(any(Competition.class));
     }
 
+    @SuppressWarnings("null")
     @Test
     void updateCompetition_WithNullDates_ShouldThrowException() {
         updateDto.setStartDate(null);
@@ -132,6 +139,7 @@ class CompetitionServiceTest {
         verify(repository, never()).save(any());
     }
 
+    @SuppressWarnings("null")
     @Test
     void updateCompetition_WithNullLevel_ShouldUpdateAndReturnDto() {
         updateDto.setLevel(null);
@@ -148,6 +156,7 @@ class CompetitionServiceTest {
         verify(mapper).modelToDto(any(Competition.class));
     }
 
+    @SuppressWarnings("null")
     @Test
     void updateCompetition_WithNullPlace_ShouldUpdateAndReturnDto() {
         updateDto.setPlace(null);

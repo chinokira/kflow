@@ -1,0 +1,25 @@
+
+> kflow@0.0.0 build
+> ng build
+
+- Generating browser application bundles (phase: setup)...
+✔ Browser application bundle generation complete.
+✔ Browser application bundle generation complete.
+- Copying assets...
+✔ Copying assets complete.
+- Generating index html...
+✔ Index html generation complete.
+
+Initial chunk files           | Names         |  Raw size | Estimated transfer size
+main.d7634f91e5880ec9.js      | main          | 925.70 kB |               182.66 kB
+styles.18a0334b779386a5.css   | styles        |  85.21 kB |                 8.10 kB
+polyfills.fba187a2bd278638.js | polyfills     |  33.98 kB |                11.06 kB
+runtime.fbe6e6f393e3ef5c.js   | runtime       | 888 bytes |               511 bytes
+
+                              | Initial total |   1.02 MB |               202.32 kB
+
+Build at: 2026-01-08T10:13:58.988Z - Hash: 1be51f718d530ca1 - Time: 11284ms
+
+Warning: C:/Users/adris/Desktop/projetFreestyle/kflow/kflow_front/src/app/pages/competitions/competitions.component.scss exceeded maximum budget. Budget 2.00 kB was not met by 1.17 kB with a total of 3.17 kB.
+
+

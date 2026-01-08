@@ -1,19 +1,21 @@
 package kayak.freestyle.competition.kflow.mappers;
 
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Component;
-
 import kayak.freestyle.competition.kflow.dto.StageDto;
 import kayak.freestyle.competition.kflow.models.Categorie;
 import kayak.freestyle.competition.kflow.models.Stage;
 import kayak.freestyle.competition.kflow.services.CategorieService;
 import kayak.freestyle.competition.kflow.services.RunService;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
 
 @Component
 public class StageMapper implements GenericMapper<Stage, StageDto> {
 
+    @SuppressWarnings("unused")
     private final RunService runService;
+    @SuppressWarnings("unused")
     private final CategorieService categorieService;
+    @SuppressWarnings("unused")
     private final RunMapper runMapper;
     private final CategorieMapper categorieMapper;
 
@@ -29,14 +31,12 @@ public class StageMapper implements GenericMapper<Stage, StageDto> {
         if (model == null) {
             return null;
         }
-        StageDto dto = StageDto.builder()
+        return StageDto.builder()
                 .id(model.getId())
                 .name(model.getName())
                 .nbRun(model.getNbRun())
                 .rules(model.getRules())
                 .build();
-
-        return dto;
     }
 
     @Override
@@ -54,10 +54,7 @@ public class StageMapper implements GenericMapper<Stage, StageDto> {
 
         // Associer la catégorie si elle est fournie dans le DTO
         if (dto.getCategorie() != null && dto.getCategorie().getId() != null) {
-            Categorie categorieRef = categorieMapper.dtoToModel(dto.getCategorie()); // Utiliser le CategorieMapper est plus propre
-            // Ou si CategorieMapper.dtoToModel ne gère pas bien les références partielles :
-            // Categorie categorieRef = new Categorie();
-            // categorieRef.setId(dto.getCategorie().getId());
+            Categorie categorieRef = categorieMapper.dtoToModel(dto.getCategorie());
             model.setCategorie(categorieRef);
         }
 

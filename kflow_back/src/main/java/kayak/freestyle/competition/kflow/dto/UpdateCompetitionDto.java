@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import kayak.freestyle.competition.kflow.dto.CategorieDto;
 
 @Data
 @Builder

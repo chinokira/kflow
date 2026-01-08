@@ -72,6 +72,7 @@ public class Participant {
      */
     @ManyToMany(fetch = FetchType.LAZY)
     @JsonBackReference("participant-categories")
+    @lombok.Builder.Default
     private Set<Categorie> categories = new HashSet<>();
 
     /**
@@ -79,6 +80,7 @@ public class Participant {
      * run represents a single attempt in a category.
      */
     @OneToMany(mappedBy = "participant", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @lombok.Builder.Default
     private Set<Run> runs = new HashSet<>();
 
     /**

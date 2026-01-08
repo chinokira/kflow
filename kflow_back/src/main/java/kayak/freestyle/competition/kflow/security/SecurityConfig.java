@@ -1,10 +1,13 @@
 package kayak.freestyle.competition.kflow.security;
 
+import com.nimbusds.jose.jwk.JWK;
+import com.nimbusds.jose.jwk.JWKSet;
+import com.nimbusds.jose.jwk.RSAKey;
+import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
+import com.nimbusds.jose.jwk.source.JWKSource;
+import com.nimbusds.jose.proc.SecurityContext;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,13 +29,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.nimbusds.jose.jwk.JWK;
-import com.nimbusds.jose.jwk.JWKSet;
-import com.nimbusds.jose.jwk.RSAKey;
-import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
-import com.nimbusds.jose.jwk.source.JWKSource;
-import com.nimbusds.jose.proc.SecurityContext;
-
 /**
  * Configuration class for Spring Security. This class configures
  * authentication, authorization, CORS, and JWT handling for the K-FLOW
@@ -46,7 +42,13 @@ import com.nimbusds.jose.proc.SecurityContext;
 @EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfig {
 
-    private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
+    private static final String COMPETITIONS_ENDPOINT = "/competitions/**";
+    private static final String CATEGORIES_ENDPOINT = "/categories/**";
+    private static final String PARTICIPANTS_ENDPOINT = "/participants/**";
+    private static final String RUNS_ENDPOINT = "/runs/**";
+    private static final String STAGES_ENDPOINT = "/stages/**";
+    private static final String ADMIN_ROLE = "ADMIN";
+    private static final String USER_ROLE = "USER";
 
     /**
      * RSA public key used for JWT verification. Injected from application
@@ -85,28 +87,28 @@ public class SecurityConfig {
                         "/swagger-ui.html"
                 ).permitAll()
                 // Routes protégées pour les utilisateurs authentifiés
-                .requestMatchers(HttpMethod.GET, "/competitions/**").hasAnyAuthority("USER", "ADMIN")
-                .requestMatchers(HttpMethod.GET, "/categories/**").hasAnyAuthority("USER", "ADMIN")
-                .requestMatchers(HttpMethod.GET, "/participants/**").hasAnyAuthority("USER", "ADMIN")
-                .requestMatchers(HttpMethod.GET, "/runs/**").hasAnyAuthority("USER", "ADMIN")
-                .requestMatchers(HttpMethod.GET, "/stages/**").hasAnyAuthority("USER", "ADMIN")
+                .requestMatchers(HttpMethod.GET, COMPETITIONS_ENDPOINT).hasAnyAuthority(USER_ROLE, ADMIN_ROLE)
+                .requestMatchers(HttpMethod.GET, CATEGORIES_ENDPOINT).hasAnyAuthority(USER_ROLE, ADMIN_ROLE)
+                .requestMatchers(HttpMethod.GET, PARTICIPANTS_ENDPOINT).hasAnyAuthority(USER_ROLE, ADMIN_ROLE)
+                .requestMatchers(HttpMethod.GET, RUNS_ENDPOINT).hasAnyAuthority(USER_ROLE, ADMIN_ROLE)
+                .requestMatchers(HttpMethod.GET, STAGES_ENDPOINT).hasAnyAuthority(USER_ROLE, ADMIN_ROLE)
                 // Routes protégées pour les administrateurs uniquement
-                .requestMatchers(HttpMethod.POST, "/competitions/**").hasAuthority("ADMIN")
-                .requestMatchers(HttpMethod.PUT, "/competitions/**").hasAuthority("ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/competitions/**").hasAuthority("ADMIN")
-                .requestMatchers(HttpMethod.POST, "/categories/**").hasAuthority("ADMIN")
-                .requestMatchers(HttpMethod.PUT, "/categories/**").hasAuthority("ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/categories/**").hasAuthority("ADMIN")
-                .requestMatchers(HttpMethod.POST, "/participants/**").hasAuthority("ADMIN")
-                .requestMatchers(HttpMethod.PUT, "/participants/**").hasAuthority("ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/participants/**").hasAuthority("ADMIN")
-                .requestMatchers(HttpMethod.POST, "/runs/**").hasAuthority("ADMIN")
-                .requestMatchers(HttpMethod.PUT, "/runs/**").hasAuthority("ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/runs/**").hasAuthority("ADMIN")
-                .requestMatchers(HttpMethod.POST, "/stages/**").hasAuthority("ADMIN")
-                .requestMatchers(HttpMethod.PUT, "/stages/**").hasAuthority("ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/stages/**").hasAuthority("ADMIN")
-                .requestMatchers("/api/import/**").hasAuthority("ADMIN")
+                .requestMatchers(HttpMethod.POST, COMPETITIONS_ENDPOINT).hasAuthority(ADMIN_ROLE)
+                .requestMatchers(HttpMethod.PUT, COMPETITIONS_ENDPOINT).hasAuthority(ADMIN_ROLE)
+                .requestMatchers(HttpMethod.DELETE, COMPETITIONS_ENDPOINT).hasAuthority(ADMIN_ROLE)
+                .requestMatchers(HttpMethod.POST, CATEGORIES_ENDPOINT).hasAuthority(ADMIN_ROLE)
+                .requestMatchers(HttpMethod.PUT, CATEGORIES_ENDPOINT).hasAuthority(ADMIN_ROLE)
+                .requestMatchers(HttpMethod.DELETE, CATEGORIES_ENDPOINT).hasAuthority(ADMIN_ROLE)
+                .requestMatchers(HttpMethod.POST, PARTICIPANTS_ENDPOINT).hasAuthority(ADMIN_ROLE)
+                .requestMatchers(HttpMethod.PUT, PARTICIPANTS_ENDPOINT).hasAuthority(ADMIN_ROLE)
+                .requestMatchers(HttpMethod.DELETE, PARTICIPANTS_ENDPOINT).hasAuthority(ADMIN_ROLE)
+                .requestMatchers(HttpMethod.POST, RUNS_ENDPOINT).hasAuthority(ADMIN_ROLE)
+                .requestMatchers(HttpMethod.PUT, RUNS_ENDPOINT).hasAuthority(ADMIN_ROLE)
+                .requestMatchers(HttpMethod.DELETE, RUNS_ENDPOINT).hasAuthority(ADMIN_ROLE)
+                .requestMatchers(HttpMethod.POST, STAGES_ENDPOINT).hasAuthority(ADMIN_ROLE)
+                .requestMatchers(HttpMethod.PUT, STAGES_ENDPOINT).hasAuthority(ADMIN_ROLE)
+                .requestMatchers(HttpMethod.DELETE, STAGES_ENDPOINT).hasAuthority(ADMIN_ROLE)
+                .requestMatchers("/api/import/**").hasAuthority(ADMIN_ROLE)
                 // Toutes les autres routes nécessitent une authentification
                 .anyRequest().authenticated())
                 .formLogin(c -> c.disable())

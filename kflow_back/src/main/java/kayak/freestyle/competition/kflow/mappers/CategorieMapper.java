@@ -18,9 +18,12 @@ import java.util.Set;
 @Component
 public class CategorieMapper implements GenericMapper<Categorie, CategorieDto> {
 
+    @SuppressWarnings("unused")
     private final ParticipantService participantService;
+    @SuppressWarnings("unused")
     private final StageService stageService;
     private final ParticipantMapper participantMapper;
+    @SuppressWarnings("unused")
     private final StageMapper stageMapper;
 
     public CategorieMapper(@Lazy ParticipantService participantService, @Lazy StageService stageService,

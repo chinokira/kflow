@@ -1,7 +1,6 @@
 package kayak.freestyle.competition.kflow.dto;
 
 import org.hibernate.validator.constraints.Length;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
