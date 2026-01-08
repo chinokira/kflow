@@ -22,13 +22,14 @@ public class UserMapper implements GenericMapper<User, UserDto> {
     @Override
     public User dtoToModel(UserDto d) {
         User user = new User();
-        user.setId(d.getId());
+        if (d.getId() != null && d.getId() != 0) {
+            user.setId(d.getId());
+        }
         user.setName(d.getName());
         user.setEmail(d.getEmail());
         user.setPassword(d.getPassword());
         user.setRole(d.getRole());
         return user;
-
     }
 
 }

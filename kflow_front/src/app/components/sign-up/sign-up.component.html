@@ -6,29 +6,39 @@
     <mat-form-field appearance="outline">
       <mat-label>Nom d'utilisateur</mat-label>
       <input matInput formControlName="name">
-      <mat-error [appInsertError2]="userFormGroup.controls.name"></mat-error>
+      <mat-error [appInsertError]="userFormGroup.controls.name"></mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
       <mat-label>Email</mat-label>
       <input matInput formControlName="email">
-      <mat-error [appInsertError2]="userFormGroup.controls.email"></mat-error>
+      <mat-error [appInsertError]="userFormGroup.controls.email"></mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
       <mat-label>Mot de passe</mat-label>
-      <input matInput formControlName="password" type="" password>
-      <mat-error [appInsertError2]="userFormGroup.controls.password"></mat-error>
+      <input matInput formControlName="password" type="password">
+      <mat-error [appInsertError]="userFormGroup.controls.password"></mat-error>
     </mat-form-field>
 
   </form>
+
+  <!-- Affichage des erreurs -->
+  @if (errorMessage) {
+    <div class="error-message" style="color: red; margin: 10px 0; padding: 10px; background-color: #ffebee; border-radius: 4px;">
+      {{ errorMessage }}
+    </div>
+  }
+
   <div class="actions">
-    <button mat-button mat-raised-button mat-dialog-close type="button" (click)="redirectToHome()">Annuler</button>
-    <button mat-button mat-raised-button color="primary" (click)="onSubmit()">Valider</button>
+    <button mat-button mat-raised-button mat-dialog-close type="button" (click)="redirectToHome()" [disabled]="isLoading">Annuler</button>
+    <button mat-button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="isLoading || !userFormGroup.valid">
+      {{ isLoading ? 'Inscription en cours...' : 'Valider' }}
+    </button>
   </div>
 
   <div class="actions" style="margin-top: 20px;">
-    <button mat-button mat-raised-button mat-dialog-close type="button" (click)="redirectToLogin()">Déjà un compte</button>
+    <button mat-button mat-raised-button mat-dialog-close type="button" (click)="redirectToLogin()" [disabled]="isLoading">Déjà un compte</button>
   </div>
 
 </div>

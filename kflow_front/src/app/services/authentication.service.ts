@@ -44,9 +44,11 @@ export class AuthenticationService {
         this.connectedUser.next(user);
       } else {
         this.refresh().subscribe({
-          next: () => console.log('Token rafraîchi avec succès'),
+          next: () => {
+            // Token rafraîchi avec succès
+          },
           error: () => {
-            console.log('Impossible de rafraîchir le token, déconnexion');
+            // Impossible de rafraîchir le token, déconnexion
             this.logout();
           }
         });
@@ -62,7 +64,6 @@ export class AuthenticationService {
     }).pipe(
       tap(res => {
         const decodedAccessToken = jwtDecode<JwtCustomPayload>(res.accessToken);
-        console.log('JWT decoded:', decodedAccessToken);
         const user = {
           accessToken: res.accessToken,
           refreshToken: res.refreshToken,
@@ -70,7 +71,6 @@ export class AuthenticationService {
           name: decodedAccessToken.username,
           role: decodedAccessToken.role
         };
-        console.log('User created:', user);
         this.connectedUser.next(user);
         localStorage.setItem('user', JSON.stringify(user));
       }),

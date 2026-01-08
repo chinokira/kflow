@@ -1,4 +1,4 @@
-import { Directive, Input, ElementRef } from '@angular/core';
+import { Directive, Input, ElementRef, OnInit, OnDestroy } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { startWith } from 'rxjs/operators';
@@ -11,11 +11,11 @@ const defaultMessages: { [k: string]: string } = {
 }
 
 @Directive({
-  selector: '[appInsertError2]',
+  selector: '[appInsertError]',
   standalone: true
 })
-export class InsertErrorDirective {
-  @Input('appInsertError2') control?: AbstractControl;
+export class InsertErrorDirective implements OnInit, OnDestroy {
+  @Input('appInsertError') control?: AbstractControl;
   private subscription?: Subscription;
 
   constructor(

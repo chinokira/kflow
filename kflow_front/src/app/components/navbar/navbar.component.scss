@@ -34,6 +34,10 @@ mat-toolbar {
       background-color: rgba(255, 255, 255, 0.2);
     }
   }
+
+  .mobile-actions {
+    display: none;
+  }
 }
 
 mat-sidenav-content {
@@ -96,4 +100,41 @@ mat-nav-list {
 
 app-footer {
   flex-shrink: 0;
+}
+
+// Media queries pour la responsivité
+@media (max-width: 768px) {
+  mat-toolbar {
+    .app-title {
+      font-size: 1.2rem;
+      margin-left: 0.5rem;
+      padding: 6px 12px;
+    }
+
+    .mobile-actions {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  .content-container {
+    padding: 0.5rem;
+  }
+
+  mat-sidenav {
+    width: 280px;
+  }
+}
+
+@media (max-width: 480px) {
+  mat-toolbar {
+    .app-title {
+      font-size: 1rem;
+      padding: 4px 8px;
+    }
+  }
+
+  .content-container {
+    padding: 0.25rem;
+  }
 } 

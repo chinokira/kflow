@@ -78,6 +78,12 @@ public class SecurityConfig {
                 // Routes publiques
                 .requestMatchers("/authenticate").permitAll()
                 .requestMatchers("/").permitAll()
+                .requestMatchers(HttpMethod.POST, "/users").permitAll()
+                .requestMatchers(
+                        "/v3/api-docs/**",
+                        "/swagger-ui/**",
+                        "/swagger-ui.html"
+                ).permitAll()
                 // Routes protégées pour les utilisateurs authentifiés
                 .requestMatchers(HttpMethod.GET, "/competitions/**").hasAnyAuthority("USER", "ADMIN")
                 .requestMatchers(HttpMethod.GET, "/categories/**").hasAnyAuthority("USER", "ADMIN")
