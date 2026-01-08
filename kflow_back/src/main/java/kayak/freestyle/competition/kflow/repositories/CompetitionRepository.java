@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 
 import kayak.freestyle.competition.kflow.models.Competition;
@@ -61,5 +62,6 @@ public interface CompetitionRepository extends JpaRepository<Competition, Long> 
         */
        @Query("SELECT DISTINCT c FROM Competition c " +
                      "LEFT JOIN FETCH c.categories")
+       @NonNull
        List<Competition> findAll();
 }

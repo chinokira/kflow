@@ -1,0 +1,29 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -----------------< kayak.freestyle.competition:kflow >------------------
+[INFO] Building kflow 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.3.2:clean (default-clean) @ kflow ---
+[INFO] Deleting C:\Users\adris\Desktop\projetFreestyle\kflow\kflow_back\target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ kflow ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 3 resources from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.11.0:compile (default-compile) @ kflow ---
+[INFO] Changes detected - recompiling the module! :source
+[INFO] Compiling 54 source files with javac [debug release 21] to target\classes
+[WARNING] /C:/Users/adris/Desktop/projetFreestyle/kflow/kflow_back/src/main/java/kayak/freestyle/competition/kflow/models/Participant.java:[75,28] @SuperBuilder will ignore the initializing expression entirely. If you want the initializing expression to serve as default, add @Builder.Default. If it is not supposed to be settable during building, make the field final.
+[WARNING] /C:/Users/adris/Desktop/projetFreestyle/kflow/kflow_back/src/main/java/kayak/freestyle/competition/kflow/models/Participant.java:[82,22] @SuperBuilder will ignore the initializing expression entirely. If you want the initializing expression to serve as default, add @Builder.Default. If it is not supposed to be settable during building, make the field final.
+[WARNING] /C:/Users/adris/Desktop/projetFreestyle/kflow/kflow_back/src/main/java/kayak/freestyle/competition/kflow/models/Categorie.java:[75,25] @SuperBuilder will ignore the initializing expression entirely. If you want the initializing expression to serve as default, add @Builder.Default. If it is not supposed to be settable during building, make the field final.
+[WARNING] /C:/Users/adris/Desktop/projetFreestyle/kflow/kflow_back/src/main/java/kayak/freestyle/competition/kflow/models/Categorie.java:[82,30] @SuperBuilder will ignore the initializing expression entirely. If you want the initializing expression to serve as default, add @Builder.Default. If it is not supposed to be settable during building, make the field final.
+[WARNING] /C:/Users/adris/Desktop/projetFreestyle/kflow/kflow_back/src/main/java/kayak/freestyle/competition/kflow/dto/CompetitionDto.java:[39,32] @SuperBuilder will ignore the initializing expression entirely. If you want the initializing expression to serve as default, add @Builder.Default. If it is not supposed to be settable during building, make the field final.
+[WARNING] /C:/Users/adris/Desktop/projetFreestyle/kflow/kflow_back/src/main/java/kayak/freestyle/competition/kflow/models/Competition.java:[80,28] @SuperBuilder will ignore the initializing expression entirely. If you want the initializing expression to serve as default, add @Builder.Default. If it is not supposed to be settable during building, make the field final.
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  7.139 s
+[INFO] Finished at: 2026-01-08T11:12:52+01:00
+[INFO] ------------------------------------------------------------------------

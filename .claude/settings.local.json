@@ -8,7 +8,16 @@
       "Bash(docker-compose up:*)",
       "Bash(timeout 30 bash:*)",
       "Bash(timeout 60 bash:*)",
-      "Bash(powershell:*)"
+      "Bash(powershell:*)",
+      "Bash(./mvnw clean compile:*)",
+      "Bash(git stash:*)",
+      "Bash(for file in CategorieServiceTest.java CompetitionServiceTest.java GenericServiceTest.java ParticipantServiceTest.java RunServiceTest.java UserServiceTest.java)",
+      "Bash(do if ! grep -q \"@SuppressWarnings\\(\"\"null\"\"\\)\" \"$file\")",
+      "Bash(then sed -i '/^class /i @SuppressWarnings\\(\"\"null\"\"\\)' \"$file\")",
+      "Bash(fi)",
+      "Bash(done)",
+      "Bash(for file in GenericServiceTest.java CategorieServiceTest.java CompetitionServiceTest.java ParticipantServiceTest.java)",
+      "Bash(do sed -i '/^class /i @SuppressWarnings\\({\"\"null\"\", \"\"unchecked\"\"}\\)' \"$file\")"
     ]
   }
 }

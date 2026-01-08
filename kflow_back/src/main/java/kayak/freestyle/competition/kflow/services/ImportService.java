@@ -6,12 +6,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import kayak.freestyle.competition.kflow.dto.CategorieDto;
 import kayak.freestyle.competition.kflow.dto.CompetitionDto;
 import kayak.freestyle.competition.kflow.dto.ParticipantDto;
@@ -27,6 +21,10 @@ import kayak.freestyle.competition.kflow.models.Participant;
 import kayak.freestyle.competition.kflow.models.Run;
 import kayak.freestyle.competition.kflow.models.Stage;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -39,6 +37,7 @@ public class ImportService {
     private final ParticipantService participantService;
     private final StageService stageService;
     private final RunService runService;
+    @SuppressWarnings("unused")
     private final CategorieMapper categorieMapper;
     private final ParticipantMapper participantMapper;
     private final StageMapper stageMapper;
@@ -67,18 +66,18 @@ public class ImportService {
         return competition;
     }
 
-    private Categorie importCategory(CategorieDto CategoryDto, Competition competition) {
-        Categorie category = createAndSaveCategory(CategoryDto, competition);
-        Map<String, Stage> stageMap = createAndSaveStages(CategoryDto, category);
-        if (CategoryDto.getParticipants() != null) {
-            createAndSaveParticipantsWithRuns(CategoryDto, category, stageMap);
+    private Categorie importCategory(CategorieDto categoryDto, Competition competition) {
+        Categorie category = createAndSaveCategory(categoryDto, competition);
+        Map<String, Stage> stageMap = createAndSaveStages(categoryDto, category);
+        if (categoryDto.getParticipants() != null) {
+            createAndSaveParticipantsWithRuns(categoryDto, category, stageMap);
         }
         return categorieService.saveModel(category);
     }
 
-    private Categorie createAndSaveCategory(CategorieDto CategoryDto, Competition competition) {
+    private Categorie createAndSaveCategory(CategorieDto categoryDto, Competition competition) {
         Categorie category = Categorie.builder()
-                .name(CategoryDto.getName())
+                .name(categoryDto.getName())
                 .competition(competition)
                 .stages(new ArrayList<>())
                 .participants(new HashSet<>())
@@ -86,8 +85,8 @@ public class ImportService {
         return categorieService.saveModel(category);
     }
 
-    private Map<String, Stage> createAndSaveStages(CategorieDto CategoryDto, Categorie categoryEntity) {
-        Set<String> stageNames = collectStageNames(CategoryDto);
+    private Map<String, Stage> createAndSaveStages(CategorieDto categoryDto, Categorie categoryEntity) {
+        Set<String> stageNames = collectStageNames(categoryDto);
         Map<String, Stage> stageMap = new HashMap<>();
 
         CategorieDto tempCategorieDtoForStageMapping = CategorieDto.builder().id(categoryEntity.getId()).name(categoryEntity.getName()).build();
@@ -111,24 +110,28 @@ public class ImportService {
         return stageMap;
     }
 
-    private Set<String> collectStageNames(CategorieDto CategoryDto) {
+    private Set<String> collectStageNames(CategorieDto categoryDto) {
         Set<String> stageNames = new HashSet<>();
-        if (CategoryDto.getParticipants() != null) {
-            for (ParticipantDto participant : CategoryDto.getParticipants()) {
-                if (participant.getRuns() != null) {
-                    for (RunDto run : participant.getRuns()) {
-                        if (run.getStageName() != null && !run.getStageName().trim().isEmpty()) {
-                            stageNames.add(run.getStageName());
-                        }
-                    }
-                }
+        if (categoryDto.getParticipants() != null) {
+            for (ParticipantDto participant : categoryDto.getParticipants()) {
+                addStageNamesFromParticipant(participant, stageNames);
             }
         }
         return stageNames;
     }
 
-    private void createAndSaveParticipantsWithRuns(CategorieDto CategoryDto, Categorie categoryEntity, Map<String, Stage> stageMap) {
-        for (ParticipantDto ParticipantDto : CategoryDto.getParticipants()) {
+    private void addStageNamesFromParticipant(ParticipantDto participant, Set<String> stageNames) {
+        if (participant.getRuns() != null) {
+            for (RunDto run : participant.getRuns()) {
+                if (run.getStageName() != null && !run.getStageName().trim().isEmpty()) {
+                    stageNames.add(run.getStageName());
+                }
+            }
+        }
+    }
+
+    private void createAndSaveParticipantsWithRuns(CategorieDto categoryDto, Categorie categoryEntity, Map<String, Stage> stageMap) {
+        for (ParticipantDto ParticipantDto : categoryDto.getParticipants()) {
             Participant participant = createAndSaveParticipant(ParticipantDto, categoryEntity);
             if (ParticipantDto.getRuns() != null) {
                 createAndSaveRuns(ParticipantDto, participant, stageMap);
@@ -153,36 +156,41 @@ public class ImportService {
         return participant;
     }
 
-    private void createAndSaveRuns(ParticipantDto ParticipantDto, Participant participantEntity, Map<String, Stage> stageMap) {
+    private void createAndSaveRuns(ParticipantDto participantDto, Participant participantEntity, Map<String, Stage> stageMap) {
         logger.info("Creating runs for participant: {}", participantEntity.getName());
-        logger.info("Number of runs in DTO: {}", ParticipantDto.getRuns().size());
+        logger.info("Number of runs in DTO: {}", participantDto.getRuns().size());
 
-        for (RunDto runDtoIncoming : ParticipantDto.getRuns()) {
-            String stageName = runDtoIncoming.getStageName();
-            logger.info("Processing run for stage: {}", stageName);
-
-            if (stageName != null && !stageName.trim().isEmpty() && stageMap.containsKey(stageName)) {
-                Stage stageEntity = stageMap.get(stageName);
-                logger.info("Found stage entity: {}", stageEntity.getName());
-
-                StageDto tempStageDto = StageDto.builder().name(stageEntity.getName()).id(stageEntity.getId()).build();
-                RunDto runDto = RunDto.builder()
-                        .duration(runDtoIncoming.getDuration())
-                        .score(runDtoIncoming.getScore())
-                        .stage(tempStageDto)
-                        .build();
-
-                Run run = runMapper.dtoToModel(runDto);
-                run.setParticipant(participantEntity);
-                run = runService.saveModel(run);
-                participantEntity.addRun(run);
-                logger.info("Saved run with ID: {} for participant: {}", run.getId(), participantEntity.getName());
-            } else {
-                logger.warn("Stage not found or invalid for run: {}", stageName);
-            }
+        for (RunDto runDtoIncoming : participantDto.getRuns()) {
+            processSingleRun(runDtoIncoming, participantEntity, stageMap);
         }
 
         logger.info("Final number of runs for participant {}: {}", participantEntity.getName(), participantEntity.getRuns().size());
+    }
+
+    private void processSingleRun(RunDto runDtoIncoming, Participant participantEntity, Map<String, Stage> stageMap) {
+        String stageName = runDtoIncoming.getStageName();
+        logger.info("Processing run for stage: {}", stageName);
+
+        if (stageName == null || stageName.trim().isEmpty() || !stageMap.containsKey(stageName)) {
+            logger.warn("Stage not found or invalid for run: {}", stageName);
+            return;
+        }
+
+        Stage stageEntity = stageMap.get(stageName);
+        logger.info("Found stage entity: {}", stageEntity.getName());
+
+        StageDto tempStageDto = StageDto.builder().name(stageEntity.getName()).id(stageEntity.getId()).build();
+        RunDto runDto = RunDto.builder()
+                .duration(runDtoIncoming.getDuration())
+                .score(runDtoIncoming.getScore())
+                .stage(tempStageDto)
+                .build();
+
+        Run run = runMapper.dtoToModel(runDto);
+        run.setParticipant(participantEntity);
+        run = runService.saveModel(run);
+        participantEntity.addRun(run);
+        logger.info("Saved run with ID: {} for participant: {}", run.getId(), participantEntity.getName());
     }
 
     public List<String> validateImport(CompetitionDto importDto) {

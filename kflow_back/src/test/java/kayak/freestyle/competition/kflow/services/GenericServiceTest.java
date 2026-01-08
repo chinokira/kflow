@@ -23,6 +23,7 @@ import kayak.freestyle.competition.kflow.exceptions.NotFoundException;
 import kayak.freestyle.competition.kflow.mappers.GenericMapper;
 
 @ExtendWith(MockitoExtension.class)
+@SuppressWarnings("null")
 class GenericServiceTest {
 
     @Mock
@@ -48,6 +49,7 @@ class GenericServiceTest {
         testDto.setName("Test DTO");
     }
 
+    @SuppressWarnings("null")
     @Test
     void findAll_ShouldReturnAllDtos() {
         List<TestModel> models = Arrays.asList(testModel);
@@ -63,6 +65,7 @@ class GenericServiceTest {
         verify(mapper).modelToDto(testModel);
     }
 
+    @SuppressWarnings("null")
     @Test
     void findByIdDto_WithExistingId_ShouldReturnDto() {
         when(repository.findById(1L)).thenReturn(Optional.of(testModel));
@@ -76,6 +79,7 @@ class GenericServiceTest {
         verify(mapper).modelToDto(testModel);
     }
 
+    @SuppressWarnings("null")
     @Test
     void findByIdDto_WithNonExistingId_ShouldThrowException() {
         when(repository.findById(999L)).thenReturn(Optional.empty());
@@ -84,6 +88,7 @@ class GenericServiceTest {
         verify(repository).findById(999L);
     }
 
+    @SuppressWarnings("null")
     @Test
     void findById_WithExistingId_ShouldReturnModel() {
         when(repository.findById(1L)).thenReturn(Optional.of(testModel));
@@ -95,6 +100,7 @@ class GenericServiceTest {
         verify(repository).findById(1L);
     }
 
+    @SuppressWarnings("null")
     @Test
     void findById_WithNonExistingId_ShouldThrowException() {
         when(repository.findById(999L)).thenReturn(Optional.empty());
@@ -103,6 +109,7 @@ class GenericServiceTest {
         verify(repository).findById(999L);
     }
 
+    @SuppressWarnings("null")
     @Test
     void save_ShouldSaveAndReturnDto() {
         when(mapper.dtoToModel(testDto)).thenReturn(testModel);
@@ -118,6 +125,7 @@ class GenericServiceTest {
         verify(mapper).modelToDto(testModel);
     }
 
+    @SuppressWarnings("null")
     @Test
     void update_WithExistingId_ShouldUpdateModel() {
         when(repository.findById(1L)).thenReturn(Optional.of(testModel));
@@ -131,6 +139,7 @@ class GenericServiceTest {
         verify(repository).save(testModel);
     }
 
+    @SuppressWarnings("null")
     @Test
     void update_WithNonExistingId_ShouldThrowException() {
         TestDto dto = new TestDto();
@@ -141,6 +150,7 @@ class GenericServiceTest {
         verify(repository).findById(999L);
     }
 
+    @SuppressWarnings("null")
     @Test
     void deleteById_WithExistingId_ShouldDeleteModel() {
         when(repository.findById(1L)).thenReturn(Optional.of(testModel));
@@ -151,6 +161,7 @@ class GenericServiceTest {
         verify(repository).deleteById(1L);
     }
 
+    @SuppressWarnings("null")
     @Test
     void deleteById_WithNonExistingId_ShouldThrowException() {
         when(repository.findById(999L)).thenReturn(Optional.empty());
@@ -159,6 +170,7 @@ class GenericServiceTest {
         verify(repository).findById(999L);
     }
 
+    @SuppressWarnings("null")
     @Test
     void saveModel_ShouldSaveAndReturnModel() {
         when(repository.save(testModel)).thenReturn(testModel);
@@ -171,6 +183,7 @@ class GenericServiceTest {
     }
 
     // Classes de test internes
+    @SuppressWarnings("unused")
     private static class TestModel {
 
         private Long id;
@@ -193,6 +206,7 @@ class GenericServiceTest {
         }
     }
 
+    @SuppressWarnings("unused")
     private static class TestDto implements HasId {
 
         private Long id;

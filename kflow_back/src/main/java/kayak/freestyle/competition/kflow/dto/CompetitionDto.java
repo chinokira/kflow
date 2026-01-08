@@ -36,6 +36,7 @@ public class CompetitionDto implements HasId {
 
     private String place;
 
+    @lombok.Builder.Default
     private List<CategorieDto> categories = new ArrayList<>();
 
     @Override

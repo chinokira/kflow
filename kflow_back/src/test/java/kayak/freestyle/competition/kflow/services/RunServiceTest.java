@@ -61,6 +61,7 @@ class RunServiceTest {
         runDto.setDuration(120);
     }
 
+    @SuppressWarnings("null")
     @Test
     void save_ShouldSaveAndReturnDto() {
         when(mapper.dtoToModel(runDto)).thenReturn(run);
@@ -76,6 +77,7 @@ class RunServiceTest {
         verify(mapper).modelToDto(run);
     }
 
+    @SuppressWarnings("null")
     @Test
     void save_WithNegativeScore_ShouldSaveAndReturnDto() {
         runDto.setScore(-1.0f);
@@ -92,6 +94,7 @@ class RunServiceTest {
         verify(mapper).modelToDto(run);
     }
 
+    @SuppressWarnings("null")
     @Test
     void save_WithNegativeDuration_ShouldSaveAndReturnDto() {
         runDto.setDuration(-1);
@@ -108,6 +111,7 @@ class RunServiceTest {
         verify(mapper).modelToDto(run);
     }
 
+    @SuppressWarnings("null")
     @Test
     void save_WithNullParticipant_ShouldSaveAndReturnDto() {
         run.setParticipant(null);
@@ -124,6 +128,7 @@ class RunServiceTest {
         verify(mapper).modelToDto(run);
     }
 
+    @SuppressWarnings("null")
     @Test
     void save_WithNullStage_ShouldSaveAndReturnDto() {
         run.setStage(null);
@@ -140,6 +145,7 @@ class RunServiceTest {
         verify(mapper).modelToDto(run);
     }
 
+    @SuppressWarnings("null")
     @Test
     void save_WithZeroScore_ShouldBeValid() {
         runDto.setScore(0.0f);
@@ -154,6 +160,7 @@ class RunServiceTest {
         verify(repository).save(any(Run.class));
     }
 
+    @SuppressWarnings("null")
     @Test
     void save_WithZeroDuration_ShouldBeValid() {
         runDto.setDuration(0);

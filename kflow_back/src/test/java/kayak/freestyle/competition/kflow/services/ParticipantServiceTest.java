@@ -26,6 +26,7 @@ import kayak.freestyle.competition.kflow.models.Run;
 import kayak.freestyle.competition.kflow.repositories.ParticipantRepository;
 
 @ExtendWith(MockitoExtension.class)
+@SuppressWarnings("null")
 class ParticipantServiceTest {
 
     @Mock
@@ -71,6 +72,7 @@ class ParticipantServiceTest {
         runDto.setDuration(120);
     }
 
+    @SuppressWarnings("null")
     @Test
     void getRunsByParticipantId_WithExistingId_ShouldReturnRuns() {
         Set<Run> runs = new HashSet<>();
@@ -88,6 +90,7 @@ class ParticipantServiceTest {
         verify(runMapper).modelToDto(run);
     }
 
+    @SuppressWarnings("null")
     @Test
     void getRunsByParticipantId_WithNonExistingId_ShouldThrowException() {
         when(repository.findByIdAndFetchRunsEagerly(999L)).thenReturn(Optional.empty());
@@ -96,6 +99,7 @@ class ParticipantServiceTest {
         verify(repository).findByIdAndFetchRunsEagerly(999L);
     }
 
+    @SuppressWarnings("null")
     @Test
     void getRunsByParticipantId_WithNoRuns_ShouldReturnEmptyList() {
         participant.setRuns(new HashSet<>());
@@ -108,6 +112,7 @@ class ParticipantServiceTest {
         verify(repository).findByIdAndFetchRunsEagerly(1L);
     }
 
+    @SuppressWarnings("null")
     @Test
     void save_ShouldSaveAndReturnDto() {
         when(participantMapper.dtoToModel(participantDto)).thenReturn(participant);
@@ -123,6 +128,7 @@ class ParticipantServiceTest {
         verify(participantMapper).modelToDto(participant);
     }
 
+    @SuppressWarnings("null")
     @Test
     void save_WithNullName_ShouldSaveAndReturnDto() {
         participantDto.setName(null);
@@ -139,6 +145,7 @@ class ParticipantServiceTest {
         verify(participantMapper).modelToDto(participant);
     }
 
+    @SuppressWarnings("null")
     @Test
     void save_WithZeroBibNb_ShouldSaveAndReturnDto() {
         participantDto.setBibNb(0);
@@ -155,6 +162,7 @@ class ParticipantServiceTest {
         verify(participantMapper).modelToDto(participant);
     }
 
+    @SuppressWarnings("null")
     @Test
     void save_WithNullClub_ShouldSaveAndReturnDto() {
         participantDto.setClub(null);

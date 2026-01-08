@@ -54,6 +54,7 @@ class UserServiceTest {
         userDto.setName("Test User");
     }
 
+    @SuppressWarnings("null")
     @Test
     void save_ShouldEncodePasswordAndSaveUser() {
         when(passwordEncoder.encode(userDto.getPassword())).thenReturn("encodedPassword");
@@ -71,6 +72,7 @@ class UserServiceTest {
         verify(mapper).modelToDto(any(User.class));
     }
 
+    @SuppressWarnings("null")
     @Test
     void save_WithNullPassword_ShouldSaveAndReturnDto() {
         userDto.setPassword(null);
@@ -87,6 +89,7 @@ class UserServiceTest {
         verify(mapper).modelToDto(any(User.class));
     }
 
+    @SuppressWarnings("null")
     @Test
     void save_WithEmptyPassword_ShouldSaveAndReturnDto() {
         userDto.setPassword("");
@@ -103,6 +106,7 @@ class UserServiceTest {
         verify(mapper).modelToDto(any(User.class));
     }
 
+    @SuppressWarnings("null")
     @Test
     void save_WithAdminRole_ShouldSaveWithAdminRole() {
         userDto.setRole(Role.ADMIN);
@@ -121,6 +125,7 @@ class UserServiceTest {
         verify(mapper).modelToDto(any(User.class));
     }
 
+    @SuppressWarnings("null")
     @Test
     void save_WithNullRole_ShouldSaveAndReturnDto() {
         userDto.setRole(null);
@@ -137,6 +142,7 @@ class UserServiceTest {
         verify(mapper).modelToDto(any(User.class));
     }
 
+    @SuppressWarnings("null")
     @Test
     void save_WithInvalidEmail_ShouldSaveAndReturnDto() {
         userDto.setEmail("invalid-email");

@@ -72,6 +72,7 @@ public class Categorie {
      */
     @OneToMany(mappedBy = "categorie", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("categorie-stages")
+    @lombok.Builder.Default
     private List<Stage> stages = new ArrayList<>();
 
     /**
@@ -79,6 +80,7 @@ public class Categorie {
      */
     @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
     @JsonManagedReference("participant-categories")
+    @lombok.Builder.Default
     private Set<Participant> participants = new HashSet<>();
 
     /**
