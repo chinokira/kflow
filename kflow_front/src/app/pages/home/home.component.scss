@@ -17,13 +17,15 @@
       margin-bottom: 20px;
 
       mat-card-title {
-        font-size: 32px;
+        font-size: clamp(1.5rem, 4vw, 2rem);
         margin-bottom: 10px;
+        line-height: 1.2;
       }
 
       mat-card-subtitle {
-        font-size: 18px;
+        font-size: clamp(1rem, 2.5vw, 1.125rem);
         color: rgba(0, 0, 0, 0.6);
+        line-height: 1.4;
       }
     }
 
@@ -32,13 +34,63 @@
       justify-content: center;
       gap: 16px;
       margin-top: 20px;
+      flex-wrap: wrap;
 
       button {
-        padding: 8px 24px;
-        font-size: 16px;
+        padding: clamp(8px, 2vw, 12px) clamp(16px, 4vw, 24px);
+        font-size: clamp(14px, 2.5vw, 16px);
+        min-height: 44px;
+        min-width: 120px;
 
         mat-icon {
           margin-right: 8px;
+        }
+      }
+    }
+  }
+}
+
+// Media queries pour la responsivité
+@media (max-width: 768px) {
+  .home-container {
+    padding: 16px;
+
+    .welcome-card {
+      padding: 16px;
+      margin: 0 8px;
+
+      .quick-actions {
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+
+        button {
+          width: 100%;
+          max-width: 280px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .home-container {
+    padding: 12px;
+
+    .welcome-card {
+      padding: 12px;
+      margin: 0 4px;
+
+      mat-card-header {
+        margin-bottom: 16px;
+      }
+
+      .quick-actions {
+        margin-top: 16px;
+        gap: 8px;
+
+        button {
+          max-width: 100%;
         }
       }
     }

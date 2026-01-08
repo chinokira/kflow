@@ -1,37 +1,37 @@
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav #drawer class="sidenav" fixedInViewport
-      [mode]="'side'"
-      [opened]="true">
+      [mode]="'over'"
+      [opened]="false">
     <mat-nav-list>
       @if (connectedUser) {
-        <a mat-list-item routerLink="/profile" routerLinkActive="active">
+        <a mat-list-item routerLink="/profile" routerLinkActive="active" (click)="drawer.close()">
           <mat-icon>account_circle</mat-icon>
           <span>{{connectedUser.name}}</span>
         </a>
       }
-      <a mat-list-item routerLink="/home" routerLinkActive="active">
+      <a mat-list-item routerLink="/home" routerLinkActive="active" (click)="drawer.close()">
         <mat-icon>home</mat-icon>
         <span>Accueil</span>
       </a>
-      <a mat-list-item routerLink="/competitions" routerLinkActive="active">
+      <a mat-list-item routerLink="/competitions" routerLinkActive="active" (click)="drawer.close()">
         <mat-icon>emoji_events</mat-icon>
         <span>Compétitions</span>
       </a>
-      <a mat-list-item routerLink="/users" routerLinkActive="active">
+      <a mat-list-item routerLink="/users" routerLinkActive="active" (click)="drawer.close()">
         <mat-icon>people</mat-icon>
         <span>Utilisateurs</span>
       </a>
       @if (connectedUser) {
-        <a mat-list-item (click)="logout()">
+        <a mat-list-item (click)="logout(); drawer.close()">
           <mat-icon>logout</mat-icon>
           <span>Déconnexion</span>
         </a>
       } @else {
-        <a mat-list-item routerLink="/login" routerLinkActive="active">
+        <a mat-list-item routerLink="/login" routerLinkActive="active" (click)="drawer.close()">
           <mat-icon>login</mat-icon>
           <span>Connexion</span>
         </a>
-        <a mat-list-item routerLink="/register" routerLinkActive="active">
+        <a mat-list-item routerLink="/register" routerLinkActive="active" (click)="drawer.close()">
           <mat-icon>person_add</mat-icon>
           <span>Inscription</span>
         </a>
@@ -48,6 +48,29 @@
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
       <span class="app-title">KFlow</span>
+      <span class="spacer"></span>
+      <!-- Actions rapides pour mobile -->
+      <div class="mobile-actions">
+        @if (connectedUser) {
+          <button mat-icon-button [matMenuTriggerFor]="userMenu">
+            <mat-icon>account_circle</mat-icon>
+          </button>
+          <mat-menu #userMenu="matMenu">
+            <button mat-menu-item routerLink="/profile">
+              <mat-icon>account_circle</mat-icon>
+              <span>Profil</span>
+            </button>
+            <button mat-menu-item (click)="logout()">
+              <mat-icon>logout</mat-icon>
+              <span>Déconnexion</span>
+            </button>
+          </mat-menu>
+        } @else {
+          <button mat-icon-button routerLink="/login">
+            <mat-icon>login</mat-icon>
+          </button>
+        }
+      </div>
     </mat-toolbar>
     <div class="content-container">
       <router-outlet></router-outlet>

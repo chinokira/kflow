@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { AuthenticationService } from '../../services/authentication.service';
 import { Router } from '@angular/router';
@@ -10,7 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
-  imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule],
+  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule],
   standalone: true
 })
 export class LoginComponent {
@@ -31,8 +32,13 @@ export class LoginComponent {
       this.credentials.value.password!).subscribe({
         next: () => this.router.navigateByUrl('/'),
         error: err => {
-          this.error = err.message;
-          console.log(err);
+          if (err.status === 401) {
+            this.error = err.error || 'Email ou mot de passe incorrect. Aucun compte trouvé.';
+            // Rediriger automatiquement vers l'inscription après 3 secondes
+            setTimeout(() => this.router.navigateByUrl('/register'), 3000);
+          } else {
+            this.error = err.message;
+          }
         }
       });
   }

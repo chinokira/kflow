@@ -1,0 +1,17 @@
+@startuml
+actor "Application cliente" as Client
+participant "Serveur d'authentification" as Server
+
+Client -> Server : 1. Demande d'autorisation utilisateur
+Server --> Client : 2. Token d'accès et token de rafraîchissement
+
+Client -> Server : 3. Requête avec le token d'accès
+Server --> Client : 4. Ressource protégée
+
+Client -> Server : 5. Nouvelle requête avec le token d'accès
+Server --> Client : 6. Erreur : token invalide ou expiré
+
+Client -> Server : 7. Envoi du token de rafraîchissement
+Server --> Client : 8. Nouveau token d'accès et token de rafraîchissement
+
+@enduml

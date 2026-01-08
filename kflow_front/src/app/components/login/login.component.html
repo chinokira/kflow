@@ -1,4 +1,3 @@
-
 <div id="content">
   <h1>Login</h1>
 
@@ -12,7 +11,7 @@
       <input matInput type="password" formControlName="password">
     </mat-form-field>
 
-    <div class="errors">
+    <div class="errors" *ngIf="error">
       {{error}}
     </div>
 

@@ -200,7 +200,6 @@ export class CompetitionImportComponent {
     try {
       let importData: ImportCompetitionDto = JSON.parse(this.jsonContent);
       importData = this.completeImportDto(importData);
-      console.log(importData);
       this.importService.importCompetition(importData).subscribe({
         next: (competition) => {
           this.snackBar.open('Compétition importée avec succès !', 'Fermer', { duration: 3000 });

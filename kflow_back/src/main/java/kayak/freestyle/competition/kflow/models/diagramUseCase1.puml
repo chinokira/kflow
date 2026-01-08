@@ -1,10 +1,18 @@
 @startuml
 left to right direction
-actor "Utilisateur" as Utilisateur
-actor "Administrateur" as Administrateur
-rectangle "Système K-FLOW" {
-  usecase "Connexion au système" as UC_Connexion
-}
-Utilisateur -- UC_Connexion
-Administrateur -- UC_Connexion
+skinparam packageStyle rectangle
+
+actor Utilisateur
+actor Administrateur
+
+usecase "Gérer les prêts" as UC_GererPrets
+usecase "Voir ses prêts en cours" as UC_VoirSesPrets
+usecase "Créer un prêt pour un utilisateur avec un produit" as UC_CreerPret
+
+Utilisateur --> UC_VoirSesPrets
+Administrateur --> UC_VoirSesPrets
+Administrateur --> UC_CreerPret
+
+UC_CreerPret --> UC_GererPrets
+
 @enduml

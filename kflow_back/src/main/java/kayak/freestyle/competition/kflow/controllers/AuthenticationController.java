@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import kayak.freestyle.competition.kflow.exceptions.NotFoundException;
 import kayak.freestyle.competition.kflow.models.User;
 import kayak.freestyle.competition.kflow.repositories.UserRepository;
 import lombok.AllArgsConstructor;
@@ -82,7 +83,8 @@ public class AuthenticationController {
 
     private JwtResponse refresh(String refreshToken) {
         var jwt = jwtDecoder.decode(refreshToken);
-        User user = userRepository.findById(Long.parseLong(jwt.getSubject())).get();
+        User user = userRepository.findById(Long.parseLong(jwt.getSubject()))
+                .orElseThrow(() -> new NotFoundException("User not found with id: " + jwt.getSubject()));
         return new JwtResponse(
                 generateAccessToken(user),
                 generateRefreshToken(user));
@@ -104,7 +106,7 @@ public class AuthenticationController {
         JwtClaimsSet jwtClaimsSet = JwtClaimsSet.builder()
                 .issuedAt(Instant.now())
                 .issuer("annuaire-backend")
-                .expiresAt(Instant.now().plus(1, ChronoUnit.MINUTES))
+                .expiresAt(Instant.now().plus(7, ChronoUnit.DAYS)) // 7 jours au lieu de 1 minute
                 .subject(String.valueOf(user.getId()))
                 .build();
         return jwtEncoder.encode(JwtEncoderParameters.from(jwtClaimsSet)).getTokenValue();

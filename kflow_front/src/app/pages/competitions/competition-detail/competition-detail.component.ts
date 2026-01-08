@@ -86,7 +86,6 @@ export class CompetitionDetailComponent implements OnInit, OnDestroy {
         this.loadingParticipants[categorie.id] = true;
         this.categorieService.getParticipants(categorie.id).subscribe({
             next: (participants: Participant[]) => {
-                console.log('Participants reçus pour catégorie', categorie.name, ':', participants);
                 categorie.participants = participants;
                 if (participants && participants.length > 0) {
                     let loadedCount = 0;

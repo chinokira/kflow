@@ -109,8 +109,6 @@ export class CompetitionEditComponent implements OnInit {
         categories: this.competition.categories || []
       };
 
-      console.log('Sending competition update:', updateDto);
-
       this.competitionService.update(updateDto).subscribe({
         next: () => {
           this.snackBar.open('Compétition mise à jour avec succès', 'Fermer', {
