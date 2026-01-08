@@ -1,154 +1,139 @@
 # Kflow  
-_Gestion personnelle de compétitions de kayak freestyle – Java 21 / Spring Boot 3.2.3 & Angular 17_
+*Application de gestion de compétitions de kayak freestyle*  
+**Java 21 / Spring Boot 3.2.3 • Angular 17 • Docker**
 
 ---
 
-## Sommaire
+## 🧭 Sommaire
 1. [Description du projet](#description-du-projet)  
-2. [Empilement technologique](#empilement-technologique)  
+2. [Technologies utilisées](#technologies-utilisées)  
 3. [Prérequis](#prérequis)  
-4. [Installation et lancement](#installation-et-lancement)  
-5. [Arborescence du code](#arborescence-du-code)  
+4. [Installation avec Docker](#installation-avec-docker)  
+5. [Arborescence du projet](#arborescence-du-projet)  
 6. [Endpoints principaux](#endpoints-principaux)  
-7. [Tests automatisés](#tests-automatisés)  
-8. [Road-map personnelle](#road-map-personnelle)  
+7. [Tests](#tests-automatisés)  
+8. [Roadmap personnelle](#roadmap-personnelle)  
 9. [Licence](#licence)
 
 ---
 
-## Description du projet
+## 📌 Description du projet
 
-Kflow est un **projet personnel d’apprentissage**.  
-Objectif : disposer d’un petit outil web pour créer, modifier puis consulter des compétitions de kayak freestyle.  
-Aucun objectif commercial ; le développement suit mon propre rythme d’apprentissage Java/Spring Boot et Angular.
+**Kflow** est un projet personnel développé dans le cadre d’un apprentissage approfondi de **Spring Boot** et **Angular**.  
+Il permet de gérer une compétition de kayak freestyle : création des épreuves, saisie des participants, consultation des résultats.
 
----
-
-## Empilement technologique
-
-| Couche | Technologie | Version |
-|--------|-------------|---------|
-| Back-end | Java 21 (OpenJDK) | 21.0.7  
-|  | Spring Boot | 3.2.3  
-|  | Spring Security 6 (JWT RSA) | 6.2.x  
-|  | Spring Data JPA / Hibernate 6 | 6.4.x  
-|  | Base de données | MySQL 8 (dev) / H2 (tests) |
-| Front-end | Angular | 17.x  
-|  | TypeScript | 5.x  
-|  | Angular Material | 17.x |
-| Build & CI | Maven 3.9, npm 10 |  
-|  | GitHub Actions (build + tests) |  
+L’application respecte une architecture modulaire, sécurisée (JWT RSA) et est entièrement **conteneurisée via Docker**.
 
 ---
 
-## Prérequis
+## ⚙️ Technologies utilisées
 
-| Outil | Version mini | Commentaire |
-|-------|--------------|-------------|
-| JDK   | **21** | `java -version`  
-| Maven | ≥ 3.8        | Wrapper fourni (`./mvnw`) |
-| Node  | ≥ 18         | (Angular 17 supporte 18+) |
-| npm   | ≥ 10         | |
-| MySQL | ≥ 8          | Ou laissez Spring démarrer H2 en mémoire |
-| Git   | ≥ 2.30       | |
+| Couche        | Outils / Frameworks                   | Versions       |
+|---------------|----------------------------------------|----------------|
+| **Back-end**  | Java 21 (OpenJDK), Spring Boot 3.2.3   | 21.0.7, 3.2.3  |
+|               | Spring Security (JWT RSA)             | 6.2.x          |
+|               | Spring Data JPA / Hibernate           | 6.4.x          |
+| **Base de données** | MySQL (prod/dev) / H2 (tests)   | 8.0.x          |
+| **Front-end** | Angular CLI + Angular Material        | 17.x           |
+|               | TypeScript, Jasmine, Karma            | 5.x, ^5        |
+| **Conteneurs**| Docker, Docker Compose                | latest         |
 
 ---
 
-## Installation et lancement
+## ✅ Prérequis
 
-### 1. Clone du dépôt
+- **Docker Desktop** installé et opérationnel  
+- **Git** pour cloner le projet
+
+---
+
+## 🚀 Installation avec Docker
+
+### 1. Cloner le projet
 
 ```bash
-git clone https://github.com/<votre-compte>/kflow.git
+git clone https://github.com/chinokira/kflow.git
 cd kflow
-2. Lancer le back-end
+2. Lancer l’ensemble des services
 bash
 Copier
 Modifier
-cd kflow_back
-./mvnw spring-boot:run
-Le profil par défaut utilise H2 en mémoire (pratique pour tester).
+docker compose up --build
+👉 Cela va :
 
-Pour MySQL local, créez une base kflow, renseignez spring.datasource.* dans src/main/resources/application.properties puis relancez.
+créer un conteneur MySQL (kflow-db),
 
-3. Lancer le front-end
-bash
-Copier
-Modifier
-cd ../kflow_front
-npm ci        # installe les dépendances
-ng serve      # application accessible sur http://localhost:4200
-4. Se connecter
-Login : admin@kflow.local
+démarrer le back-end Spring Boot (kflow-back),
 
-Mot de passe : admin123
+lancer le front-end Angular (kflow-front, dispo sur http://localhost:4200)
 
-(Ces identifiants sont insérés par le script data-test.sql lors du démarrage en profil dev.)
+3. Connexion par défaut
+Email : admin@admin.admin
 
-Arborescence du code (extrait)
+Mot de passe : adminadmin
+ou
+Email : user@user.user
+
+Mot de passe : useruser
+
+(Identifiants injectés par data-test.sql)
+
+🗂 Arborescence du projet
 css
 Copier
 Modifier
 kflow/
- ├─ kflow_back/
- │   ├─ src/main/java
- │   │   └─ kayak/freestyle/competition/kflow
- │   │        ├─ controllers/
- │   │        ├─ services/
- │   │        ├─ repositories/
- │   │        └─ models/   ← Entités JPA (Annexe A)
- │   └─ src/test/java/…    ← 9 tests JUnit (Annexe B)
- └─ kflow_front/
-     ├─ src/app
-     │   ├─ components/
-     │   ├─ pages/
-     │   ├─ services/      ← authentication.service.ts, etc.
-     │   └─ guards/        ← authGuard, adminGuard
-     └─ src/environments/
-Endpoints principaux
+ ├── docker-compose.yml
+ ├── kflow_back/
+ │   ├── src/main/java/kayak/…
+ │   │    ├── controllers/
+ │   │    ├── services/
+ │   │    ├── repositories/
+ │   │    └── models/          ← Entités JPA
+ │   └── src/test/java/        ← Tests JUnit
+ ├── kflow_front/
+ │   ├── src/app/
+ │   │    ├── components/
+ │   │    ├── pages/
+ │   │    ├── services/
+ │   │    └── guards/          ← Auth & Admin Guards
+ │   └── src/environments/
+🔗 Endpoints principaux
 Méthode	URL	Description	Accès
-POST	/authenticate	Renvoie access-token (60 s) + refresh-token (24 h)	Public
-GET	/competitions	Liste paginée des compétitions	Public
+POST	/authenticate	Authentification	Public
+GET	/competitions	Liste des compétitions	Public
+GET	/competitions/{id}	Détail d'une compétition	Public
 POST	/competitions	Créer une compétition	ADMIN
-PUT	/competitions/{id}	Mettre à jour	ADMIN
-GET	/competitions/{id}	Détail + stages + catégories	Public
+PUT	/competitions/{id}	Modifier une compétition	ADMIN
 
-JWT à placer dans l’en-tête Authorization: Bearer <token>.
+📌 Les appels protégés doivent contenir un header :
+Authorization: Bearer <access-token>
 
-Tests automatisés
+🧪 Tests 
+🖥 Back-end : JUnit
 bash
 Copier
 Modifier
-# Back-end
 cd kflow_back
 ./mvnw test
-# => Tests run: 9, Failures: 0
-
-# Front-end
-cd ../kflow_front
-npm run test -- --watch=false
-# => 11 specs, 0 failures
-Road-map personnelle
- Sprint Performance : profiling Hibernate, index supplémentaires.
-
- Sprint Qualité : intégration JaCoCo et ESLint strict.
-
- Sprint CI/CD : Docker multi-stage + déploiement sur un VPS.
-
- Sprint Temps réel : notifications WebSocket (résultats live).
-
-Licence
-Projet sous licence MIT. Vous pouvez l’utiliser et le modifier librement pour vos propres expérimentations, à condition de conserver cette notice.
-
-Kflow est développé sur mon temps libre pour apprendre et pratiquer Java 21, Spring Boot 3 et Angular 17. Toute contribution pull-request est la bienvenue !
-
-markdown
+# Résultat attendu : Tests run: 9, Failures: 0
+🌐 Front-end : Karma + Jasmine
+bash
 Copier
 Modifier
+cd kflow_front
+npm ci
+npm run test -- --watch=false
+# Résultat attendu : 11 specs, 0 failures
+🛠 Roadmap personnelle
+Sprint Optimisation : indexations SQL, profiling Hibernate
 
-### Comment l’utiliser
-1. **Copie/colle** le bloc dans `kflow/README.md`.  
-2. Adapte le lien GitHub et l’identifiant admin si tu changes ces valeurs.  
-3. Supprime les sections “Road-map” ou “Licence” si tu n’en veux pas.
+Sprint Qualité : JaCoCo pour la couverture + ESLint strict
 
-Cela donne au lecteur (et au jury) toutes les informations objectives — installation, lancement, arborescence
+Sprint CI/CD : pipeline GitHub Actions, image Docker multi-stage
+
+Sprint Temps réel : ajout de WebSockets pour scores en direct
+
+📄 Licence
+Projet sous licence MIT – librement réutilisable et modifiable.
+Développé dans un cadre personnel à des fins pédagogiques (certification CDA 2025).
