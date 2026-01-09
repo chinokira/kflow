@@ -33,10 +33,16 @@ jobs:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
+      - name: Debug - show repo tree
+        run: |
+          pwd
+          ls -la
+          find . -maxdepth 4 -type f -name pom.xml -print
+          find . -maxdepth 3 -type d -name "kflow_back" -print
 
       - name: Build and analyze
-        working-directory: kflow/kflow_back
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=kflow -Dsonar.projectName='kflow'
+          working-directory: kflow_back
+          env:
+            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+            SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+          run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=kflow -Dsonar.projectName='kflow'
