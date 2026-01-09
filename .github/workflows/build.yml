@@ -1,4 +1,3 @@
-Create or update your .github/workflows/build.yml YAML file with the following content:
 name: Build
 
 on:
