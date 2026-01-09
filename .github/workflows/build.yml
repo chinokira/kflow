@@ -2,42 +2,47 @@ name: Build
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
   build:
-    name: Build
     runs-on: ubuntu-latest
-    permissions: read-all
+
+    services:
+      sonarqube:
+        image: sonarqube:lts-community
+        ports:
+          - 9000:9000
 
     steps:
-      - name: Checkout sources
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+      - uses: actions/checkout@v4
 
       - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
+          distribution: temurin
           java-version: 21
           cache: maven
 
-      - name: Cache SonarQube packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
+      - name: Wait for SonarQube
+        run: |
+          for i in {1..60}; do
+            if curl -s http://localhost:9000/api/system/health | grep -q '"status":"UP"'; then
+              echo "SonarQube is UP"
+              exit 0
+            fi
+            echo "Waiting for SonarQube..."
+            sleep 5
+          done
+          exit 1
 
       - name: Build (skip tests) and analyze
         working-directory: kflow_back
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         run: |
-          mvn -B -DskipTests verify \
-            org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+          mvn -B -DskipTests verify sonar:sonar \
             -Dsonar.projectKey=kflow \
-            -Dsonar.projectName='kflow'
+            -Dsonar.projectName="kflow" \
+            -Dsonar.host.url=http://localhost:9000 \
+            -Dsonar.token=$SONAR_TOKEN
