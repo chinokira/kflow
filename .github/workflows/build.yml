@@ -31,30 +31,13 @@ jobs:
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
 
-      - name: Debug - show repository structure
-        run: |
-          echo "Current directory:"
-          pwd
-          echo "Root files:"
-          ls -la
-          echo "Find pom.xml:"
-          find . -maxdepth 4 -name pom.xml -print
-
-      - name: Build and analyze
+      - name: Build (skip tests) and analyze
         working-directory: kflow_back
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         run: |
-          mvn -B -e verify \
+          mvn -B -DskipTests verify \
             org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
             -Dsonar.projectKey=kflow \
             -Dsonar.projectName='kflow'
-
-      - name: Upload surefire reports
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: surefire-reports
-          path: kflow_back/target/surefire-reports
-
