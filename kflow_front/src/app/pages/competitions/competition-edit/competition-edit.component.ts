@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
@@ -15,10 +15,9 @@ import { CompetitionService, UpdateCompetitionDto } from '../../../services/comp
 import { Competition } from '../../../models/competition-detail.model';
 
 @Component({
-  selector: 'app-competition-edit',
-  standalone: true,
-  imports: [
-    CommonModule,
+    standalone: true,
+    selector: 'app-competition-edit',
+    imports: [
     ReactiveFormsModule,
     MatCardModule,
     MatFormFieldModule,
@@ -29,9 +28,9 @@ import { Competition } from '../../../models/competition-detail.model';
     MatNativeDateModule,
     MatSnackBarModule,
     MatProgressSpinnerModule
-  ],
-  templateUrl: './competition-edit.component.html',
-  styleUrls: ['./competition-edit.component.scss']
+],
+    templateUrl: './competition-edit.component.html',
+    styleUrls: ['./competition-edit.component.scss']
 })
 export class CompetitionEditComponent implements OnInit {
   competitionForm: FormGroup;

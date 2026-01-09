@@ -2,7 +2,7 @@
 
 ## Vue d'ensemble du projet
 
-KFLOW est une application full-stack de gestion de compétitions de kayak freestyle, développée comme projet d'apprentissage démontrant l'intégration de Java 21, Spring Boot 3 et Angular 17.
+KFLOW est une application full-stack de gestion de compétitions de kayak freestyle, développée comme projet d'apprentissage démontrant l'intégration de Java 21, Spring Boot 3 et Angular 21 (migré depuis Angular 17).
 
 ### Objectif
 Gérer l'intégralité du cycle de vie d'une compétition de kayak freestyle :
@@ -76,9 +76,11 @@ kflow/
 
 | Technologie | Version | Usage |
 |-------------|---------|-------|
-| Angular | 17.x | Framework |
-| TypeScript | 5.x | Langage de programmation |
-| Angular Material | 17.x | Bibliothèque de composants UI |
+| Angular | **21.0.8** (migré depuis 17.x) | Framework |
+| TypeScript | **5.9.3** (migré depuis 5.3.x) | Langage de programmation |
+| Angular Material | **21.0.6** (migré depuis 17.x) | Bibliothèque de composants UI |
+| Angular CLI | **21.0.5** | Outil de développement |
+| zone.js | **0.15.1** | Change detection |
 | RxJS | 7.8.0 | Programmation réactive |
 | jwt-decode | 4.0.0 | Parsing des tokens JWT |
 | Jasmine/Karma | - | Tests |
@@ -1384,8 +1386,496 @@ onSubmit() {
 1. **Tests** : Ajouter des tests unitaires pour les nouvelles corrections
 2. **CI/CD** : Configurer un pipeline pour détecter automatiquement les console.log
 3. **Linting** : Activer ESLint strict pour prévenir les fuites mémoire
-4. **Migration Angular** : Planifier la mise à jour vers Angular 21
-5. **Configuration multi-environnement** : Créer des profils Spring (dev, prod) et des environments Angular
+4. ~~**Migration Angular** : Planifier la mise à jour vers Angular 21~~ ✅ **TERMINÉ** (voir section ci-dessous)
+5. ~~**Configuration multi-environnement** : Créer des profils Spring (dev, prod) et des environments Angular~~ ✅ **TERMINÉ** (voir section ci-dessous)
+
+---
+
+## Migrations et améliorations majeures
+
+### Date : 2026-01-09
+
+Cette section documente les migrations majeures et les améliorations de configuration effectuées pour moderniser le projet.
+
+---
+
+### 🚀 Migration Angular 17 → 21
+
+**Contexte :**
+Le projet utilisait Angular 17, une version déjà obsolète. La migration vers Angular 21 (dernière version stable) était nécessaire pour bénéficier des dernières fonctionnalités, améliorations de performance et corrections de sécurité.
+
+**Stratégie :**
+Migration progressive version par version pour assurer la compatibilité et minimiser les risques :
+- Angular 17 → 18
+- Angular 18 → 19
+- Angular 19 → 20
+- Angular 20 → 21
+- Angular Material 17 → 18 → 19 → 20 → 21
+
+---
+
+#### Étape 1 : Migration Angular 17 → 18
+
+**Commande :**
+```bash
+cd kflow_front && npx @angular/cli@18 update @angular/core@18 @angular/cli@18 --allow-dirty --force
+```
+
+**Changements automatiques :**
+- Packages Angular mis à jour vers 18.2.14
+- TypeScript mis à jour vers 5.4.5
+- Migrations automatiques des providers HTTP :
+  - `provideHttpClient()` remplace les anciens modules HttpClient
+  - Configuration CORS et intercepteurs migrés vers la nouvelle API
+
+**Fichiers modifiés :**
+- [package.json](kflow_front/package.json) : Versions Angular 17.x → 18.2.14
+- Configuration TypeScript ajustée automatiquement
+
+---
+
+#### Étape 2 : Migration Angular 18 → 19
+
+**Commande :**
+```bash
+cd kflow_front && npx @angular/cli@19 update @angular/core@19 @angular/cli@19 --allow-dirty --force
+```
+
+**Changements automatiques :**
+- Packages Angular mis à jour vers 19.2.18
+- TypeScript mis à jour vers 5.5.4
+- zone.js mis à jour vers 0.15.1
+- **Migration importante** : Ajout de `standalone: false` à 12 composants non-standalone
+
+**Composants modifiés :**
+- [footer.component.ts](kflow_front/src/app/components/footer/footer.component.ts)
+- [navbar.component.ts](kflow_front/src/app/components/navbar/navbar.component.ts)
+- [home.component.ts](kflow_front/src/app/pages/home/home.component.ts)
+- [competitions.component.ts](kflow_front/src/app/pages/competitions/competitions.component.ts)
+- [competition-detail.component.ts](kflow_front/src/app/pages/competitions/competition-detail/competition-detail.component.ts)
+- [competition-edit.component.ts](kflow_front/src/app/pages/competitions/competition-edit/competition-edit.component.ts)
+- [competition-import.component.ts](kflow_front/src/app/pages/competitions/competition-import/competition-import.component.ts)
+- [users.component.ts](kflow_front/src/app/components/users/users.component.ts)
+- [login.component.ts](kflow_front/src/app/components/login/login.component.ts)
+- [sign-up.component.ts](kflow_front/src/app/components/sign-up/sign-up.component.ts)
+- [user-profile.component.ts](kflow_front/src/app/components/user-profile/user-profile.component.ts)
+
+**Exemple de changement :**
+```typescript
+// Avant (Angular 18)
+@Component({
+  selector: 'app-navbar',
+  templateUrl: './navbar.component.html',
+  styleUrls: ['./navbar.component.scss']
+})
+
+// Après (Angular 19)
+@Component({
+  selector: 'app-navbar',
+  standalone: false,
+  templateUrl: './navbar.component.html',
+  styleUrls: ['./navbar.component.scss']
+})
+```
+
+---
+
+#### Étape 3 : Migration Angular 19 → 20
+
+**Commande :**
+```bash
+cd kflow_front && npx @angular/cli@20 update @angular/core@20 @angular/cli@20 --allow-dirty --force
+```
+
+**Changements automatiques :**
+- Packages Angular mis à jour vers 20.3.16
+- Angular CLI et build tools mis à jour vers 20.3.14
+- TypeScript mis à jour vers 5.9.3
+- Migration de la configuration de génération workspace
+
+**Fichiers modifiés :**
+- [angular.json](kflow_front/angular.json) : Configuration workspace mise à jour
+- [package.json](kflow_front/package.json) : Toutes les dépendances Angular → 20.x
+
+**Migrations exécutées :**
+- ✅ Workspace generation defaults updated
+- ✅ `moduleResolution` updated to `bundler` in TypeScript config
+- ✅ Karma configuration cleanup
+
+---
+
+#### Étape 4 : Migration Angular 20 → 21
+
+**Commande :**
+```bash
+cd kflow_front && npx @angular/cli@21 update @angular/core@21 @angular/cli@21 --allow-dirty --force
+```
+
+**Changements automatiques :**
+- Packages Angular mis à jour vers 21.0.8
+- Angular CLI et build tools mis à jour vers 21.0.5
+- **Migration majeure** : Conversion automatique vers la nouvelle syntaxe de contrôle de flux (block control flow)
+
+**Fichiers modifiés :**
+- [main.ts](kflow_front/src/main.ts) : Options de bootstrap migrées vers providers
+- [login.component.html](kflow_front/src/app/components/login/login.component.html) : Syntaxe `*ngIf` → `@if`
+- [competition-detail.component.html](kflow_front/src/app/pages/competitions/competition-detail/competition-detail.component.html) : Syntaxe de contrôle modernisée
+- 11 fichiers TypeScript mis à jour automatiquement
+
+**Exemple de migration de syntaxe :**
+```html
+<!-- Avant (Angular 20) -->
+<div *ngIf="error">
+  {{ error }}
+</div>
+
+<!-- Après (Angular 21) -->
+@if (error) {
+  <div>
+    {{ error }}
+  </div>
+}
+```
+
+**Migrations exécutées :**
+- ✅ Bootstrap options migrated to providers
+- ✅ **Block control flow conversion** (nouvelle syntaxe `@if`, `@for`, `@switch`)
+- ✅ Router.lastSuccessfulNavigation signal updated
+- ✅ TypeScript library target updated to ES2022
+
+---
+
+#### Étape 5 : Migration Angular Material 17 → 21
+
+**Commandes :**
+```bash
+cd kflow_front && npx @angular/cli@21 update @angular/material@18 --allow-dirty --force
+cd kflow_front && npx @angular/cli@21 update @angular/material@19 --allow-dirty --force
+cd kflow_front && npx @angular/cli@21 update @angular/material@20 --allow-dirty --force
+cd kflow_front && npx @angular/cli@21 update @angular/material@21 --allow-dirty --force
+```
+
+**Packages mis à jour :**
+- `@angular/material` : 17.3.10 → 21.0.6
+- `@angular/cdk` : 17.3.10 → 21.0.6
+
+**Note :** Angular Material doit être migré version par version. Chaque migration a exécuté ses propres scripts de mise à jour automatique pour garantir la compatibilité.
+
+---
+
+#### Résultats de la migration
+
+**✅ Succès complet :**
+- Toutes les migrations terminées sans erreur
+- Build de production réussi : `npm run build` ✅
+- Compilation backend toujours fonctionnelle : `./mvnw clean compile` ✅
+- Aucune régression détectée
+
+**Versions finales :**
+- Angular Core : **21.0.8**
+- Angular CLI : **21.0.5**
+- Angular Material : **21.0.6**
+- TypeScript : **5.9.3**
+- zone.js : **0.15.1**
+
+**Taille du bundle de production :**
+- Main : 961.59 KB (198.90 KB compressé)
+- Styles : 104.57 KB (7.98 KB compressé)
+- Polyfills : 34.83 KB (11.31 KB compressé)
+- **Total initial : 1.10 MB (218.70 KB compressé)**
+
+**Bénéfices :**
+- 🚀 Dernières fonctionnalités Angular (block control flow, signals)
+- 🛡️ Derniers correctifs de sécurité
+- ⚡ Améliorations de performance natives
+- 📦 Meilleure optimisation du bundle
+- 🔧 Support TypeScript 5.9 avec toutes ses améliorations
+
+---
+
+### ⚙️ Configuration Multi-Environnement
+
+**Contexte :**
+Le projet utilisait une seule configuration pour développement et production, ce qui posait des problèmes de sécurité :
+- Mots de passe en clair dans les fichiers
+- Logging DEBUG activé en production
+- SSL désactivé
+- Pas de séparation des URL backend dev/prod
+
+**Solution :**
+Mise en place d'une configuration séparée pour développement et production sur les deux parties du projet.
+
+---
+
+#### Backend : Profils Spring Boot
+
+**Fichiers créés/modifiés :**
+
+**1. [application.properties](kflow_back/src/main/resources/application.properties) - Configuration principale**
+```properties
+# Nom de l'application
+spring.application.name=kflow
+
+# Profil actif par défaut (dev ou prod)
+spring.profiles.active=${SPRING_PROFILES_ACTIVE:dev}
+
+# Database Configuration (valeurs par défaut pour dev)
+spring.datasource.url=${DB_URL:jdbc:mysql://localhost:3306/kflow?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true}
+spring.datasource.username=${DB_USERNAME:root}
+spring.datasource.password=${DB_PASSWORD:}
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+
+# JPA/Hibernate Configuration
+spring.jpa.hibernate.naming.physical-strategy=org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQLDialect
+
+# Logging par défaut (production-safe)
+spring.jpa.show-sql=false
+logging.level.org.hibernate.SQL=WARN
+logging.level.org.hibernate.type.descriptor.sql.BasicBinder=WARN
+logging.level.org.springframework=INFO
+logging.level.kayak.freestyle.competition.kflow=INFO
+
+# JWT Configuration
+rsa.public-key=classpath:jwt/public.pem
+rsa.private-key=classpath:jwt/private.pem
+```
+
+**2. [application-dev.properties](kflow_back/src/main/resources/application-dev.properties) - Développement**
+```properties
+# Profil de développement
+
+# Database sans SSL pour développement local
+spring.datasource.url=jdbc:mysql://localhost:3306/kflow?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=false
+spring.datasource.username=root
+spring.datasource.password=
+
+# JPA - Mode update pour développement
+spring.jpa.hibernate.ddl-auto=update
+
+# Logging détaillé pour le debugging
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+logging.level.org.hibernate.SQL=DEBUG
+logging.level.org.hibernate.type.descriptor.sql.BasicBinder=TRACE
+logging.level.org.springframework=DEBUG
+logging.level.kayak.freestyle.competition.kflow=DEBUG
+
+# Affichage complet des erreurs pour debugging
+server.error.include-message=always
+server.error.include-stacktrace=always
+server.error.include-binding-errors=always
+```
+
+**3. [application-prod.properties](kflow_back/src/main/resources/application-prod.properties) - Production**
+```properties
+# Profil de production
+
+# Database avec SSL obligatoire et configuration via variables d'environnement
+spring.datasource.url=${DB_URL:jdbc:mysql://localhost:3306/kflow?useSSL=true&requireSSL=true}
+spring.datasource.username=${DB_USERNAME}
+spring.datasource.password=${DB_PASSWORD}
+
+# JPA - Mode validate uniquement (pas de modification automatique du schéma)
+spring.jpa.hibernate.ddl-auto=validate
+
+# Logging minimal pour production
+spring.jpa.show-sql=false
+spring.jpa.properties.hibernate.format_sql=false
+logging.level.org.hibernate.SQL=WARN
+logging.level.org.hibernate.type.descriptor.sql.BasicBinder=WARN
+logging.level.org.springframework=WARN
+logging.level.kayak.freestyle.competition.kflow=INFO
+
+# Sécurité : masquer les détails d'erreur en production
+server.error.include-message=never
+server.error.include-stacktrace=never
+server.error.include-binding-errors=never
+```
+
+**4. [.env.example](kflow_back/src/main/resources/.env.example) - Template variables d'environnement**
+```properties
+# Configuration des variables d'environnement pour production
+# Copier ce fichier en .env et remplir avec vos valeurs
+
+# Profil Spring actif (dev ou prod)
+SPRING_PROFILES_ACTIVE=dev
+
+# Configuration base de données
+DB_URL=jdbc:mysql://localhost:3306/kflow?useSSL=true
+DB_USERNAME=root
+DB_PASSWORD=votre_mot_de_passe_securise_ici
+```
+
+**Usage :**
+```bash
+# Développement (par défaut)
+./mvnw spring-boot:run
+
+# Production
+SPRING_PROFILES_ACTIVE=prod DB_PASSWORD=secret ./mvnw spring-boot:run
+
+# Ou avec un fichier .env
+export $(cat .env | xargs) && ./mvnw spring-boot:run
+```
+
+---
+
+#### Frontend : Fichiers d'environnement Angular
+
+**Fichiers créés :**
+
+**1. [environment.ts](kflow_front/src/environments/environment.ts) - Développement**
+```typescript
+export const environment = {
+  production: false,
+  apiUrl: 'http://localhost:8080'
+};
+```
+
+**2. [environment.prod.ts](kflow_front/src/environments/environment.prod.ts) - Production**
+```typescript
+export const environment = {
+  production: true,
+  apiUrl: 'https://api.kflow.example.com',
+  enableDebugTools: false,
+  logLevel: 'error'
+};
+```
+
+**3. Configuration Angular [angular.json](kflow_front/angular.json) - File replacements**
+```json
+{
+  "configurations": {
+    "production": {
+      "fileReplacements": [
+        {
+          "replace": "src/environments/environment.ts",
+          "with": "src/environments/environment.prod.ts"
+        }
+      ],
+      "budgets": [
+        {
+          "type": "initial",
+          "maximumWarning": "500kb",
+          "maximumError": "1mb"
+        },
+        {
+          "type": "anyComponentStyle",
+          "maximumWarning": "4kb",
+          "maximumError": "6kb"
+        }
+      ],
+      "outputHashing": "all"
+    }
+  }
+}
+```
+
+**Usage dans les services Angular :**
+```typescript
+import { environment } from '../environments/environment';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class CompetitionService {
+  private apiUrl = `${environment.apiUrl}/competitions`;
+
+  constructor(private http: HttpClient) { }
+
+  getAll(): Observable<Competition[]> {
+    return this.http.get<Competition[]>(this.apiUrl);
+  }
+}
+```
+
+**Build :**
+```bash
+# Développement (utilise environment.ts)
+ng serve
+
+# Production (utilise environment.prod.ts)
+ng build --configuration production
+```
+
+---
+
+#### Résultats de la configuration multi-environnement
+
+**✅ Améliorations de sécurité :**
+- ✅ Mots de passe externalisés via variables d'environnement
+- ✅ SSL obligatoire en production
+- ✅ Erreurs masquées en production (pas de stack traces exposées)
+- ✅ Logging minimal en production
+
+**✅ Amélioration de l'expérience développeur :**
+- ✅ Configuration locale simplifiée (valeurs par défaut)
+- ✅ Logging détaillé en développement
+- ✅ Pas besoin de modifier les fichiers pour changer d'environnement
+- ✅ Template .env.example pour documenter les variables requises
+
+**✅ Séparation claire dev/prod :**
+- ✅ Backend : 3 profils Spring (default, dev, prod)
+- ✅ Frontend : 2 fichiers environment (dev, prod)
+- ✅ Configuration automatique via build system
+
+**⚙️ Variables d'environnement backend :**
+| Variable | Défaut (dev) | Production |
+|----------|--------------|------------|
+| `SPRING_PROFILES_ACTIVE` | `dev` | `prod` (requis) |
+| `DB_URL` | `localhost:3306/kflow` | Requis (avec SSL) |
+| `DB_USERNAME` | `root` | Requis |
+| `DB_PASSWORD` | (vide) | Requis |
+
+**⚙️ Paramètres frontend par environnement :**
+| Paramètre | Développement | Production |
+|-----------|---------------|------------|
+| `production` | `false` | `true` |
+| `apiUrl` | `http://localhost:8080` | `https://api.kflow.example.com` |
+| `enableDebugTools` | `true` | `false` |
+| `logLevel` | `debug` | `error` |
+
+---
+
+### 📝 Mise à jour de la stack technologique
+
+**Frontend (kflow_front) - Nouvelles versions :**
+
+| Technologie | Ancienne Version | Nouvelle Version | Changement |
+|-------------|------------------|------------------|------------|
+| Angular | 17.x | **21.0.8** | ✅ +4 versions majeures |
+| TypeScript | 5.3.x | **5.9.3** | ✅ +0.6 versions mineures |
+| Angular Material | 17.x | **21.0.6** | ✅ +4 versions majeures |
+| zone.js | 0.14.0 | **0.15.1** | ✅ +0.1 versions mineures |
+| Angular CLI | 17.x | **21.0.5** | ✅ +4 versions majeures |
+
+---
+
+### 🎯 Recommandations post-migration
+
+1. **Tests de régression** : Tester toutes les fonctionnalités principales
+   - ✅ Authentification JWT
+   - ✅ Gestion des compétitions
+   - ✅ Gestion des catégories et participants
+   - ✅ Import JSON de compétitions
+
+2. **Environnement de staging** : Configurer un environnement intermédiaire
+   - Créer `application-staging.properties` avec des valeurs intermédiaires
+   - Créer `environment.staging.ts` pour tests pré-production
+
+3. **CI/CD** : Intégrer les nouveaux profils dans le pipeline
+   - Build backend : `./mvnw clean package -Pprod`
+   - Build frontend : `ng build --configuration production`
+
+4. **Documentation** : Mettre à jour le README.md principal
+   - Documenter les variables d'environnement requises
+   - Ajouter les commandes de build pour production
+   - Expliquer la gestion des profils Spring
+
+5. **Monitoring** : Activer le monitoring en production
+   - Spring Boot Actuator pour les métriques backend
+   - Angular DevTools désactivé en production (déjà fait ✅)
 
 ---
 

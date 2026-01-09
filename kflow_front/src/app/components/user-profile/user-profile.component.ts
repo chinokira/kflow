@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
@@ -13,10 +13,10 @@ interface ConnectedUser {
 }
 
 @Component({
-  selector: 'app-user-profile',
-  standalone: true,
-  imports: [CommonModule, MatCardModule, MatListModule, MatIconModule],
-  template: `
+    standalone: true,
+    selector: 'app-user-profile',
+    imports: [MatCardModule, MatListModule, MatIconModule],
+    template: `
     <div class="profile-container">
       <mat-card>
         <mat-card-header>
@@ -39,7 +39,7 @@ interface ConnectedUser {
       </mat-card>
     </div>
   `,
-  styles: [`
+    styles: [`
     .profile-container {
       padding: 20px;
       max-width: 600px;

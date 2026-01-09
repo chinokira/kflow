@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
@@ -19,21 +19,20 @@ interface ConnectedUser {
 }
 
 @Component({
-  selector: 'app-navbar',
-  standalone: true,
-  imports: [
-    CommonModule, 
-    MatSidenavModule, 
-    MatListModule, 
-    MatIconModule, 
-    RouterModule, 
-    MatToolbarModule, 
+    selector: 'app-navbar',
+    standalone: true,
+    imports: [
+    MatSidenavModule,
+    MatListModule,
+    MatIconModule,
+    RouterModule,
+    MatToolbarModule,
     MatButtonModule,
     MatMenuModule,
     FooterComponent
-  ],
-  templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css']
+],
+    templateUrl: './navbar.component.html',
+    styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit, OnDestroy {
   connectedUser: ConnectedUser | undefined;

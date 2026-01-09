@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SignUpComponent } from './sign-up.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { UserService } from '../../services/user.service';
 import { Role } from '../../models/user.model';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 class MockUserService {
   save(user: any) {
@@ -35,21 +36,20 @@ describe('SignUpComponent', () => {
     routerSpy.navigate.and.returnValue(Promise.resolve(true));
 
     await TestBed.configureTestingModule({
-      imports: [
-        ReactiveFormsModule,
-        HttpClientTestingModule,
+    imports: [ReactiveFormsModule,
         RouterTestingModule,
         NoopAnimationsModule,
         MatFormFieldModule,
         MatInputModule,
         MatButtonModule,
-        MatCardModule
-      ],
-      providers: [
+        MatCardModule],
+    providers: [
         { provide: Router, useValue: routerSpy },
-        { provide: UserService, useClass: MockUserService }
-      ]
-    }).compileComponents();
+        { provide: UserService, useClass: MockUserService },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting()
+    ]
+}).compileComponents();
 
     router = TestBed.inject(Router) as jasmine.SpyObj<Router>;
     userService = TestBed.inject(UserService) as MockUserService;

@@ -13,8 +13,8 @@ import { ParticipantService } from '../../../services/participant.service';
 
 
 @Component({
-    selector: 'app-competition-detail',
     standalone: true,
+    selector: 'app-competition-detail',
     imports: [
         CommonModule,
         MatProgressSpinnerModule,

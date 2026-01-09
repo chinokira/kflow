@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ImportService, ImportCompetitionDto } from '../../../services/import.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -13,12 +13,11 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-competition-import',
-  templateUrl: './competition-import.component.html',
-  styleUrls: ['./competition-import.component.scss'],
-  standalone: true,
-  imports: [
-    CommonModule,
+    standalone: true,
+    selector: 'app-competition-import',
+    templateUrl: './competition-import.component.html',
+    styleUrls: ['./competition-import.component.scss'],
+    imports: [
     FormsModule,
     MatCardModule,
     MatButtonModule,
@@ -26,7 +25,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
     MatInputModule,
     MatListModule,
     MatProgressBarModule
-  ]
+]
 })
 export class CompetitionImportComponent {
   jsonContent: string = '';

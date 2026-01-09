@@ -7,14 +7,14 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { InsertErrorDirective } from '../../directives/insert-error.directive';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
-  selector: 'app-sign-up',
-  templateUrl: './sign-up.component.html',
-  styleUrl: './sign-up.component.css',
-  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, InsertErrorDirective],
-  standalone: true
+    selector: 'app-sign-up',
+    standalone: true,
+    templateUrl: './sign-up.component.html',
+    styleUrl: './sign-up.component.css',
+    imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, InsertErrorDirective]
 })
 export class SignUpComponent {
 

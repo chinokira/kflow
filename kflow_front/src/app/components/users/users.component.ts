@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { UserService } from '../../services/user.service';
 import { User } from '../../models/user.model';
 import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
 
 @Component({
-  selector: 'app-users',
-  standalone: true,
-  imports: [CommonModule, MatTableModule, MatCardModule],
-  template: `
+    standalone: true,
+    selector: 'app-users',
+    imports: [MatTableModule, MatCardModule],
+    template: `
     <mat-card>
       <mat-card-header>
         <mat-card-title>Liste des utilisateurs</mat-card-title>
@@ -42,7 +42,7 @@ import { MatCardModule } from '@angular/material/card';
       </mat-card-content>
     </mat-card>
   `,
-  styles: [`
+    styles: [`
     mat-card {
       margin: 20px;
     }

@@ -11,9 +11,11 @@
       <input matInput type="password" formControlName="password">
     </mat-form-field>
 
-    <div class="errors" *ngIf="error">
-      {{error}}
-    </div>
+    @if (error) {
+      <div class="errors">
+        {{error}}
+      </div>
+    }
 
     <div class="actions">
       <button mat-button mat-raised-button mat-dialog-close type="button" (click)="redirectToRegister()">Créer un compte</button>

@@ -37,7 +37,7 @@
                         Liste des participants
                       </mat-panel-title>
                     </mat-expansion-panel-header>
-                    <ng-container *ngIf="!loadingParticipants[category.id]; else loadingPart">
+                    @if (!loadingParticipants[category.id]) {
                       @for (participant of category.participants || []; track participant.id) {
                         <div class="participant-item">
                           <strong>{{ participant.name }}</strong>
@@ -61,13 +61,14 @@
                           </div>
                         </div>
                       }
-                      <div *ngIf="(category.participants || []).length === 0">
-                        Aucun participant.
-                      </div>
-                    </ng-container>
-                    <ng-template #loadingPart>
+                      @if ((category.participants || []).length === 0) {
+                        <div>
+                          Aucun participant.
+                        </div>
+                      }
+                    } @else {
                       <div class="loading"><mat-spinner diameter="24"></mat-spinner></div>
-                    </ng-template>
+                    }
                   </mat-expansion-panel>
                 </mat-accordion>
               </mat-card-content>
@@ -80,117 +81,117 @@
 </div>
 
 <style>
-    .competition-detail {
-        padding: 20px;
-        width: 100%;
-        margin: 0 auto;
-    }
+  .competition-detail {
+  padding: 20px;
+  width: 100%;
+  margin: 0 auto;
+}
 
-    .categories-list {
-        margin-top: 20px;
-    }
+.categories-list {
+margin-top: 20px;
+}
 
-    .results-table {
-        margin-top: 16px;
-        overflow-x: auto;
-    }
+.results-table {
+margin-top: 16px;
+overflow-x: auto;
+}
 
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        background-color: white;
-    }
+table {
+width: 100%;
+border-collapse: collapse;
+background-color: white;
+}
 
-    th,
-    td {
-        padding: 12px;
-        text-align: left;
-        border: 1px solid #ddd;
-    }
+th,
+td {
+padding: 12px;
+text-align: left;
+border: 1px solid #ddd;
+}
 
-    th {
-        background-color: #f5f5f5;
-        font-weight: 500;
-    }
+th {
+background-color: #f5f5f5;
+font-weight: 500;
+}
 
-    .rank-col {
-        width: 50px;
-        text-align: center;
-    }
+.rank-col {
+width: 50px;
+text-align: center;
+}
 
-    .name-col {
-        width: 200px;
-    }
+.name-col {
+width: 200px;
+}
 
-    .club-col {
-        width: 150px;
-    }
+.club-col {
+width: 150px;
+}
 
-    .runs-col {
-        min-width: 300px;
-    }
+.runs-col {
+min-width: 300px;
+}
 
-    .runs-list {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-    }
+.runs-list {
+display: flex;
+flex-wrap: wrap;
+gap: 8px;
+}
 
-    .run-item {
-        background-color: #f5f5f5;
-        padding: 8px 12px;
-        border-radius: 4px;
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-    }
+.run-item {
+background-color: #f5f5f5;
+padding: 8px 12px;
+border-radius: 4px;
+display: flex;
+flex-direction: column;
+gap: 4px;
+}
 
-    .run-item strong {
-        color: #2196f3;
-    }
+.run-item strong {
+color: #2196f3;
+}
 
-    .run-score {
-        color: #4caf50;
-    }
+.run-score {
+color: #4caf50;
+}
 
-    .no-runs {
-        color: #999;
-        font-style: italic;
-    }
+.no-runs {
+color: #999;
+font-style: italic;
+}
 
-    .loading {
-        display: flex;
-        justify-content: center;
-        margin-top: 20px;
-    }
+.loading {
+display: flex;
+justify-content: center;
+margin-top: 20px;
+}
 
-    .categories-grid {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 20px;
-        width: 100%;
-    }
+.categories-grid {
+display: grid;
+grid-template-columns: 1fr;
+gap: 20px;
+width: 100%;
+}
 
-    .category-card {
-        width: 100%;
-    }
+.category-card {
+width: 100%;
+}
 
-    .runs-scores {
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-        margin-top: 4px;
-    }
+.runs-scores {
+display: flex;
+flex-direction: column;
+gap: 4px;
+margin-top: 4px;
+}
 
-    .run-score {
-        color: #4caf50;
-        font-size: 0.9em;
-    }
+.run-score {
+color: #4caf50;
+font-size: 0.9em;
+}
 
-    .classement-score {
-        color: #ff9800;
-        font-size: 0.95em;
-        margin-left: 8px;
-        font-style: italic;
-    }
+.classement-score {
+color: #ff9800;
+font-size: 0.95em;
+margin-left: 8px;
+font-style: italic;
+}
 </style>

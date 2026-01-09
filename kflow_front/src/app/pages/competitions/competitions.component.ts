@@ -12,19 +12,19 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AuthenticationService } from '../../services/authentication.service';
 
 @Component({
-  selector: 'app-competitions',
-  standalone: true,
-  imports: [
-    CommonModule,
-    RouterModule,
-    MatCardModule,
-    MatButtonModule,
-    MatIconModule,
-    MatSnackBarModule,
-    MatProgressSpinnerModule
-  ],
-  templateUrl: './competitions.component.html',
-  styleUrls: ['./competitions.component.scss']
+    standalone: true,
+    selector: 'app-competitions',
+    imports: [
+        CommonModule,
+        RouterModule,
+        MatCardModule,
+        MatButtonModule,
+        MatIconModule,
+        MatSnackBarModule,
+        MatProgressSpinnerModule
+    ],
+    templateUrl: './competitions.component.html',
+    styleUrls: ['./competitions.component.scss']
 })
 export class CompetitionsComponent implements OnInit {
   competitions: Competition[] = [];

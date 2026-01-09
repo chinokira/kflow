@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { LoginComponent } from './login.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthenticationService } from '../../services/authentication.service';
@@ -11,6 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -23,21 +24,20 @@ describe('LoginComponent', () => {
     const routerSpy = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
 
     await TestBed.configureTestingModule({
-      imports: [
-        ReactiveFormsModule,
-        HttpClientTestingModule,
+    imports: [ReactiveFormsModule,
         RouterTestingModule,
         NoopAnimationsModule,
         MatFormFieldModule,
         MatInputModule,
         MatButtonModule,
-        MatCardModule
-      ],
-      providers: [
+        MatCardModule],
+    providers: [
         { provide: AuthenticationService, useValue: authServiceSpy },
-        { provide: Router, useValue: routerSpy }
-      ]
-    }).compileComponents();
+        { provide: Router, useValue: routerSpy },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting()
+    ]
+}).compileComponents();
 
     authService = TestBed.inject(AuthenticationService) as jasmine.SpyObj<AuthenticationService>;
     router = TestBed.inject(Router) as jasmine.SpyObj<Router>;

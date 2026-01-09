@@ -17,7 +17,19 @@
       "Bash(fi)",
       "Bash(done)",
       "Bash(for file in GenericServiceTest.java CategorieServiceTest.java CompetitionServiceTest.java ParticipantServiceTest.java)",
-      "Bash(do sed -i '/^class /i @SuppressWarnings\\({\"\"null\"\", \"\"unchecked\"\"}\\)' \"$file\")"
+      "Bash(do sed -i '/^class /i @SuppressWarnings\\({\"\"null\"\", \"\"unchecked\"\"}\\)' \"$file\")",
+      "Bash(cat:*)",
+      "Bash(npx @angular/cli@18 update:*)",
+      "Bash(npx @angular/cli@19 update:*)",
+      "Bash(npx @angular/cli@20 update:*)",
+      "Bash(npx @angular/cli@21 update:*)",
+      "Bash(npm run build:*)",
+      "Bash(timeout 30 ng serve:*)",
+      "Bash(npx tsc:*)",
+      "Bash(grep:*)",
+      "Bash(find:*)",
+      "Bash(for file in competitions.component.ts competition-detail/competition-detail.component.ts competition-edit/competition-edit.component.ts competition-import/competition-import.component.ts)",
+      "Bash(do sed -i 's/@Component\\({/@Component\\({\\\\n    standalone: true,/' \"$file\")"
     ]
   }
 }
