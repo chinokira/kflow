@@ -34,13 +34,6 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
           
-      - name: Debug - show repo tree
-        run: |
-          pwd
-          ls -la
-          find . -maxdepth 4 -type f -name pom.xml -print
-          find . -maxdepth 3 -type d -name "kflow_back" -print
-
       - name: Build and analyze
           working-directory: kflow_back
           env:
