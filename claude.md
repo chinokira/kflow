@@ -1307,19 +1307,149 @@ Les warnings de null safety dans les tests sont liés aux types génériques et 
 
 ---
 
+#### 10. Configuration multi-environnement et sécurisation
+
+**Problème :** Configuration non sécurisée et absence de séparation dev/prod
+**Fichiers modifiés :**
+- Backend : application.properties, application-dev.properties, application-prod.properties, .env.example
+- Frontend : environment.ts, environment.prod.ts, angular.json
+
+**Corrections Backend :**
+
+**1. Création des profils Spring (dev/prod)**
+
+**application.properties** (configuration par défaut) :
+```properties
+# Profil actif par défaut
+spring.profiles.active=dev
+
+# Database avec variables d'environnement
+spring.datasource.url=${DB_URL:jdbc:mysql://localhost:3306/kflow?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true}
+spring.datasource.username=${DB_USERNAME:root}
+spring.datasource.password=${DB_PASSWORD:}
+
+# Logging par défaut (production)
+spring.jpa.show-sql=false
+logging.level.org.hibernate.SQL=WARN
+logging.level.org.springframework=INFO
+```
+
+**application-dev.properties** (développement) :
+```properties
+# Database sans SSL pour développement
+spring.datasource.url=jdbc:mysql://localhost:3306/kflow?useSSL=false
+spring.datasource.password=
+
+# Logging détaillé
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+logging.level.org.hibernate.SQL=DEBUG
+logging.level.org.hibernate.type.descriptor.sql.BasicBinder=TRACE
+
+# DDL auto update
+spring.jpa.hibernate.ddl-auto=update
+```
+
+**application-prod.properties** (production) :
+```properties
+# Database avec SSL obligatoire
+spring.datasource.url=${DB_URL:jdbc:mysql://localhost:3306/kflow?useSSL=true&requireSSL=true}
+spring.datasource.username=${DB_USERNAME}
+spring.datasource.password=${DB_PASSWORD}
+
+# Logging minimal
+spring.jpa.show-sql=false
+logging.level.org.hibernate.SQL=WARN
+
+# DDL validate uniquement (pas de modification auto)
+spring.jpa.hibernate.ddl-auto=validate
+
+# Sécurité : masquer les détails d'erreur
+server.error.include-message=never
+server.error.include-stacktrace=never
+```
+
+**2. Fichier .env.example**
+```properties
+# Variables d'environnement pour la production
+DB_URL=jdbc:mysql://localhost:3306/kflow?useSSL=true
+DB_USERNAME=root
+DB_PASSWORD=votre_mot_de_passe_securise_ici
+SPRING_PROFILES_ACTIVE=prod
+```
+
+**Corrections Frontend :**
+
+**environment.ts** (développement) :
+```typescript
+export const environment = {
+  production: false,
+  apiUrl: 'http://localhost:8080',
+  enableDebugTools: true,
+  logLevel: 'debug'
+};
+```
+
+**environment.prod.ts** (production) :
+```typescript
+export const environment = {
+  production: true,
+  apiUrl: 'https://api.kflow.example.com',
+  enableDebugTools: false,
+  logLevel: 'error'
+};
+```
+
+**angular.json** - Configuration fileReplacements :
+```json
+"production": {
+  "fileReplacements": [
+    {
+      "replace": "src/environments/environment.ts",
+      "with": "src/environments/environment.prod.ts"
+    }
+  ]
+}
+```
+
+**Impact :**
+- ✅ Séparation claire entre dev et production
+- ✅ Mots de passe via variables d'environnement (sécurité)
+- ✅ SSL activé en production
+- ✅ Logging adapté à chaque environnement
+- ✅ Protection contre les fuites d'informations en production
+- ✅ Configuration Angular centralisée par environnement
+
+**Utilisation :**
+
+Backend :
+```bash
+# Développement
+./mvnw spring-boot:run
+
+# Production
+export DB_PASSWORD="votre_mot_de_passe"
+./mvnw spring-boot:run -Dspring.profiles.active=prod
+```
+
+Frontend :
+```bash
+# Développement
+ng serve
+
+# Production
+ng build --configuration production
+```
+
+---
+
 ### 📝 Problèmes Identifiés mais Non Corrigés
 
 Les problèmes suivants ont été identifiés lors de l'analyse mais nécessitent une décision ou une planification :
 
-#### Backend
-- **Logging de debug activé** : `application.properties` contient des niveaux DEBUG/TRACE pour Hibernate
-- **Mot de passe base de données vide** : Configuration de développement non sécurisée
-- **SSL désactivé** : Connexion MySQL sans SSL
-
 #### Frontend
 - **Dépendances obsolètes** : Angular 17 → Angular 21 (migration majeure à planifier)
-- **Styles CSS/SCSS mélangés** : Standardisation nécessaire
-- **Pas de configuration par environnement** : Créer des fichiers environment.ts
+- **Styles CSS/SCSS mélangés** : Standardisation nécessaire (.css vs .scss)
 
 ---
 
