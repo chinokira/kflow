@@ -1,0 +1,58 @@
+# Docker Compose pour SonarQube
+# Ce fichier permet de lancer rapidement une instance SonarQube locale pour l'analyse de code
+
+version: '3.8'
+
+services:
+  # Base de données PostgreSQL pour SonarQube
+  sonarqube-db:
+    image: postgres:16-alpine
+    container_name: kflow-sonarqube-db
+    environment:
+      POSTGRES_USER: sonar
+      POSTGRES_PASSWORD: sonar
+      POSTGRES_DB: sonarqube
+    volumes:
+      - sonarqube_db_data:/var/lib/postgresql/data
+    networks:
+      - sonar-network
+    restart: unless-stopped
+
+  # SonarQube Server
+  sonarqube:
+    image: sonarqube:10.4-community
+    container_name: kflow-sonarqube
+    depends_on:
+      - sonarqube-db
+    environment:
+      SONAR_JDBC_URL: jdbc:postgresql://sonarqube-db:5432/sonarqube
+      SONAR_JDBC_USERNAME: sonar
+      SONAR_JDBC_PASSWORD: sonar
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_logs:/opt/sonarqube/logs
+      - sonarqube_extensions:/opt/sonarqube/extensions
+    ports:
+      - "9000:9000"
+    networks:
+      - sonar-network
+    restart: unless-stopped
+    # Augmenter les limites pour éviter les erreurs de démarrage
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
+
+networks:
+  sonar-network:
+    driver: bridge
+
+volumes:
+  sonarqube_db_data:
+    name: kflow_sonarqube_db_data
+  sonarqube_data:
+    name: kflow_sonarqube_data
+  sonarqube_logs:
+    name: kflow_sonarqube_logs
+  sonarqube_extensions:
+    name: kflow_sonarqube_extensions

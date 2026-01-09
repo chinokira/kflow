@@ -134,6 +134,55 @@ Sprint CI/CD : pipeline GitHub Actions, image Docker multi-stage
 
 Sprint Temps réel : ajout de WebSockets pour scores en direct
 
+---
+
+## 📊 Analyse de la qualité du code avec SonarQube
+
+Le projet est configuré pour utiliser **SonarQube**, une plateforme d'analyse continue de la qualité du code qui détecte les bugs, vulnérabilités, code smells et mesure la couverture de code.
+
+### Démarrage rapide
+
+1. **Lancer SonarQube avec Docker :**
+   ```bash
+   docker-compose -f docker-compose.sonar.yml up -d
+   ```
+
+2. **Accéder à SonarQube :**
+   - URL : http://localhost:9000
+   - Identifiants par défaut : `admin` / `admin`
+   - Changer le mot de passe lors de la première connexion
+
+3. **Générer un token d'authentification :**
+   - My Account > Security > Generate Tokens
+   - Copier le token généré
+
+4. **Lancer l'analyse :**
+   ```bash
+   # Linux/Mac
+   export SONAR_TOKEN=your_token_here
+   ./analyze-sonar.sh
+
+   # Windows
+   set SONAR_TOKEN=your_token_here
+   analyze-sonar.bat
+   ```
+
+5. **Consulter les résultats :**
+   - Dashboard : http://localhost:9000/dashboard?id=kflow
+
+### Documentation complète
+
+Pour plus de détails sur la configuration, l'interprétation des résultats et l'intégration CI/CD, consultez le guide complet : **[SONARQUBE.md](SONARQUBE.md)**
+
+Le guide contient :
+- Installation et configuration détaillées
+- Explication des métriques (Bugs, Vulnérabilités, Code Smells, Couverture)
+- Interprétation du dashboard
+- Intégration dans GitHub Actions / GitLab CI
+- Bonnes pratiques et dépannage
+
+---
+
 📄 Licence
 Projet sous licence MIT – librement réutilisable et modifiable.
 Développé dans un cadre personnel à des fins pédagogiques (certification CDA 2025).

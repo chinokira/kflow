@@ -115,7 +115,14 @@
               "@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "codeCoverage": true,
+            "codeCoverageExclude": [
+              "src/environments/**",
+              "src/**/*.spec.ts",
+              "src/test.ts",
+              "src/polyfills.ts"
+            ]
           }
         }
       }

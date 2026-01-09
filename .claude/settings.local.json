@@ -30,7 +30,10 @@
       "Bash(find:*)",
       "Bash(for file in competitions.component.ts competition-detail/competition-detail.component.ts competition-edit/competition-edit.component.ts competition-import/competition-import.component.ts)",
       "Bash(do sed -i 's/@Component\\({/@Component\\({\\\\n    standalone: true,/' \"$file\")",
-      "Bash(npm test:*)"
+      "Bash(npm test:*)",
+      "Bash(docker-compose:*)",
+      "Bash(docker logs:*)",
+      "Bash(curl:*)"
     ]
   }
 }

@@ -1,0 +1,83 @@
+# ===================================================================
+# Fichiers à exclure du contrôle de version Git pour KFLOW
+# ===================================================================
+
+# ===================================================================
+# Backend Java (kflow_back)
+# ===================================================================
+kflow_back/target/
+kflow_back/.mvn/
+kflow_back/mvnw
+kflow_back/mvnw.cmd
+kflow_back/.idea/
+kflow_back/*.iml
+kflow_back/*.iws
+kflow_back/*.ipr
+kflow_back/.settings/
+kflow_back/.classpath
+kflow_back/.project
+kflow_back/bin/
+
+# ===================================================================
+# Frontend Angular (kflow_front)
+# ===================================================================
+kflow_front/node_modules/
+kflow_front/dist/
+kflow_front/.angular/
+kflow_front/coverage/
+kflow_front/.nyc_output/
+kflow_front/*.log
+kflow_front/.idea/
+kflow_front/*.iml
+
+# ===================================================================
+# SonarQube
+# ===================================================================
+.sonar/
+.scannerwork/
+sonar-scanner/
+
+# Rapports de couverture
+kflow_back/target/site/jacoco/
+kflow_back/target/jacoco.exec
+kflow_front/coverage/
+
+# ===================================================================
+# IDEs et éditeurs
+# ===================================================================
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ===================================================================
+# Logs
+# ===================================================================
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ===================================================================
+# Variables d'environnement et configuration locale
+# ===================================================================
+.env
+.env.local
+.env.*.local
+
+# ===================================================================
+# Base de données
+# ===================================================================
+*.db
+*.sqlite
+
+# ===================================================================
+# Docker volumes (générés par docker-compose)
+# ===================================================================
+# Note : les volumes sont gérés par Docker, pas besoin de les ignorer
+# mais on peut ignorer les fichiers de backup locaux
+*.sql.backup
